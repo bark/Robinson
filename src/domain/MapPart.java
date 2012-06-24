@@ -125,12 +125,12 @@ public class MapPart {
 	}
 	public boolean generate(int higth, int with){
 		//TODO denna måste bli smart 
-		Grass grass=new Grass();
+		
 		map= new Tile[higth][with][3];
 		//fyll den med gräs
 		for(int i=0;i<higth;i++){
 			for(int j=0;j<with;j++){
-				map[i][j][0]=grass;
+				map[i][j][0]=new Grass();;
 			}
 		}	
 		return true;

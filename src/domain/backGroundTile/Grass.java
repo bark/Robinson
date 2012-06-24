@@ -7,11 +7,16 @@ public class Grass extends BackgroundTile{
 	
 	@Override
 	public void paint(Graphics g) {
-		//g.drawLine(0, 0, 200, 400);
-		g.setColor(Color.RED);
-		g.clearRect (0,0,100,100);
-		System.out.println("line");
 		super.paint(g);
+		//g.drawLine(0, 0, 200, 400);
+		
+		g.setColor(Color.RED);
+		g.fillOval(0,0, 10, 10);
+
+		//g.drawRect(0,0,100,100);
+		
+		//g.dispose();
+
 		
 	}
 }
