@@ -1,5 +1,7 @@
 package domain;
 
-public class Tile {
+import java.awt.Canvas;
+
+public class Tile extends Canvas{
 
 }

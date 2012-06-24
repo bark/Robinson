@@ -1,5 +1,8 @@
 package domain.backGroundTile;
 
-public class BackgroundTile extends Tile{
+import domain.Tile;
 
+public class BackgroundTile extends Tile{
+	private String imgUrl;
+	
 }

@@ -27,24 +27,22 @@ public class MainMenuController implements ActionListener {
 					debug=true;
 				}
 		}
-		System.out.println("start mainMenuController");
 		new MainMenuController();
 
-		System.out.println("efter mainMenuController");
 	}
 
 	
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-		System.out.println("triggering");
-		System.out.println(((JButton)ae.getSource()).getText());
+		System.out.println("text på kanppen: "+((JButton)ae.getSource()).getText());
 		if(((JButton)ae.getSource()).getText().equals("exit")){
 			System.exit(0);
 		}
-		if(((JButton)ae.getSource()).getText().equals("new game")){
+		if(((JButton)ae.getSource()).getText().equals("new Game")){
 			System.out.println("startar ett nytt spel");
 			//starta ett nytt spel :P
+			new GameController();
 		}
 		if(((JButton)ae.getSource()).getText().equals("options")){
 			System.out.println("går in i option menu");

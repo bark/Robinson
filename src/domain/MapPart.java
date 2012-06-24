@@ -1,5 +1,6 @@
 package domain;
 
+import java.awt.Point;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,17 +11,17 @@ import java.util.Scanner;
 
 import javax.print.attribute.Size2DSyntax;
 
+import domain.backGroundTile.Grass;
+
 public class MapPart {
 	HashMap<String,Tile> MapTranslation = new HashMap<String,Tile>(); 
 	Tile[][][] map;
 
 	private int worldX;
 	private int worldY;
-	private int worldZ;
-	public MapPart(int x,int y,int z,int higth, int with){
+	public MapPart(int x,int y, int higth, int with){
 		worldX=x;
 		worldY=y;
-		worldZ=z;
 		generate(higth, with);
 	}
 	
@@ -47,7 +48,6 @@ public class MapPart {
 		//Where in the world this part is.
 		worldX =Integer.parseInt( mapheader[2]);
 		worldY =Integer.parseInt( mapheader[3]);
-		worldZ =Integer.parseInt( mapheader[4]);
 		
 		
 		map=new Tile[x][y][3];
@@ -119,18 +119,30 @@ public class MapPart {
 	
 	
 	
-	public HashMap<String,Integer> getPoition(){
-		HashMap<String,Integer> position=new HashMap<String,Integer>();
-		position.put("x", worldX);
-		position.put("y", worldY);
-		position.put("z", worldZ);
-		return position;
+	public Point getPoition(){
+		Point p=new Point(worldX,worldY);
+		return p;
 	}
 	public boolean generate(int higth, int with){
-		//TODO denna måste bli smart
+		//TODO denna måste bli smart 
+		Grass grass=new Grass();
 		map= new Tile[higth][with][3];
-		
+		//fyll den med gräs
+		for(int i=0;i<higth;i++){
+			for(int j=0;j<with;j++){
+				map[i][j][0]=grass;
+			}
+		}	
 		return true;
 	}
+	public int getHigth(){
+		return map.length;
+	}
+	public int getwith(){
+		return map[0].length;
+	}
 	
+	public Tile getPoint(int x, int y,int layer){
+		return map[x][y][layer];
+	}
 }
