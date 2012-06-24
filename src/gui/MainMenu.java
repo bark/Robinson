@@ -21,9 +21,9 @@ public class MainMenu extends JFrame {
 	private JButton loadGame;
 	private JButton exit;
 
-	//totorial
+	//tutorial
 	//new game
-	//loade game
+	//load game
 	//config
 	//exit
 	public MainMenu(){
