@@ -19,30 +19,33 @@ import javax.swing.KeyStroke;
 
 import domain.Map;
 import domain.MapPart;
+import domain.Player;
 
 public class GameController implements MouseWheelListener,KeyListener {
-	int x = 500;
-	int y = 500;
 	float zoomlv = 1;
 	GameGui gameGui = null;
 	MapView mapView =null;
+	Player player1=null;
 	public GameController() {
 		System.out.println("gameController");
 		Map worldMap = new Map();
-
+		
+		player1=new Player(2000,2000);
+		
+		
 		// borde bara skicka det man ser.
 		MapPart mappart = worldMap.getPart(0, 0);
 		System.out.println("tillverkat en mapPart");
 
-		MapView mapView = new MapView();
-		mapView.moveTo(x, y, zoomlv);
-		mapView.setMap(mappart);
+		MapView mapView = new MapView(mappart,player1);
+		//mapView.moveTo(player1.getPosX(),player1.getPosY(), zoomlv);
+		//mapView.setMap();
 		
 		this.mapView=mapView;
 		gameGui = new GameGui();
 		gameGui.setMapView(mapView);
 		gameGui.setAlwaysOnTop(true);
-
+		
 		// för scrollen ska fungera
 		gameGui.addMouseWheelListener(this);
 		gameGui.addKeyListener(this);
@@ -56,7 +59,7 @@ public class GameController implements MouseWheelListener,KeyListener {
 		System.out.println("zoomlv :"+zoomlv +""+ change+" change");
 		zoomlv=zoomlv+change;
 		System.out.println("new zoom valure:"+ zoomlv);
-		mapView.moveTo(x, y,zoomlv);
+		mapView.moveTo(player1.getPosX(),player1.getPosY(),zoomlv);
 	}
 
 	@Override
@@ -65,16 +68,17 @@ public class GameController implements MouseWheelListener,KeyListener {
 		System.out.println("key pressed");
 		System.out.println(e.getKeyChar());
 		if(e.getKeyChar()=='w'){
-			y-=3;
+			player1.goUp();
 		}else if(e.getKeyChar()=='s'){
-			y+=3;
+			player1.goDown();
 		}else if(e.getKeyChar()=='a'){
-			x-=3;
+			player1.goLeft();
 		}else if(e.getKeyChar()=='d'){
-			x+=3;
+			player1.goRigth();
 			
 		}
-		mapView.moveTo(x, y,zoomlv);
+		
+		mapView.moveTo(player1.getPosX(),player1.getPosY(),zoomlv);
 		
 	}
 

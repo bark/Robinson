@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import domain.MapPart;
+import domain.Player;
 
 
 public class MapView extends JComponent{
@@ -23,6 +24,14 @@ public class MapView extends JComponent{
 	int centerY;
 	private int leftCornerX;
 	private int leftCornerY;
+	Player player1;
+	public MapView(MapPart mappart, Player player1) {
+		this.mapPart=mappart;
+		repaint();
+		this.player1=player1;
+		setVisible(true);
+		// TODO Auto-generated constructor stub
+	}
 	public void setMap(MapPart mapPart) {
 		this.mapPart=mapPart;
 		repaint();
@@ -36,9 +45,9 @@ public class MapView extends JComponent{
 				mapPart.getPoint(x, y, 0).drawItSelf(g,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
 			}
 		}
-		
-		g.setColor(Color.green);
-		g.fillOval((int)getWidth()/2, (int)getHeight()/2,(int)(64*zoom),(int)( 64*zoom));
+		player1.drawItSelf(g,this,(int)getWidth()/2,(int)getHeight()/2,zoom);
+		//g.setColor(Color.green);
+		//g.fillOval((int)getWidth()/2, (int)getHeight()/2,(int)(64*zoom),(int)( 64*zoom));
 		
 	}
 	public void moveTo(int x,int y,float zoom){//move the center of the camera to this point
@@ -47,8 +56,8 @@ public class MapView extends JComponent{
 		this.zoom=zoom;
 		this.centerX=x;
 		this.centerY=y;
-		this.leftCornerX=x-(int)(getHeight()/2);
-		this.leftCornerY=y-(int)(getWidth()/2);
+		this.leftCornerX=(int)(x*zoom)-(int)((getHeight()/2));//denna stämmer inte riktigt med zoom
+		this.leftCornerY=(int)(y*zoom)-(int)((getWidth()/2));//denna stämmer inte riktigt med zoom
 		repaint();
 	}
 }
