@@ -138,7 +138,7 @@ public class MapPart {
 	public int getHigth(){
 		return map.length;
 	}
-	public int getwith(){
+	public int getWith(){
 		return map[0].length;
 	}
 	

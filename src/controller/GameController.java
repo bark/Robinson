@@ -20,12 +20,12 @@ import javax.swing.KeyStroke;
 import domain.Map;
 import domain.MapPart;
 
-public class GameController implements MouseWheelListener {
-	int x = 25;
-	int y = 25;
-	int zoomlv = 1;
+public class GameController implements MouseWheelListener,KeyListener {
+	int x = 500;
+	int y = 500;
+	float zoomlv = 1;
 	GameGui gameGui = null;
-
+	MapView mapView =null;
 	public GameController() {
 		System.out.println("gameController");
 		Map worldMap = new Map();
@@ -35,68 +35,59 @@ public class GameController implements MouseWheelListener {
 		System.out.println("tillverkat en mapPart");
 
 		MapView mapView = new MapView();
+		mapView.moveTo(x, y, zoomlv);
 		mapView.setMap(mappart);
+		
+		this.mapView=mapView;
 		gameGui = new GameGui();
 		gameGui.setMapView(mapView);
 		gameGui.setAlwaysOnTop(true);
 
 		// för scrollen ska fungera
 		gameGui.addMouseWheelListener(this);
+		gameGui.addKeyListener(this);
 
-		InputMap myInputMap = mapView.getInputMap(JComponent.WHEN_FOCUSED);
-		myInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0, false), "a");
-		myInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0, false), "w");
-		myInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0, false), "s");
-		myInputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0, false), "d");
-		myInputMap.put(KeyStroke.getKeyStroke("SPACE"), "space");
-
-		ActionMap myActionMap = mapView.getActionMap();
-		AbstractAction space = new AbstractAction() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("space är tryckt");
-
-			}
-		};
-		AbstractAction a = new AbstractAction() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("move left");
-				x += 5;
-				gameGui.move(x, y,zoomlv);
-			}
-		};
-		AbstractAction w = new AbstractAction() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("move forward");
-				y += 5;
-				gameGui.move(x, y,zoomlv);
-			}
-		};
-		AbstractAction s = new AbstractAction() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("move back");
-				y -= 5;
-				gameGui.move(x, y,zoomlv);
-			}
-		};
-		AbstractAction d = new AbstractAction() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("move rigth");
-				x -= 5;
-				gameGui.move(x, y,zoomlv);
-			}
-		};
-		myActionMap.put("a", a);
-		myActionMap.put("w", w);
-		myActionMap.put("s", s);
-		myActionMap.put("d", d);
-		myActionMap.put("space", space);
 
 	}
 
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent arg0) {
+		float change=(float) (arg0.getClickCount()*arg0.getWheelRotation()*0.01);
+		System.out.println("zoomlv :"+zoomlv +""+ change+" change");
+		zoomlv=zoomlv+change;
+		System.out.println("new zoom valure:"+ zoomlv);
+		mapView.moveTo(x, y,zoomlv);
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		System.out.println("key pressed");
+		System.out.println(e.getKeyChar());
+		if(e.getKeyChar()=='w'){
+			y-=3;
+		}else if(e.getKeyChar()=='s'){
+			y+=3;
+		}else if(e.getKeyChar()=='a'){
+			x-=3;
+		}else if(e.getKeyChar()=='d'){
+			x+=3;
+			
+		}
+		mapView.moveTo(x, y,zoomlv);
 		
-		System.out.println("scrollning");
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		//System.out.println("key released");
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		//System.out.println("keyTyped");
 	}
 
 }
