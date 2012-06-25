@@ -11,8 +11,8 @@ public class Grass extends BackgroundTile{
 		//g.drawLine(0, 0, 200, 400);
 		
 		g.setColor(Color.RED);
-		g.fillOval(0,0, 10, 10);
-
+		g.fillOval(0,0, 64, 64);
+		
 		//g.drawRect(0,0,100,100);
 		
 		//g.dispose();
