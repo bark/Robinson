@@ -13,6 +13,7 @@ import javax.print.attribute.Size2DSyntax;
 
 import domain.backGroundTile.Grass;
 import domain.forgroundTile.Stone;
+import domain.forgroundTile.TreeBottom;
 
 public class MapPart {
 	HashMap<String,Tile> MapTranslation = new HashMap<String,Tile>(); 
@@ -131,6 +132,10 @@ public class MapPart {
 		//fyll den med gräs
 		for(int i=0;i<higth;i++){
 			for(int j=0;j<with;j++){
+				if(i%9==0&&j%7==0){
+					createATree(i,j);
+				}
+				
 				if(i%3==0&&j%3==0){
 					map[i][j][2]=new Stone();
 				}
@@ -140,6 +145,20 @@ public class MapPart {
 		}	
 		return true;
 	}
+	void createATree(int x,int y){
+		if(x<90&&y<90){
+			map[x][y][2]=new TreeBottom(0, 0);
+			map[x+1][y][2]=new TreeBottom(0, 1);
+			map[x+2][y][2]=new TreeBottom(0, 2);
+			map[x][y+1][2]=new TreeBottom(0, 3);
+			map[x+1][y+1][2]=new TreeBottom(0, 4);
+			map[x+2][y+1][2]=new TreeBottom(0, 5);
+			map[x][y+2][2]=new TreeBottom(0, 6);
+			map[x+1][y+2][2]=new TreeBottom(0, 7);
+			map[x+2][y+2][2]=new TreeBottom(0, 8);
+		}
+	}
+	
 	public int getHigth(){
 		return map.length;
 	}
