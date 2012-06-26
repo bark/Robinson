@@ -58,8 +58,8 @@ public class MapView extends JComponent{
 		this.zoom=zoom;
 		this.centerX=x;
 		this.centerY=y;
-		this.leftCornerX=(int)(x*zoom)-(int)((getHeight()/2));//denna stämmer inte riktigt med zoom
-		this.leftCornerY=(int)(y*zoom)-(int)((getWidth()/2));//denna stämmer inte riktigt med zoom
+		this.leftCornerX=(int)(x*zoom)-((getWidth()/2));//denna stämmer inte riktigt med zoom
+		this.leftCornerY=(int)(y*zoom)-((getHeight()/2));//denna stämmer inte riktigt med zoom
 		repaint();
 	}
 }
