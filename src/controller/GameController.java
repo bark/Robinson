@@ -40,8 +40,7 @@ public class GameController implements MouseWheelListener,KeyListener {
 
 		StatusView statusView=new StatusView(player1);
 		MapView mapView = new MapView(mappart,statusView,player1);
-		//mapView.moveTo(player1.getPosX(),player1.getPosY(), zoomlv);
-		//mapView.setMap();
+		
 		this.mapView=mapView;
 		gameGui = new GameGui();
 		gameGui.setMapView(mapView);
@@ -65,8 +64,6 @@ public class GameController implements MouseWheelListener,KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		//System.out.println("key pressed");
 		//System.out.println(e.getKeyCode());
 		if(e.getKeyChar()=='w'||e.getKeyCode()==38){
 			player1.goUp();
