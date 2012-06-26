@@ -10,7 +10,7 @@ public class TreeBottom extends ForgroundTile{
 	private int part;
 	private int treeType;
 	public TreeBottom(int treeType,int part){
-		String uri="./res/pic/treetop.png";
+		String uri="./res/pic/trunk.png";
 		pic= Toolkit.getDefaultToolkit().getImage(uri);
 		this.treeType=treeType;
 		this.part=part;

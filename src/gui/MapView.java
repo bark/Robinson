@@ -44,13 +44,42 @@ public class MapView extends JComponent{
 			for(int y=0;y<mapPart.getWith();y++){
 				if(mapPart.getPoint(x, y, 0)!=null)
 					mapPart.getPoint(x, y, 0).drawItSelf(g,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
+			}
+		}
+		
+		
+		for(int x=0;x<mapPart.getHigth();x++){
+			for(int y=0;y<mapPart.getWith();y++){
 				if(mapPart.getPoint(x, y, 1)!=null)
 					mapPart.getPoint(x, y, 1).drawItSelf(g,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
-				if(mapPart.getPoint(x, y, 2)!=null)
-					mapPart.getPoint(x, y, 2).drawItSelf(g,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
+			
 			}
 		}
 		player1.drawItSelf(g,this,(int)getWidth()/2,(int)getHeight()/2,zoom);
+		
+		for(int x=0;x<mapPart.getHigth();x++){
+			for(int y=0;y<mapPart.getWith();y++){
+				if(mapPart.getPoint(x, y, 2)!=null)
+					mapPart.getPoint(x, y, 2).drawItSelf(g,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
+	
+			}
+		}
+		for(int x=0;x<mapPart.getHigth();x++){
+			for(int y=0;y<mapPart.getWith();y++){
+				if(mapPart.getPoint(x, y, 3)!=null)
+					mapPart.getPoint(x, y, 3).drawItSelf(g,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
+	
+			}
+		}
+		for(int x=0;x<mapPart.getHigth();x++){
+			for(int y=0;y<mapPart.getWith();y++){
+				if(mapPart.getPoint(x, y, 4)!=null)
+					mapPart.getPoint(x, y, 4).drawItSelf(g,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
+	
+			}
+		}
+		
+		
 		statusView.drawItSelf(g,this,(int)getWidth()-400,(int)getHeight()-200,zoom);
 	}
 	public void moveTo(int x,int y,float zoom){//move the center of the camera to this point
