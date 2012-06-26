@@ -34,7 +34,7 @@ public class GameController implements MouseWheelListener, KeyListener {
 		System.out.println("gameController");
 		worldMap = new Map();
 
-		player1 = new Player(64, 64, this);
+		player1 = new Player(256, 256, this);
 
 		// borde bara skicka det man ser.
 		worldMap.getPart(0, 0);
@@ -95,7 +95,11 @@ public class GameController implements MouseWheelListener, KeyListener {
 
 	public Tile translatePxToTile(int x, int y, int layer) {
 		
-		return worldMap.getPoint((int) x / 64, (int) y / 64, layer);
+		int tileX=(int) ((x / 64));
+		int tileY=(int) ((y / 64));
+		
+		System.out.println("punkten är" + tileX+ ", " + tileY);
+		return worldMap.getPoint(tileX, tileY, layer);
 	}
 
 	public boolean checkPositionIsOk(int x, int y) {
