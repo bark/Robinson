@@ -42,8 +42,12 @@ public class MapView extends JComponent{
 	public void paint(Graphics g) {
 		for(int x=0;x<mapPart.getHigth();x++){
 			for(int y=0;y<mapPart.getWith();y++){
-				
-				mapPart.getPoint(x, y, 0).drawItSelf(g,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
+				if(mapPart.getPoint(x, y, 0)!=null)
+					mapPart.getPoint(x, y, 0).drawItSelf(g,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
+				if(mapPart.getPoint(x, y, 1)!=null)
+					mapPart.getPoint(x, y, 1).drawItSelf(g,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
+				if(mapPart.getPoint(x, y, 2)!=null)
+					mapPart.getPoint(x, y, 2).drawItSelf(g,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
 			}
 		}
 		player1.drawItSelf(g,this,(int)getWidth()/2,(int)getHeight()/2,zoom);

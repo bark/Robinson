@@ -132,10 +132,10 @@ public class MapPart {
 		for(int i=0;i<higth;i++){
 			for(int j=0;j<with;j++){
 				if(i%3==0&&j%3==0){
-					map[i][j][0]=new Stone();
-				}else{
-					map[i][j][0]=new Grass();
+					map[i][j][2]=new Stone();
 				}
+				map[i][j][0]=new Grass();
+				
 			}
 		}	
 		return true;
