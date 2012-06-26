@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class Map {
 	HashMap<Point, MapPart> worldMap = new HashMap<Point, MapPart>();
-
+	int layers=5;
 	boolean LoadMap(String mapUri) {
 		File mapFile = new File(mapUri);
 		Scanner mapScanner;
@@ -71,5 +71,23 @@ public class Map {
 			part=generateWorldMap(x,y);
 		}
 		return part;
+	}
+	public int getLayers() {
+		return layers;
+		
+	}
+	
+	public int getHigth() {
+		return worldMap.get(new Point(0,0)).getHigth();
+		
+	}
+	public int getWith() {
+		return worldMap.get(new Point(0,0)).getWith();
+		
+	}
+
+	public Tile getPoint(int x, int y, int i) {
+
+		return worldMap.get(new Point(0,0)).getPoint(x,y,i);
 	}
 }
