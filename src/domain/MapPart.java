@@ -12,6 +12,7 @@ import java.util.Scanner;
 import javax.print.attribute.Size2DSyntax;
 
 import domain.backGroundTile.Grass;
+import domain.forgroundTile.Stone;
 
 public class MapPart {
 	HashMap<String,Tile> MapTranslation = new HashMap<String,Tile>(); 
@@ -130,7 +131,11 @@ public class MapPart {
 		//fyll den med gräs
 		for(int i=0;i<higth;i++){
 			for(int j=0;j<with;j++){
-				map[i][j][0]=new Grass();;
+				if(i%3==0&&j%3==0){
+					map[i][j][0]=new Stone();
+				}else{
+					map[i][j][0]=new Grass();
+				}
 			}
 		}	
 		return true;

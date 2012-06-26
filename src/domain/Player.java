@@ -4,6 +4,9 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.ImageObserver;
+import java.util.ArrayList;
+
+import Items.Item;
 
 
 public class Player {
@@ -26,6 +29,7 @@ public class Player {
 	float tempratur=47;
 	float tiredness=80;
 	
+	ArrayList<Item> inventory=new ArrayList<Item>();
 	
 	Direction dir=Direction.DOWN;
 	Image pic=null;
@@ -164,6 +168,12 @@ public class Player {
 	public void setTiredness(float tiredness) {
 		this.tiredness = tiredness;
 	}
-
+	public void addItem(Item item){
+		inventory.add(item);
+	}
+	public ArrayList<Item> getInventory(){
+		return inventory;
+	}
+	
 	
 }
