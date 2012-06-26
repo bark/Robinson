@@ -25,10 +25,12 @@ public class MapView extends JComponent{
 	private int leftCornerX;
 	private int leftCornerY;
 	Player player1;
-	public MapView(MapPart mappart, Player player1) {
+	private StatusView statusView;
+	public MapView(MapPart mappart,StatusView statusView, Player player1) {
 		this.mapPart=mappart;
 		repaint();
 		this.player1=player1;
+		this.statusView=statusView;
 		setVisible(true);
 		// TODO Auto-generated constructor stub
 	}
@@ -38,7 +40,6 @@ public class MapView extends JComponent{
 		setVisible(true);
 	}
 	public void paint(Graphics g) {
-		System.out.println("kör paint på mapview");
 		for(int x=0;x<mapPart.getHigth();x++){
 			for(int y=0;y<mapPart.getWith();y++){
 				
@@ -46,13 +47,10 @@ public class MapView extends JComponent{
 			}
 		}
 		player1.drawItSelf(g,this,(int)getWidth()/2,(int)getHeight()/2,zoom);
-		//g.setColor(Color.green);
-		//g.fillOval((int)getWidth()/2, (int)getHeight()/2,(int)(64*zoom),(int)( 64*zoom));
-		
+		statusView.drawItSelf(g,this,(int)getWidth()-400,(int)getHeight()-200,zoom);
 	}
 	public void moveTo(int x,int y,float zoom){//move the center of the camera to this point
-		System.out.println("bredden:"+getWidth());
-		System.out.println("höjd:"+getHeight());
+		
 		this.zoom=zoom;
 		this.centerX=x;
 		this.centerY=y;

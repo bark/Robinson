@@ -2,6 +2,7 @@ package controller;
 
 import gui.GameGui;
 import gui.MapView;
+import gui.StatusView;
 
 import java.awt.Desktop.Action;
 import java.awt.event.ActionEvent;
@@ -37,10 +38,10 @@ public class GameController implements MouseWheelListener,KeyListener {
 		MapPart mappart = worldMap.getPart(0, 0);
 		System.out.println("tillverkat en mapPart");
 
-		MapView mapView = new MapView(mappart,player1);
+		StatusView statusView=new StatusView(player1);
+		MapView mapView = new MapView(mappart,statusView,player1);
 		//mapView.moveTo(player1.getPosX(),player1.getPosY(), zoomlv);
 		//mapView.setMap();
-		
 		this.mapView=mapView;
 		gameGui = new GameGui();
 		gameGui.setMapView(mapView);
@@ -56,24 +57,24 @@ public class GameController implements MouseWheelListener,KeyListener {
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent arg0) {
 		float change=(float) (arg0.getClickCount()*arg0.getWheelRotation()*0.01);
-		System.out.println("zoomlv :"+zoomlv +""+ change+" change");
+		//System.out.println("zoomlv :"+zoomlv +""+ change+" change");
 		zoomlv=zoomlv+change;
-		System.out.println("new zoom valure:"+ zoomlv);
+		//System.out.println("new zoom valure:"+ zoomlv);
 		mapView.moveTo(player1.getPosX(),player1.getPosY(),zoomlv);
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		System.out.println("key pressed");
-		System.out.println(e.getKeyChar());
-		if(e.getKeyChar()=='w'){
+		//System.out.println("key pressed");
+		//System.out.println(e.getKeyCode());
+		if(e.getKeyChar()=='w'||e.getKeyCode()==38){
 			player1.goUp();
-		}else if(e.getKeyChar()=='s'){
+		}else if(e.getKeyChar()=='s'||e.getKeyCode()==40){
 			player1.goDown();
-		}else if(e.getKeyChar()=='a'){
+		}else if(e.getKeyChar()=='a'||e.getKeyCode()==37){
 			player1.goLeft();
-		}else if(e.getKeyChar()=='d'){
+		}else if(e.getKeyChar()=='d'||e.getKeyCode()==39){
 			player1.goRigth();
 			
 		}

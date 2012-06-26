@@ -10,12 +10,23 @@ public class Player {
 	public enum Direction {
 	    RIGTH, LEFT, UP, DOWN 
 	}	
+	
 	int posX=0;
-	float spead=2;
 	int posY=0;
+	
+	//stats
+	float spead=2;
+	
+		int maxhp=100;
+	
 	//inventory
-	int hp;
-	int maxhp;
+	float hp=maxhp;
+	float hunger=40;
+	float thirst=100;
+	float tempratur=47;
+	float tiredness=80;
+	
+	
 	Direction dir=Direction.DOWN;
 	Image pic=null;
 	int frame=0;
@@ -101,5 +112,58 @@ public class Player {
 		posX-=spead;
 		
 	}
+
+	public int getHpLeft(){
+	 	return (int)(getMaxhp()/getHp())*100;
+	}
+	
+	public int getMaxhp() {
+		return maxhp;
+	}
+
+	public void setMaxhp(int maxhp) {
+		this.maxhp = maxhp;
+	}
+
+	public float getHp() {
+		return hp;
+	}
+
+	public void setHp(float hp) {
+		this.hp = hp;
+	}
+
+	public int getHunger() {
+		return (int)hunger;
+	}
+
+	public void setHunger(float hunger) {
+		this.hunger = hunger;
+	}
+
+	public int getThirst() {
+		return (int)thirst;
+	}
+
+	public void setThirst(float thirst) {
+		this.thirst = thirst;
+	}
+
+	public float getTempratur() {
+		return tempratur;
+	}
+
+	public void setTempratur(float tempratur) {
+		this.tempratur = tempratur;
+	}
+
+	public int getTiredness() {
+		return (int)tiredness;
+	}
+
+	public void setTiredness(float tiredness) {
+		this.tiredness = tiredness;
+	}
+
 	
 }

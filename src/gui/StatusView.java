@@ -1,17 +1,48 @@
 package gui;
 
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.ImageObserver;
 
-public class StatusView extends Canvas{
+import domain.Player;
 
-	void updateList(int hp,int törst){ //ska måla om bilden när anropas
-		// TODO gör grafer se samwise bild.
+public class StatusView {
+	Player player=null;
+	public StatusView(Player player) {
+		this.player=player;
 	}
 	
-	@Override
-	public void paint(Graphics g) {
-		// TODO gör grafer se samwise bild.
-		super.paint(g);
+	public void drawItSelf( Graphics g,ImageObserver io,int x,int y,float zoom){
+		g.setColor(Color.GRAY);
+		g.fillRect(x, y, 400, 200);	
+		
+		g.setColor(Color.RED);
+		g.fillRect(x+300, y+(200-(player.getHpLeft()*2)), 90, 200);
+		
+		
+		
+		g.setColor(Color.GREEN);
+		g.fillRect(x+200, y+(200-(player.getHunger()*2)), 90, 200);
+		
+		
+		g.setColor(Color.BLUE);
+		g.fillRect(x+100, y+( 200-(player.getThirst()*2)), 90, 200);
+		
+		g.setColor(Color.YELLOW);
+		g.fillRect(x, y+(200-(player.getTiredness()*2)), 90, 200);
+		
+		
+		g.setColor(Color.GRAY);
+		g.fillRect(x, y+180, 400, 200);	
+		
+		g.setColor(Color.BLACK);
+		g.drawChars("hp".toCharArray(), 0, 2, x+350, y+193);
+		g.drawChars("Hunger".toCharArray(), 0, 6, x+220, y+193);
+		g.drawChars("Thirst".toCharArray(), 0, 6, x+120, y+193);
+		g.drawChars("Tiredness".toCharArray(), 0, 9, x+20, y+193);
+	
+		
 	}
+	
 }
