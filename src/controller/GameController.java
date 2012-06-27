@@ -14,8 +14,15 @@ import domain.Map;
 import domain.Player;
 import domain.Tile;
 
-public class GameController implements MouseWheelListener, KeyListener {
+public class GameController implements MouseWheelListener, KeyListener,
+		Runnable {
 	float zoomlv = 1;
+
+	public static enum ACTION {
+		RIGTH, LEFT, UP, DOWN
+	}
+
+	ACTION action = null;
 	GameGui gameGui = null;
 
 	MapView mapView = null;
@@ -27,17 +34,15 @@ public class GameController implements MouseWheelListener, KeyListener {
 		System.out.println("gameController");
 		worldMap = new Map();
 
-		player1 = new Player(256, 256, this);
+		player1 = new Player(25444, 25444, this);
 
 		// borde bara skicka det man ser.
-		worldMap.getPart(0, 0);
 		System.out.println("tillverkat en mapPart");
 
-
-		StatusView statusView=new StatusView(player1);		
+		StatusView statusView = new StatusView(player1);
 		logView = new LogView();
-		mapView = new MapView(worldMap,statusView,logView, player1);
-		
+		mapView = new MapView(worldMap, statusView, logView, player1);
+
 		gameGui = new GameGui();
 		gameGui.setMapView(mapView);
 		gameGui.setAlwaysOnTop(true);
@@ -45,7 +50,7 @@ public class GameController implements MouseWheelListener, KeyListener {
 		// för scrollen ska fungera
 		gameGui.addMouseWheelListener(this);
 		gameGui.addKeyListener(this);
-
+		new Thread(this).start();
 	}
 
 	@Override
@@ -61,17 +66,18 @@ public class GameController implements MouseWheelListener, KeyListener {
 	public void keyPressed(KeyEvent e) {
 		// System.out.println(e.getKeyCode());
 		if (e.getKeyChar() == 'w' || e.getKeyCode() == 38) {
-			player1.goUp();
+			System.out.println("w");
+			action = ACTION.UP;
 		} else if (e.getKeyChar() == 's' || e.getKeyCode() == 40) {
-			player1.goDown();
+			action = ACTION.DOWN;
 		} else if (e.getKeyChar() == 'a' || e.getKeyCode() == 37) {
-			player1.goLeft();
-		}else if(e.getKeyChar()=='d'||e.getKeyCode()==39){
-			player1.goRigth();	
-		}else if(e.getKeyChar()=='z'){
+			action = ACTION.LEFT;
+		} else if (e.getKeyChar() == 'd' || e.getKeyCode() == 39) {
+			action = ACTION.RIGTH;
+		} else if (e.getKeyChar() == 'z') {
 			zoomlv += 0.1;
 			logView.addString("Zoomade med z");
-		}else if(e.getKeyChar()=='x'){
+		} else if (e.getKeyChar() == 'x') {
 			zoomlv -= 0.1;
 			logView.addString("Zoomade med x");
 		}
@@ -102,9 +108,7 @@ public class GameController implements MouseWheelListener, KeyListener {
 	}
 
 	public boolean checkPositionIsOk(int topX, int topY, int botX, int botY) {
-		if (topX < 0 || topY < 0) {
-			return false;
-		}
+
 		for (int i = 0; i < worldMap.getLayers(); i++) {
 
 			if (translatePxToTile(topX, botY, i) != null) {
@@ -123,8 +127,7 @@ public class GameController implements MouseWheelListener, KeyListener {
 					return false;
 				}
 			}
-			
-			
+
 			if (translatePxToTile(botX, botY, i) != null) {
 
 				if (translatePxToTile(botX, botY, i).isSollid()) {
@@ -144,6 +147,27 @@ public class GameController implements MouseWheelListener, KeyListener {
 			}
 		}
 		return true;
+	}
+
+	// game loop
+	@Override
+	public void run() {// ska vara ca 60 fps
+		while (true) {
+			if (action != null) {
+				player1.action(action);
+				action=null;
+			}
+			//System.out.println("looping....");
+			// kolla vart den går
+			// kolla om den får gå dit
+			// rita om
+			try {
+				Thread.sleep(1000/60);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

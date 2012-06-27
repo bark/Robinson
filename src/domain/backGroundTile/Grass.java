@@ -7,7 +7,7 @@ import java.awt.Toolkit;
 import java.awt.image.ImageObserver;
 
 public class Grass extends BackgroundTile{
-	Image pic;
+	static Image pic;
 	int part=0; //0-3 0 är standard.
 	public Grass(){
 		super();

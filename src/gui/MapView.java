@@ -35,16 +35,18 @@ public class MapView extends JComponent{
 		setVisible(true);
 	}
 	public void paint(Graphics g) {
-		for(int x=0;x<map.getHigth();x++){
-			for(int y=0;y<map.getWith();y++){
+		
+		for(int x=(player1.getPosX()/64)-15;x<(player1.getPosX()/64)+15;x++){
+			for(int y=(player1.getPosY()/64)-15;y<(player1.getPosY()/64)+15;y++){
+				
 				if(map.getPoint(x, y, 0)!=null)
 					map.getPoint(x, y, 0).drawItSelf(g,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
 			}
 		}
 		
 		
-		for(int x=0;x<map.getHigth();x++){
-			for(int y=0;y<map.getWith();y++){
+		for(int x=(player1.getPosX()/64)-15;x<(player1.getPosX()/64)+15;x++){
+			for(int y=(player1.getPosY()/64)-15;y<(player1.getPosY()/64)+15;y++){
 				if(map.getPoint(x, y, 1)!=null)
 					map.getPoint(x, y, 1).drawItSelf(g,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
 			
@@ -52,28 +54,27 @@ public class MapView extends JComponent{
 		}
 		player1.drawItSelf(g,this,(int)getWidth()/2,(int)getHeight()/2,zoom);
 		
-		for(int x=0;x<map.getHigth();x++){
-			for(int y=0;y<map.getWith();y++){
+		for(int x=(player1.getPosX()/64)-15;x<(player1.getPosX()/64)+15;x++){
+			for(int y=(player1.getPosY()/64)-15;y<(player1.getPosY()/64)+15;y++){
 				if(map.getPoint(x, y, 2)!=null)
 					map.getPoint(x, y, 2).drawItSelf(g,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
 	
 			}
 		}
-		for(int x=0;x<map.getHigth();x++){
-			for(int y=0;y<map.getWith();y++){
+		for(int x=(player1.getPosX()/64)-15;x<(player1.getPosX()/64)+15;x++){
+			for(int y=(player1.getPosY()/64)-15;y<(player1.getPosY()/64)+15;y++){
 				if(map.getPoint(x, y, 3)!=null)
 					map.getPoint(x, y, 3).drawItSelf(g,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
 	
 			}
 		}
-		for(int x=0;x<map.getHigth();x++){
-			for(int y=0;y<map.getWith();y++){
+		for(int x=(player1.getPosX()/64)-15;x<(player1.getPosX()/64)+15;x++){
+			for(int y=(player1.getPosY()/64)-15;y<(player1.getPosY()/64)+15;y++){
 				if(map.getPoint(x, y, 4)!=null)
 					map.getPoint(x, y, 4).drawItSelf(g,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
 	
 			}
 		}
-		
 		
 		statusView.drawItSelf(g,this,(int)getWidth()-400,(int)getHeight()-200,zoom);
 		logView.drawItSelf(g, this, 0, getHeight()-100, zoom);

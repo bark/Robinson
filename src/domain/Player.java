@@ -7,19 +7,17 @@ import java.awt.image.ImageObserver;
 import java.util.ArrayList;
 
 import controller.GameController;
+import controller.GameController.ACTION;
 
 import Items.Item;
 
 public class Player {
-	public enum Direction {
-		RIGTH, LEFT, UP, DOWN
-	}
 
 	int posX = 0;
 	int posY = 0;
 
 	// stats
-	float spead = 2;
+	float spead = 4;
 
 	int maxhp = 100;
 
@@ -31,8 +29,7 @@ public class Player {
 	float tiredness = 80;
 
 	ArrayList<Item> inventory = new ArrayList<Item>();
-
-	Direction dir = Direction.DOWN;
+	ACTION action=null;
 	Image pic = null;
 	int frame = 0;
 	GameController gc;
@@ -49,16 +46,16 @@ public class Player {
 			float zoom) {
 		int picX = 0;
 		int picY = 0;
-		if (dir == Direction.UP) {
+		if (action == ACTION.UP) {
 
 			picY = 0;
-		} else if (dir == Direction.LEFT) {
+		} else if (action == ACTION.LEFT) {
 
 			picY = 64;
-		} else if (dir == Direction.DOWN) {
+		} else if (action == ACTION.DOWN) {
 
 			picY = 128;
-		} else if (dir == Direction.RIGTH) {
+		} else if (action == ACTION.RIGTH) {
 
 			picY = 128 + 64;
 		}
@@ -86,19 +83,20 @@ public class Player {
 		this.posY = posY;
 	}
 
-	public void goUp() {
+	private void goUp() {
 
-		if (dir == Direction.UP) {
+		if (action == ACTION.UP) {
 			frame = (frame + 1) % 9;
 		} else {
 			frame = 0;
-			dir = Direction.UP;
+			action = ACTION.UP;
 		}
 		int newposY = (int) (posY - spead);
 
 		// kollar om den är sollid
-		if (gc.checkPositionIsOk(posX+10,newposY+12,posX+64-10, newposY+64-5)) { //+32 tittar på mitten av gubben
-			
+		if (gc.checkPositionIsOk(posX + 10, newposY + 12, posX + 64 - 10,
+				newposY + 64 - 5)) { // +32 tittar på mitten av gubben
+
 			posY = newposY;
 		} else {
 			System.out.println("punkten är" + (int) posX / 64 + ", "
@@ -107,18 +105,19 @@ public class Player {
 
 	}
 
-	public void goDown() {
-		if (dir == Direction.DOWN) {
+	private void goDown() {
+		if (action == ACTION.DOWN) {
 			frame = (frame + 1) % 9;
 		} else {
 			frame = 0;
-			dir = Direction.DOWN;
+			action = ACTION.DOWN;
 		}
 		int newposY = (int) (posY + spead);
 
 		// kollar om den är sollid
 
-		if (gc.checkPositionIsOk(posX+10,newposY+12,posX+64-10, newposY+64-5)) { //+32 tittar på mitten av gubben
+		if (gc.checkPositionIsOk(posX + 10, newposY + 12, posX + 64 - 10,
+				newposY + 64 - 5)) { // +32 tittar på mitten av gubben
 			posY = newposY;
 		} else {
 			System.out.println("punkten är" + (int) posX / 64 + ", "
@@ -126,17 +125,18 @@ public class Player {
 		}
 	}
 
-	public void goRigth() {
-		if (dir == Direction.RIGTH) {
+	private void goRigth() {
+		if (action == ACTION.RIGTH) {
 			frame = (frame + 1) % 9;
 		} else {
 			frame = 0;
-			dir = Direction.RIGTH;
+			action = ACTION.RIGTH;
 		}
 		int newposX = (int) (posX + spead);
 
 		// kollar om den är sollid
-		if (gc.checkPositionIsOk(newposX+10,posY+12,newposX+64-10, posY+64-5)) {
+		if (gc.checkPositionIsOk(newposX + 10, posY + 12, newposX + 64 - 10,
+				posY + 64 - 5)) {
 			System.out.println("punkten är" + newposX / 64 + ", " + posY / 64
 					+ " och är gå bar");
 			posX = newposX;
@@ -146,17 +146,18 @@ public class Player {
 		}
 	}
 
-	public void goLeft() {
-		if (dir == Direction.LEFT) {
+	private void goLeft() {
+		if (action == ACTION.LEFT) {
 			frame = (frame + 1) % 9;
 		} else {
 			frame = 0;
-			dir = Direction.LEFT;
+			action = ACTION.LEFT;
 		}
 		int newposX = (int) (posX - spead);
 
 		// kollar om den är sollid
-		if (gc.checkPositionIsOk(newposX+10,posY+12,newposX+64-10, posY+64-5)) {
+		if (gc.checkPositionIsOk(newposX + 10, posY + 12, newposX + 64 - 10,
+				posY + 64 - 5)) {
 			System.out.println("punkten är" + newposX / 64 + ", " + posY / 64
 					+ " och är gå bar");
 			posX = newposX;
@@ -225,6 +226,29 @@ public class Player {
 
 	public ArrayList<Item> getInventory() {
 		return inventory;
+	}
+
+	public void action(ACTION action) {
+		//this.action=action;
+		switch (action) {
+		case UP:
+			goUp();
+			break;
+		case DOWN:
+			goDown();
+			break;
+		case LEFT:
+			goLeft();
+			break;
+		case RIGTH:
+			goRigth();
+			break;
+
+		default:
+			break;
+		}
+		// TODO Auto-generated method stub
+
 	}
 
 }

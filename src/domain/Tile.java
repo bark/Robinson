@@ -9,6 +9,7 @@ public class Tile{
 	 String url="";
 	 protected String name="tile";
 	 protected Boolean sollid=false;
+	 
 	 public void drawItSelf( Graphics g,ImageObserver io,int x,int y,float zoom){
 			
 		}

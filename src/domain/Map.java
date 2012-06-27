@@ -10,8 +10,10 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class Map {
-	HashMap<Point, MapPart> worldMap = new HashMap<Point, MapPart>();
-	int layers=5;
+	MapPart[][] worldMap = new MapPart[100][100];
+	int layers = 5;
+	int mapPiceSize = 100;
+
 	boolean LoadMap(String mapUri) {
 		File mapFile = new File(mapUri);
 		Scanner mapScanner;
@@ -55,39 +57,42 @@ public class Map {
 
 	}
 
-	private MapPart generateWorldMap(int x,int y) {
-		Point p= new Point(x,y);
-
-		MapPart mapPart = new MapPart(x, y, 100, 100);
-		worldMap.put(p, mapPart);
-		return mapPart;
+	private void generateWorldMap(int x, int y) {
+		
+		MapPart mapPart = new MapPart(x, y, mapPiceSize, mapPiceSize);
+		worldMap[x][y]=mapPart;
 
 	}
-	public MapPart getPart(int x,int y){
-		Point p= new Point(x,y);
-		MapPart part=worldMap.get(p);
-		if(part==null){
-			System.out.println("denna biten fins inte genererar ny bit");
-			part=generateWorldMap(x,y);
-		}
-		return part;
-	}
+
+
 	public int getLayers() {
 		return layers;
-		
+
+	}
+
+	public int getHigth() {
+		return mapPiceSize;// worldMap.get(new Point(0,0)).getHigth();
+
+	}
+
+	public int getWith() {
+		return mapPiceSize;// worldMap.get(new Point(0,0)).getWith();
+
 	}
 	
-	public int getHigth() {
-		return worldMap.get(new Point(0,0)).getHigth();
-		
-	}
-	public int getWith() {
-		return worldMap.get(new Point(0,0)).getWith();
-		
+	public Tile getPointFromPx(int x, int y, int i) {
+		return getPoint(x/64,y/64,i);
 	}
 
 	public Tile getPoint(int x, int y, int i) {
-
-		return worldMap.get(new Point(0,0)).getPoint(x,y,i);
+		int piceX = (int) (x / 100);
+		int piceY = (int) (y / 100);
+		int centerpiceX=50;
+		int centerpiceY=50;
+		if (worldMap[centerpiceX][centerpiceY] == null) {
+			System.out.println("generating new world map");
+			generateWorldMap(centerpiceX, centerpiceY);
+		}
+		return worldMap[centerpiceX][centerpiceY].getPoint(x-piceX*100, y-piceY*100, i);
 	}
 }
