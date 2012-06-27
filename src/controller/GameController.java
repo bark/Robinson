@@ -11,7 +11,6 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
 import domain.Map;
-import domain.MapPart;
 import domain.Player;
 import domain.Tile;
 
