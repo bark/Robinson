@@ -8,7 +8,10 @@ import java.awt.image.ImageObserver;
 public class Stone extends ForgroundTile{
 	private Image pic;
 	private int part;
+	
 	public Stone(){
+		sollid=true;
+		name="stone";
 		String uri="./res/pic/rock.png";
 		pic= Toolkit.getDefaultToolkit().getImage(uri);
 		double rand=Math.random();

@@ -9,11 +9,14 @@ public class TreeBottom extends ForgroundTile{
 	private Image pic;
 	private int part;
 	private int treeType;
+	
 	public TreeBottom(int treeType,int part){
+		sollid=true;
 		String uri="./res/pic/trunk.png";
 		pic= Toolkit.getDefaultToolkit().getImage(uri);
 		this.treeType=treeType;
 		this.part=part;
+		name="treeBot";
 	}
 	 public void drawItSelf( Graphics g,ImageObserver io, int x,int y,float zoom){
 			int picX=0;

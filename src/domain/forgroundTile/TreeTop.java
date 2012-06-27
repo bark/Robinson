@@ -13,6 +13,7 @@ public class TreeTop extends ForgroundTile{
 		String uri="./res/pic/treetop.png";
 		pic= Toolkit.getDefaultToolkit().getImage(uri);
 		this.treeType=treeType;
+		name="treeTop";
 		this.part=part;
 	}
 	 public void drawItSelf( Graphics g,ImageObserver io, int x,int y,float zoom){
