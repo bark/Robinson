@@ -1,34 +1,27 @@
 package controller;
 
 import gui.GameGui;
+import gui.LogView;
 import gui.MapView;
 import gui.StatusView;
 
-import java.awt.Desktop.Action;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
-import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
-import javax.swing.KeyStroke;
-
 import domain.Map;
-import domain.MapPart;
 import domain.Player;
 import domain.Tile;
 
 public class GameController implements MouseWheelListener, KeyListener {
 	float zoomlv = 1;
 	GameGui gameGui = null;
+
 	MapView mapView = null;
 	Player player1 = null;
 	Map worldMap = null;
+	LogView logView = null;
 
 	public GameController() {
 		System.out.println("gameController");
@@ -40,10 +33,11 @@ public class GameController implements MouseWheelListener, KeyListener {
 		worldMap.getPart(0, 0);
 		System.out.println("tillverkat en mapPart");
 
-		StatusView statusView = new StatusView(player1);
-		MapView mapView = new MapView(worldMap, statusView, player1);
 
-		this.mapView = mapView;
+		StatusView statusView=new StatusView(player1);		
+		logView = new LogView();
+		mapView = new MapView(worldMap,statusView,logView, player1);
+		
 		gameGui = new GameGui();
 		gameGui.setMapView(mapView);
 		gameGui.setAlwaysOnTop(true);
@@ -72,9 +66,14 @@ public class GameController implements MouseWheelListener, KeyListener {
 			player1.goDown();
 		} else if (e.getKeyChar() == 'a' || e.getKeyCode() == 37) {
 			player1.goLeft();
-		} else if (e.getKeyChar() == 'd' || e.getKeyCode() == 39) {
-			player1.goRigth();
-
+		}else if(e.getKeyChar()=='d'||e.getKeyCode()==39){
+			player1.goRigth();	
+		}else if(e.getKeyChar()=='z'){
+			zoomlv += 0.1;
+			logView.addString("Zoomade med z");
+		}else if(e.getKeyChar()=='x'){
+			zoomlv -= 0.1;
+			logView.addString("Zoomade med x");
 		}
 
 		mapView.moveTo(player1.getPosX(), player1.getPosY(), zoomlv);
