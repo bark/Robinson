@@ -1,22 +1,14 @@
 package controller;
 
 import gui.GameGui;
+import gui.LogView;
 import gui.MapView;
 import gui.StatusView;
 
-import java.awt.Desktop.Action;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-
-import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
-import javax.swing.KeyStroke;
 
 import domain.Map;
 import domain.MapPart;
@@ -27,6 +19,7 @@ public class GameController implements MouseWheelListener,KeyListener {
 	GameGui gameGui = null;
 	MapView mapView =null;
 	Player player1=null;
+	LogView logView = null;
 	public GameController() {
 		System.out.println("gameController");
 		Map worldMap = new Map();
@@ -39,7 +32,10 @@ public class GameController implements MouseWheelListener,KeyListener {
 		System.out.println("tillverkat en mapPart");
 
 		StatusView statusView=new StatusView(player1);
-		MapView mapView = new MapView(mappart,statusView,player1);
+		
+		logView = new LogView();
+		
+		MapView mapView = new MapView(mappart,statusView,logView, player1);
 		
 		this.mapView=mapView;
 		gameGui = new GameGui();
@@ -72,8 +68,13 @@ public class GameController implements MouseWheelListener,KeyListener {
 		}else if(e.getKeyChar()=='a'||e.getKeyCode()==37){
 			player1.goLeft();
 		}else if(e.getKeyChar()=='d'||e.getKeyCode()==39){
-			player1.goRigth();
-			
+			player1.goRigth();	
+		}else if(e.getKeyChar()=='z'){
+			zoomlv += 0.1;
+			logView.addString("Zoomade med z");
+		}else if(e.getKeyChar()=='x'){
+			zoomlv -= 0.1;
+			logView.addString("Zoomade med x");
 		}
 		
 		mapView.moveTo(player1.getPosX(),player1.getPosY(),zoomlv);
