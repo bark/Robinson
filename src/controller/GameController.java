@@ -94,22 +94,52 @@ public class GameController implements MouseWheelListener, KeyListener {
 	}
 
 	public Tile translatePxToTile(int x, int y, int layer) {
-		
-		int tileX=(int) ((x / 64));
-		int tileY=(int) ((y / 64));
-		
-		System.out.println("punkten är" + tileX+ ", " + tileY);
+
+		int tileX = (int) ((x / 64));
+		int tileY = (int) ((y / 64));
+
+		System.out.println("punkten är" + tileX + ", " + tileY);
 		return worldMap.getPoint(tileX, tileY, layer);
 	}
 
-	public boolean checkPositionIsOk(int x, int y) {
-		if(x<0||y<0){
+	public boolean checkPositionIsOk(int topX, int topY, int botX, int botY) {
+		if (topX < 0 || topY < 0) {
 			return false;
 		}
 		for (int i = 0; i < worldMap.getLayers(); i++) {
-			if (translatePxToTile(x, y, i) != null) {
-				if (translatePxToTile(x, y, i).isSollid()) {
-					 System.out.println("it is a : "+translatePxToTile(x, y, i).getName());
+
+			if (translatePxToTile(topX, botY, i) != null) {
+
+				if (translatePxToTile(topX, botY, i).isSollid()) {
+					System.out.println("it is a : "
+							+ translatePxToTile(topX, botY, i).getName());
+					return false;
+				}
+			}
+			if (translatePxToTile(botX, topY, i) != null) {
+
+				if (translatePxToTile(botX, topY, i).isSollid()) {
+					System.out.println("it is a : "
+							+ translatePxToTile(botX, topY, i).getName());
+					return false;
+				}
+			}
+			
+			
+			if (translatePxToTile(botX, botY, i) != null) {
+
+				if (translatePxToTile(botX, botY, i).isSollid()) {
+					System.out.println("it is a : "
+							+ translatePxToTile(botX, botY, i).getName());
+					return false;
+				}
+			}
+
+			if (translatePxToTile(topX, topY, i) != null) {
+
+				if (translatePxToTile(topX, topY, i).isSollid()) {
+					System.out.println("it is a : "
+							+ translatePxToTile(topX, topY, i).getName());
 					return false;
 				}
 			}

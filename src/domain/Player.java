@@ -97,7 +97,7 @@ public class Player {
 		int newposY = (int) (posY - spead);
 
 		// kollar om den är sollid
-		if (gc.checkPositionIsOk(posX+32, newposY+32)) { //+32 tittar på mitten av gubben
+		if (gc.checkPositionIsOk(posX+10,newposY+12,posX+64-10, newposY+64-5)) { //+32 tittar på mitten av gubben
 			
 			posY = newposY;
 		} else {
@@ -118,7 +118,7 @@ public class Player {
 
 		// kollar om den är sollid
 
-		if (gc.checkPositionIsOk(posX+32, newposY+64)) {
+		if (gc.checkPositionIsOk(posX+10,newposY+12,posX+64-10, newposY+64-5)) { //+32 tittar på mitten av gubben
 			posY = newposY;
 		} else {
 			System.out.println("punkten är" + (int) posX / 64 + ", "
@@ -136,7 +136,7 @@ public class Player {
 		int newposX = (int) (posX + spead);
 
 		// kollar om den är sollid
-		if (gc.checkPositionIsOk(newposX+40, posY+32)) {
+		if (gc.checkPositionIsOk(newposX+10,posY+12,newposX+64-10, posY+64-5)) {
 			System.out.println("punkten är" + newposX / 64 + ", " + posY / 64
 					+ " och är gå bar");
 			posX = newposX;
@@ -156,7 +156,7 @@ public class Player {
 		int newposX = (int) (posX - spead);
 
 		// kollar om den är sollid
-		if (gc.checkPositionIsOk(newposX+20, posY+32)) {
+		if (gc.checkPositionIsOk(newposX+10,posY+12,newposX+64-10, posY+64-5)) {
 			System.out.println("punkten är" + newposX / 64 + ", " + posY / 64
 					+ " och är gå bar");
 			posX = newposX;
