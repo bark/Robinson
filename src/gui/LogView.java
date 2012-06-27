@@ -16,6 +16,9 @@ public class LogView {
 		g.fillRect(x, y, 200, 100);
 		for(String s:message){
 			g.setColor(Color.BLACK);
+			if(count > 0){
+				g.setColor(Color.DARK_GRAY);
+			}
 			g.drawString(s, x+5, (int)(y+90 - count * g.getFont().getSize() * 1.5));
 			count++;
 			if(count == 5){
