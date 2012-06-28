@@ -17,9 +17,10 @@ import domain.Tile;
 public class GameController implements MouseWheelListener, KeyListener,
 		Runnable {
 	float zoomlv = 1;
+	boolean shiftPressed = false;
 
 	public static enum ACTION {
-		RIGTH, LEFT, UP, DOWN
+		GORIGTH, GOLEFT, GOUP, GODOWN, RUNDOWN, RUNUP, RUNLEFT, RUNRIGTH
 	}
 
 	ACTION action = null;
@@ -59,37 +60,54 @@ public class GameController implements MouseWheelListener, KeyListener,
 		// System.out.println("zoomlv :"+zoomlv +""+ change+" change");
 		zoomlv = zoomlv + change;
 		// System.out.println("new zoom valure:"+ zoomlv);
-		mapView.moveTo(player1.getPosX(), player1.getPosY(), zoomlv);
+		mapView.moveCameraTo(player1.getPosX(), player1.getPosY(), zoomlv);
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// System.out.println(e.getKeyCode());
-		if (e.getKeyChar() == 'w' || e.getKeyCode() == 38) {
-			System.out.println("w");
-			action = ACTION.UP;
-		} else if (e.getKeyChar() == 's' || e.getKeyCode() == 40) {
-			action = ACTION.DOWN;
-		} else if (e.getKeyChar() == 'a' || e.getKeyCode() == 37) {
-			action = ACTION.LEFT;
-		} else if (e.getKeyChar() == 'd' || e.getKeyCode() == 39) {
-			action = ACTION.RIGTH;
-		} else if (e.getKeyChar() == 'z') {
+		if (shiftPressed) {
+			if (e.getKeyCode() == 87) {
+				action = ACTION.RUNUP;
+				System.out.println("shift kay and W");
+			} else if (e.getKeyCode() == 83) {
+				action = ACTION.RUNDOWN;
+			} else if (e.getKeyCode() == 65) {
+				action = ACTION.RUNLEFT;
+			} else if (e.getKeyCode() == 68) {
+				action = ACTION.RUNRIGTH;
+			}
+		} else {
+			if (e.getKeyChar() == 'w' || e.getKeyCode() == 38) {
+
+				action = ACTION.GOUP;
+			} else if (e.getKeyChar() == 's' || e.getKeyCode() == 40) {
+				action = ACTION.GODOWN;
+			} else if (e.getKeyChar() == 'a' || e.getKeyCode() == 37) {
+				action = ACTION.GOLEFT;
+			} else if (e.getKeyChar() == 'd' || e.getKeyCode() == 39) {
+				action = ACTION.GORIGTH;
+			}
+		}
+		if (e.getKeyChar() == 'z') {
 			zoomlv += 0.1;
 			logView.addString("Zoomade med z");
 		} else if (e.getKeyChar() == 'x') {
 			zoomlv -= 0.1;
 			logView.addString("Zoomade med x");
 		}
-
-		mapView.moveTo(player1.getPosX(), player1.getPosY(), zoomlv);
-
+		if (e.getKeyCode() == 16) {
+			shiftPressed = true;
+		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		// System.out.println("key released");
+		System.out.println("reliased " + e.getKeyCode());
+		if (e.getKeyCode() == 16) {
+			System.out.println(" shiftkey reliased");
+			shiftPressed = false;
+		}
 	}
 
 	@Override
@@ -155,14 +173,16 @@ public class GameController implements MouseWheelListener, KeyListener,
 		while (true) {
 			if (action != null) {
 				player1.action(action);
-				action=null;
+				action = null;
 			}
-			//System.out.println("looping....");
+			// System.out.println("looping....");
 			// kolla vart den går
 			// kolla om den får gå dit
+
 			// rita om
+			mapView.moveCameraTo(player1.getPosX(), player1.getPosY(), zoomlv);
 			try {
-				Thread.sleep(1000/60);
+				Thread.sleep(50);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

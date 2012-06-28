@@ -79,7 +79,7 @@ public class MapView extends JComponent{
 		statusView.drawItSelf(g,this,(int)getWidth()-400,(int)getHeight()-200,zoom);
 		logView.drawItSelf(g, this, 0, getHeight()-100, zoom);
 	}
-	public void moveTo(int x,int y,float zoom){//move the center of the camera to this point
+	public void moveCameraTo(int x,int y,float zoom){//move the center of the camera to this point
 		
 		this.zoom=zoom;
 		this.centerX=x;

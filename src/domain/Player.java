@@ -29,7 +29,7 @@ public class Player {
 	float tiredness = 80;
 
 	ArrayList<Item> inventory = new ArrayList<Item>();
-	ACTION action=null;
+	ACTION action = null;
 	Image pic = null;
 	int frame = 0;
 	GameController gc;
@@ -46,16 +46,16 @@ public class Player {
 			float zoom) {
 		int picX = 0;
 		int picY = 0;
-		if (action == ACTION.UP) {
+		if (action == ACTION.GOUP || action == ACTION.RUNUP) {
 
 			picY = 0;
-		} else if (action == ACTION.LEFT) {
+		} else if (action == ACTION.GOLEFT || action == ACTION.RUNLEFT) {
 
 			picY = 64;
-		} else if (action == ACTION.DOWN) {
+		} else if (action == ACTION.GODOWN || action == ACTION.RUNDOWN) {
 
 			picY = 128;
-		} else if (action == ACTION.RIGTH) {
+		} else if (action == ACTION.GORIGTH || action == ACTION.RUNRIGTH) {
 
 			picY = 128 + 64;
 		}
@@ -85,11 +85,11 @@ public class Player {
 
 	private void goUp() {
 
-		if (action == ACTION.UP) {
+		if (action == ACTION.GOUP) {
 			frame = (frame + 1) % 9;
 		} else {
 			frame = 0;
-			action = ACTION.UP;
+			action = ACTION.GOUP;
 		}
 		int newposY = (int) (posY - spead);
 
@@ -106,11 +106,11 @@ public class Player {
 	}
 
 	private void goDown() {
-		if (action == ACTION.DOWN) {
+		if (action == ACTION.GODOWN) {
 			frame = (frame + 1) % 9;
 		} else {
 			frame = 0;
-			action = ACTION.DOWN;
+			action = ACTION.GODOWN;
 		}
 		int newposY = (int) (posY + spead);
 
@@ -126,11 +126,11 @@ public class Player {
 	}
 
 	private void goRigth() {
-		if (action == ACTION.RIGTH) {
+		if (action == ACTION.GORIGTH) {
 			frame = (frame + 1) % 9;
 		} else {
 			frame = 0;
-			action = ACTION.RIGTH;
+			action = ACTION.GORIGTH;
 		}
 		int newposX = (int) (posX + spead);
 
@@ -147,11 +147,11 @@ public class Player {
 	}
 
 	private void goLeft() {
-		if (action == ACTION.LEFT) {
+		if (action == ACTION.GOLEFT) {
 			frame = (frame + 1) % 9;
 		} else {
 			frame = 0;
-			action = ACTION.LEFT;
+			action = ACTION.GOLEFT;
 		}
 		int newposX = (int) (posX - spead);
 
@@ -229,26 +229,68 @@ public class Player {
 	}
 
 	public void action(ACTION action) {
-		//this.action=action;
-		switch (action) {
-		case UP:
-			goUp();
-			break;
-		case DOWN:
-			goDown();
-			break;
-		case LEFT:
-			goLeft();
-			break;
-		case RIGTH:
-			goRigth();
-			break;
+		// this.action=action;
 
-		default:
-			break;
-		}
+		move(action);
+		/*
+		 * switch (action) {
+		 * 
+		 * case GOUP: goUp(); break; case GODOWN: goDown(); break; case GOLEFT:
+		 * goLeft(); break; case GORIGTH: goRigth(); break;
+		 * 
+		 * default: break; }
+		 */
 		// TODO Auto-generated method stub
 
 	}
 
+	private void move(ACTION action2) {
+		int newposX =posX;
+		int newposY =posY; 
+		if (action == action2) {
+			frame = (frame + 1) % 9;
+		} else {
+			frame = 0;
+			action = action2;
+		}
+		switch (action2) {
+			case GODOWN:
+				newposY = (int) (posY + spead);
+				break;
+			case GOUP:
+				newposY = (int) (posY - spead);
+				break;
+			case GOLEFT:
+				newposX = (int) (posX - spead);
+				break;
+			case GORIGTH:
+				newposX = (int) (posX + spead);
+				break;
+			case RUNUP:
+				newposY = (int) (posY - (spead*3));
+				break;
+			case RUNDOWN:
+				newposY = (int) (posY + (spead*3));
+				break;
+			case RUNRIGTH:
+				newposX = (int) (posX +(spead*3));
+				break;
+			case RUNLEFT:
+				newposX = (int) (posX - (spead*3));
+				break;
+			default:
+				break;
+		}
+		// kollar om den är sollid
+		if (gc.checkPositionIsOk(newposX + 10, newposY + 12, newposX + 64 - 10,
+				newposY + 64 - 5)) {
+			System.out.println("punkten är" + newposX / 64 + ", " + newposY / 64
+					+ " och är gå bar");
+			posX = newposX;
+			posY = newposY;
+		} else {
+			System.out.println("punkten är" + (int) newposX / 64 + ", "
+					+ (int) posY / 64 + " och är INTE gå bar");
+		}
+	}
 }
