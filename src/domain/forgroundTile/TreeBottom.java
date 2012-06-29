@@ -6,12 +6,19 @@ import java.awt.Toolkit;
 import java.awt.image.ImageObserver;
 
 public class TreeBottom extends ForgroundTile{
-	private Image pic;
+	private static Image pic;
 	private int part;
 	private int treeType;
 	
 	public TreeBottom(int treeType,int part){
 		
+		
+		if(part==3)
+		{
+			yvalure=105;
+		}else{
+			yvalure=60;
+		}
 		String uri="./res/pic/trunk.png";
 		pic= Toolkit.getDefaultToolkit().getImage(uri);
 		this.treeType=treeType;

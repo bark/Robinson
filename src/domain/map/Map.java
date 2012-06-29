@@ -1,4 +1,4 @@
-package domain;
+package domain.map;
 
 import java.awt.Point;
 import java.io.BufferedWriter;
@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import domain.Event;
+import domain.Tile;
 import domain.Event.EVENTACTION;
 
 public class Map {
@@ -86,11 +88,11 @@ public class Map {
 
 	}
 	
-	public Tile getPointFromPx(int x, int y, int i) {
-		return getPoint(x/64,y/64,i);
+	public SortedTileList getPointFromPx(int x, int y) {
+		return getPoint(x/64,y/64);
 	}
 
-	public Tile getPoint(int x, int y, int i) {
+	public SortedTileList getPoint(int x, int y) {
 		int piceX = (int) (x / 100);
 		int piceY = (int) (y / 100);
 		int centerpiceX=50;
@@ -99,6 +101,6 @@ public class Map {
 			System.out.println("generating new world map");
 			generateWorldMap(centerpiceX, centerpiceY);
 		}
-		return worldMap[centerpiceX][centerpiceY].getPoint(x-piceX*100, y-piceY*100, i);
+		return worldMap[centerpiceX][centerpiceY].getPoint(x-piceX*100, y-piceY*100);
 	}
 }

@@ -1,4 +1,4 @@
-package domain;
+package domain.map;
 
 import java.awt.Point;
 import java.io.BufferedWriter;
@@ -12,9 +12,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.print.attribute.Size2DSyntax;
 
+import domain.Tile;
 import domain.Tile.DIRECTION;
 import domain.backGroundTile.Dirt;
 import domain.backGroundTile.Grass;
@@ -23,8 +26,7 @@ import domain.forgroundTile.TreeBottom;
 import domain.forgroundTile.TreeTop;
 
 public class MapPart {
-	HashMap<String, Tile> MapTranslation = new HashMap<String, Tile>();
-	Tile[][][] map;
+	SortedTileList[][] map;
 	MessageDigest m;
 
 	private int worldX;
@@ -102,17 +104,18 @@ public class MapPart {
 
 	public boolean generate(int higth, int with) {
 		Random notRandomRandom = new Random(seed);
-		map = new Tile[higth][with][5];
+		map = new SortedTileList[higth][with];
 		// fyll den med gräs
 		for (int i = 0; i < higth; i++) {
 			for (int j = 0; j < with; j++) {
+				map[i][j] = new SortedTileList();
 				if (notRandomRandom.nextFloat() * 100 < 5) {
-					map[i][j][2] = new Stone();
+					map[i][j].add(new Stone());
 				}
-				map[i][j][0] = new Dirt();
-				if (notRandomRandom.nextFloat() * 100 < 20 + nrOf(new Dirt(), i,
-						j, 0) * 18)
-					map[i][j][1] = new Grass();
+				map[i][j].add(new Dirt());
+				if (notRandomRandom.nextFloat() * 100 < 20 + nrOf(
+						((Tile) new Dirt()), i, j) * 18)
+					map[i][j].add(new Grass());
 			}
 		}
 		for (int i = 0; i < higth; i++) {
@@ -127,51 +130,55 @@ public class MapPart {
 		fixGrass();
 		fixGrass();
 		fixGrass();
-		fixGrass();//TODO FIX this
+		fixGrass();// TODO FIX this
 		fixGrass();
 		fixGrass();
 		fixGrass();
-		fixGrass();//TODO FIX this
+		fixGrass();// TODO FIX this
 		return true;
 	}
 
 	private void fixGrass() {
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[0].length; j++) {
-				if (map[i][j][1] != null) {
+				if (map[i][j].contains(new Grass())) {
 					ArrayList<DIRECTION> directionsArr = generateArrayOfDirections(
-							new Grass(), i, j, 1);
+							new Grass(), i, j);
 					if (!directionsArr.contains(DIRECTION.NORTH)
 							&& !directionsArr.contains(DIRECTION.SOUTH)) {
-						map[i][j][1] = null;
+						map[i][j].removeTileOfType(new Grass());
 					} else if (!directionsArr.contains(DIRECTION.WEST)
 							&& !directionsArr.contains(DIRECTION.EAST)) {
-						map[i][j][1] = null;
+						map[i][j].removeTileOfType(new Grass());
 					} else if (!directionsArr.contains(DIRECTION.NORTHEAST)
 							&& !directionsArr.contains(DIRECTION.SOUTHWEST)) {
-						map[i][j][1] = null;
+						map[i][j].removeTileOfType(new Grass());
 					} else if (!directionsArr.contains(DIRECTION.NORTHWEST)
 							&& !directionsArr.contains(DIRECTION.SOUTHEAST)) {
-						map[i][j][1] = null;
-					}// 
-						else if (!directionsArr.contains(DIRECTION.NORTH)
-								&& !directionsArr.contains(DIRECTION.WEST)&& !directionsArr.contains(DIRECTION.SOUTHEAST)) {
-							map[i][j][1] = null;
-						}else if (!directionsArr.contains(DIRECTION.NORTH)
-								&& !directionsArr.contains(DIRECTION.EAST)&& !directionsArr.contains(DIRECTION.SOUTHWEST)) {
-							map[i][j][1] = null;
-						}else if (!directionsArr.contains(DIRECTION.SOUTH)
-								&& !directionsArr.contains(DIRECTION.EAST)&& !directionsArr.contains(DIRECTION.NORTHWEST)) {
-							map[i][j][1] = null;
-						}else if (!directionsArr.contains(DIRECTION.SOUTH)
-								&& !directionsArr.contains(DIRECTION.WEST)&& !directionsArr.contains(DIRECTION.NORTHEAST)) {
-							map[i][j][1] = null;
-						}else 
-					
+						map[i][j].removeTileOfType(new Grass());
+					}//
+					else if (!directionsArr.contains(DIRECTION.NORTH)
+							&& !directionsArr.contains(DIRECTION.WEST)
+							&& !directionsArr.contains(DIRECTION.SOUTHEAST)) {
+						map[i][j].removeTileOfType(new Grass());
+					} else if (!directionsArr.contains(DIRECTION.NORTH)
+							&& !directionsArr.contains(DIRECTION.EAST)
+							&& !directionsArr.contains(DIRECTION.SOUTHWEST)) {
+						map[i][j].removeTileOfType(new Grass());
+					} else if (!directionsArr.contains(DIRECTION.SOUTH)
+							&& !directionsArr.contains(DIRECTION.EAST)
+							&& !directionsArr.contains(DIRECTION.NORTHWEST)) {
+						map[i][j].removeTileOfType(new Grass());
+					} else if (!directionsArr.contains(DIRECTION.SOUTH)
+							&& !directionsArr.contains(DIRECTION.WEST)
+							&& !directionsArr.contains(DIRECTION.NORTHEAST)) {
+						map[i][j].removeTileOfType(new Grass());
+					} else
+
 					{
 						// System.out.println(directionsArr);
-
-						map[i][j][1].SetPart(directionsArr);
+						map[i][j].getTileOfType(new Grass()).SetPart(
+								directionsArr);
 					}
 				}
 			}
@@ -179,47 +186,47 @@ public class MapPart {
 	}
 
 	private ArrayList<DIRECTION> generateArrayOfDirections(Tile tile, int x,
-			int y, int layer) {
+			int y) {
 		ArrayList<DIRECTION> directions = new ArrayList<DIRECTION>();
 		// layer1
-		if (isTileOfSort(tile, x - 1, y - 1, layer)) {
+		if (isTileOfSort(tile, x - 1, y - 1)) {
 			directions.add(DIRECTION.NORTHEAST);
 		}
-		if (isTileOfSort(tile, x , y-1, layer)) {
+		if (isTileOfSort(tile, x, y - 1)) {
 			directions.add(DIRECTION.NORTH);
 		}
-		if (isTileOfSort(tile, x +1, y - 1, layer)) {
+		if (isTileOfSort(tile, x + 1, y - 1)) {
 			directions.add(DIRECTION.NORTHWEST);
 		}
 		// layer2
-		if (isTileOfSort(tile, x-1, y , layer)) {
+		if (isTileOfSort(tile, x - 1, y)) {
 			directions.add(DIRECTION.EAST);
 		}
-		if (isTileOfSort(tile, x+1, y, layer)) {
+		if (isTileOfSort(tile, x + 1, y)) {
 			directions.add(DIRECTION.WEST);
 		}
 		// layer3
-		if (isTileOfSort(tile, x - 1, y + 1, layer)) {
+		if (isTileOfSort(tile, x - 1, y + 1)) {
 			directions.add(DIRECTION.SOUTHEAST);
 		}
-		if (isTileOfSort(tile, x , y+1, layer)) {
+		if (isTileOfSort(tile, x, y + 1)) {
 			directions.add(DIRECTION.SOUTH);
 		}
-		if (isTileOfSort(tile, x + 1, y + 1, layer)) {
+		if (isTileOfSort(tile, x + 1, y + 1)) {
 			directions.add(DIRECTION.SOUTHWEST);
 		}
 		return directions;
 	}
 
-	private int nrOf(Tile tile, int x, int y, int layer) {
-		return generateArrayOfDirections(tile, x, y, layer).size();
+	private int nrOf(Tile tile, int x, int y) {
+		return generateArrayOfDirections(tile, x, y).size();
 	}
 
-	private boolean isTileOfSort(Tile tile, int x, int y, int layer) {
+	private boolean isTileOfSort(Tile tile, int x, int y) {
 		if (x > 0 && x < map.length)// kollar giltigt x värde
 			if (y > 0 && y < map[x].length)// kollar gilltigt y värde
-				if (map[x][y][layer] != null)// kollar så den innehåller något
-					if (tile.getClass() == map[x][y][layer].getClass())
+				if (map[x][y] != null)
+					if (map[x][y].getTileOfType(tile) != null)
 						return true;
 		return false;
 	}
@@ -236,30 +243,30 @@ public class MapPart {
 		if (x < 90 && y < 90) {
 
 			// stammen
-			map[x][y + 2][2] = new TreeBottom(0, 0);
-			map[x][y + 1 + 2][2] = new TreeBottom(0, 1);
-			map[x][y + 2 + 2][2] = new TreeBottom(0, 2);
+			map[x][y + 2].add(new TreeBottom(0, 0));
+			map[x][y + 1 + 2].add(new TreeBottom(0, 1));
+			map[x][y + 2 + 2].add(new TreeBottom(0, 2));
 
-			map[x + 1][y + 2][2] = new TreeBottom(0, 3);
-			map[x + 1][y + 1 + 2][2] = new TreeBottom(0, 4);
-			map[x + 1][y + 2 + 2][2] = new TreeBottom(0, 5);
+			map[x + 1][y + 2].add(new TreeBottom(0, 3));
+			map[x + 1][y + 1 + 2].add(new TreeBottom(0, 4));
+			map[x + 1][y + 2 + 2].add(new TreeBottom(0, 5));
 
-			map[x + 2][y + 2][2] = new TreeBottom(0, 6);
-			map[x + 2][y + 1 + 2][2] = new TreeBottom(0, 7);
-			map[x + 2][y + 2 + 2][2] = new TreeBottom(0, 8);
+			map[x + 2][y + 2].add(new TreeBottom(0, 6));
+			map[x + 2][y + 1 + 2].add(new TreeBottom(0, 7));
+			map[x + 2][y + 2 + 2].add(new TreeBottom(0, 8));
 
 			// träd toppen
-			map[x][y][3] = new TreeTop(0, 0);
-			map[x][y + 1][3] = new TreeTop(0, 1);
-			map[x][y + 2][3] = new TreeTop(0, 2);
+			map[x][y].add(new TreeTop(0, 0));
+			map[x][y + 1].add(new TreeTop(0, 1));
+			map[x][y + 2].add(new TreeTop(0, 2));
 
-			map[x + 1][y][3] = new TreeTop(0, 3);
-			map[x + 1][y + 1][3] = new TreeTop(0, 4);
-			map[x + 1][y + 2][3] = new TreeTop(0, 5);
+			map[x + 1][y].add(new TreeTop(0, 3));
+			map[x + 1][y + 1].add(new TreeTop(0, 4));
+			map[x + 1][y + 2].add(new TreeTop(0, 5));
 
-			map[x + 2][y][3] = new TreeTop(0, 6);
-			map[x + 2][y + 1][3] = new TreeTop(0, 7);
-			map[x + 2][y + 2][3] = new TreeTop(0, 8);
+			map[x + 2][y].add(new TreeTop(0, 6));
+			map[x + 2][y + 1].add(new TreeTop(0, 7));
+			map[x + 2][y + 2].add(new TreeTop(0, 8));
 
 		}
 	}
@@ -272,7 +279,7 @@ public class MapPart {
 		return map[0].length;
 	}
 
-	public Tile getPoint(int x, int y, int layer) {
-		return map[x][y][layer];
+	public SortedTileList getPoint(int x, int y) {
+		return map[x][y];
 	}
 }

@@ -197,8 +197,8 @@ public class Player {
 				break;
 		}
 		// kollar om den är sollid
-		if (gc.checkPositionIsOk(newposX + 10, newposY + 12, newposX + 64 - 10,
-				newposY + 64 - 5)) {
+		if (gc.checkPositionIsOk(newposX + 16, newposY + 46, newposX + 44,
+				newposY + 64 -5)) {
 			System.out.println("punkten är" + newposX / 64 + ", " + newposY / 64
 					+ " och är gå bar");
 			posX = newposX;

@@ -6,10 +6,11 @@ import java.awt.Toolkit;
 import java.awt.image.ImageObserver;
 
 public class Stone extends ForgroundTile{
-	private Image pic;
+	private static Image pic;
 	private int part;
 	
 	public Stone(){
+		yvalure=50;
 		sollid=true;
 		name="stone";
 		String uri="./res/pic/rock.png";

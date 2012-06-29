@@ -5,11 +5,11 @@ import java.awt.Graphics;
 import java.awt.image.ImageObserver;
 import java.util.ArrayList;
 
-public class Tile {
+public class Tile implements Comparable{
 	public static enum DIRECTION {
 		NORTH, SOUTH, WEST, EAST, NORTHWEST, NORTHEAST, SOUTHWEST, SOUTHEAST
 	}
-
+	protected int yvalure=0;//100 is the human
 	String url = "";
 
 	protected String name = "tile";
@@ -19,7 +19,10 @@ public class Tile {
 			float zoom) {
 
 	}
-
+	public int getYValure(){
+		return yvalure;
+	}
+	
 	public void SetPart(ArrayList<DIRECTION> directions) {
 	}
 
@@ -29,5 +32,10 @@ public class Tile {
 
 	public String getName() {
 		return name;
+	}
+
+	@Override
+	public int compareTo(Object arg0) {
+		return yvalure-((Tile)arg0).getYValure();
 	}
 }

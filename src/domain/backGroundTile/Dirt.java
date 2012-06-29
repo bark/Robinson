@@ -9,7 +9,7 @@ public class Dirt extends BackgroundTile{
 	static Image pic;
 	int part=0; //0-3 0 är standard.
 	public Dirt(){
-		super();
+		yvalure=0;
 		String uri="./res/pic/dirt.png";
 		pic= Toolkit.getDefaultToolkit().getImage(uri);
 		double rand=Math.random();

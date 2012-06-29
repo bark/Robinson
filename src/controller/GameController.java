@@ -17,9 +17,10 @@ import java.awt.event.MouseWheelListener;
 
 import Items.Candle;
 
-import domain.Map;
 import domain.Player;
 import domain.Tile;
+import domain.map.Map;
+import domain.map.SortedTileList;
 
 public class GameController implements MouseWheelListener, KeyListener,
 		Runnable {
@@ -60,19 +61,14 @@ public class GameController implements MouseWheelListener, KeyListener,
 
 		gameGui = new GameGui();
 
-
 		gameGui.setLogView(logView);
 		gameGui.setStatusView(statusView);
 		gameGui.setInventoryView(inventoryView);
 		gameGui.setButtonPanel(new ButtonPanel(new ButtonPanelListener()));
 		gameGui.setMapView(mapView);
 		gameGui.setAlwaysOnTop(true);
-		
-		
-		
 
-
-//		gameGui.setAlwaysOnTop(true);
+		// gameGui.setAlwaysOnTop(true);
 
 		// för scrollen ska fungera
 		gameGui.addMouseWheelListener(this);
@@ -93,14 +89,14 @@ public class GameController implements MouseWheelListener, KeyListener,
 	public void keyPressed(KeyEvent e) {
 		// System.out.println(e.getKeyCode());
 		if (shiftPressed) {
-			if (e.getKeyCode() == 87|| e.getKeyCode() == 38) {
+			if (e.getKeyCode() == 87 || e.getKeyCode() == 38) {
 				action = ACTION.RUNUP;
 				System.out.println("shift kay and W");
-			} else if (e.getKeyCode() == 83|| e.getKeyCode() == 40) {
+			} else if (e.getKeyCode() == 83 || e.getKeyCode() == 40) {
 				action = ACTION.RUNDOWN;
-			} else if (e.getKeyCode() == 65|| e.getKeyCode() == 37) {
+			} else if (e.getKeyCode() == 65 || e.getKeyCode() == 37) {
 				action = ACTION.RUNLEFT;
-			} else if (e.getKeyCode() == 68|| e.getKeyCode() == 39) {
+			} else if (e.getKeyCode() == 68 || e.getKeyCode() == 39) {
 				action = ACTION.RUNRIGTH;
 			}
 		} else {
@@ -142,55 +138,36 @@ public class GameController implements MouseWheelListener, KeyListener,
 		// System.out.println("keyTyped");
 	}
 
-	public Tile translatePxToTile(int x, int y, int layer) {
+	public SortedTileList translatePxToTileList(int x, int y) {
 
 		int tileX = (int) ((x / 64));
 		int tileY = (int) ((y / 64));
 
 		System.out.println("punkten är" + tileX + ", " + tileY);
-		return worldMap.getPoint(tileX, tileY, layer);
+		return worldMap.getPoint(tileX, tileY);
+	}
+
+	public boolean checkPointIsOk(int x, int y) {
+		for (Tile tile : translatePxToTileList(x, y)) {
+			if (tile.isSollid()) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public boolean checkPositionIsOk(int topX, int topY, int botX, int botY) {
 
-		for (int i = 0; i < worldMap.getLayers(); i++) {
-
-			if (translatePxToTile(topX, botY, i) != null) {
-
-				if (translatePxToTile(topX, botY, i).isSollid()) {
-					System.out.println("it is a : "
-							+ translatePxToTile(topX, botY, i).getName());
-					return false;
-				}
-			}
-			if (translatePxToTile(botX, topY, i) != null) {
-
-				if (translatePxToTile(botX, topY, i).isSollid()) {
-					System.out.println("it is a : "
-							+ translatePxToTile(botX, topY, i).getName());
-					return false;
-				}
-			}
-
-			if (translatePxToTile(botX, botY, i) != null) {
-
-				if (translatePxToTile(botX, botY, i).isSollid()) {
-					System.out.println("it is a : "
-							+ translatePxToTile(botX, botY, i).getName());
-					return false;
-				}
-			}
-
-			if (translatePxToTile(topX, topY, i) != null) {
-
-				if (translatePxToTile(topX, topY, i).isSollid()) {
-					System.out.println("it is a : "
-							+ translatePxToTile(topX, topY, i).getName());
-					return false;
+		if (checkPointIsOk(topX, botY)) {
+			if (checkPointIsOk(topX, topY)) {
+				if (checkPointIsOk(botX, botY)) {
+					if (checkPointIsOk(botX, topY)) {
+						return true;
+					}
 				}
 			}
 		}
-		return true;
+		return false;
 	}
 
 	// game loop
@@ -201,7 +178,7 @@ public class GameController implements MouseWheelListener, KeyListener,
 				player1.action(action);
 				action = null;
 			}
-			//System.out.println("looping....");
+			// System.out.println("looping....");
 			// System.out.println("looping....");
 			// kolla vart den går
 			// kolla om den får gå dit
@@ -216,43 +193,43 @@ public class GameController implements MouseWheelListener, KeyListener,
 			}
 		}
 	}
-	
+
 	class ButtonPanelListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(e.getActionCommand().equals("inventory")){
+			if (e.getActionCommand().equals("inventory")) {
 				inventoryView.setVisible(!inventoryView.isVisible());
 				player1.getInventory().add(new Candle());
 				inventoryView.updateView();
 			}
-			
+
 		}
-		
+
 	}
-	
+
 	class InventoryListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(e.getClass() != null && e.getSource() instanceof ItemButton){
-				ItemButton ib = (ItemButton)e.getSource();
-				if((e.getModifiers() & e.SHIFT_MASK) != 0){
-					logView.addString("Used item: "+ib.getItem().toString());
+			if (e.getClass() != null && e.getSource() instanceof ItemButton) {
+				ItemButton ib = (ItemButton) e.getSource();
+				if ((e.getModifiers() & e.SHIFT_MASK) != 0) {
+					logView.addString("Used item: " + ib.getItem().toString());
 					System.out.println("SHIFT_INVENTORY_CLICK");
-				} else if((e.getModifiers() & e.CTRL_MASK) != 0){
+				} else if ((e.getModifiers() & e.CTRL_MASK) != 0) {
 					player1.getInventory().remove(ib.getItem());
 					System.out.println("CTRL_INV_CLICK");
 				} else {
 					gameGui.setItemToPaint(ib.getItem());
 					System.out.println("INV CLICK");
 				}
-				
+
 				inventoryView.updateView();
 				inventoryView.validate();
 			}
-			
+
 		}
-		
+
 	}
 }

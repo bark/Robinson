@@ -4,9 +4,10 @@ import java.awt.Graphics;
 
 import javax.swing.JComponent;
 
-import domain.Map;
-import domain.MapPart;
 import domain.Player;
+import domain.Tile;
+import domain.map.Map;
+import domain.map.MapPart;
 
 
 public class MapView extends JComponent{
@@ -39,11 +40,28 @@ public class MapView extends JComponent{
 		for(int x=(player1.getPosX()/64)-15;x<(player1.getPosX()/64)+15;x++){
 			for(int y=(player1.getPosY()/64)-15;y<(player1.getPosY()/64)+15;y++){
 				
-				if(map.getPoint(x, y, 0)!=null)
-					map.getPoint(x, y, 0).drawItSelf(g,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
+				for(Tile tile:map.getPoint(x, y)){
+					if(tile.getYValure()>100){
+						break;
+					}
+					tile.drawItSelf(g,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
+				}
+			}
+		}
+		player1.drawItSelf(g,this,(int)getWidth()/2,(int)getHeight()/2,zoom);
+		
+		
+		for(int x=(player1.getPosX()/64)-15;x<(player1.getPosX()/64)+15;x++){
+			for(int y=(player1.getPosY()/64)-15;y<(player1.getPosY()/64)+15;y++){
+				for(Tile tile:map.getPoint(x, y)){
+					if(tile.getYValure()>100){
+						tile.drawItSelf(g,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
+					}
+				}
 			}
 		}
 		
+		/*
 		
 		for(int x=(player1.getPosX()/64)-15;x<(player1.getPosX()/64)+15;x++){
 			for(int y=(player1.getPosY()/64)-15;y<(player1.getPosY()/64)+15;y++){
@@ -51,9 +69,9 @@ public class MapView extends JComponent{
 					map.getPoint(x, y, 1).drawItSelf(g,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
 			
 			}
-		}
-		player1.drawItSelf(g,this,(int)getWidth()/2,(int)getHeight()/2,zoom);
+		}*/
 		
+		/*
 		for(int x=(player1.getPosX()/64)-15;x<(player1.getPosX()/64)+15;x++){
 			for(int y=(player1.getPosY()/64)-15;y<(player1.getPosY()/64)+15;y++){
 				if(map.getPoint(x, y, 2)!=null)
@@ -75,7 +93,7 @@ public class MapView extends JComponent{
 	
 			}
 		}
-		
+		*/
 //		statusView.drawItSelf(g,this,(int)getWidth()-400,(int)getHeight()-200,zoom);
 //		logView.drawItSelf(g, this, 0, getHeight()-100, zoom);
 	}
