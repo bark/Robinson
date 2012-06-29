@@ -6,7 +6,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Scanner;
 
 import javax.print.attribute.Size2DSyntax;
@@ -19,20 +22,32 @@ import domain.forgroundTile.TreeTop;
 public class MapPart {
 	HashMap<String,Tile> MapTranslation = new HashMap<String,Tile>(); 
 	Tile[][][] map;
+	MessageDigest m ;
+
 
 	private int worldX;
 	private int worldY;
-	public MapPart(int x,int y, int higth, int with){
+	Long seed;
+	
+	public MapPart(int x,int y, Long i, int higth, int with){
+		try {
+			m = MessageDigest.getInstance("MD5");
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.seed=i;
 		worldX=x;
 		worldY=y;
 		generate(higth, with);
 	}
 	
 	public MapPart(String MapPartUrl){
-		loadMap(MapPartUrl);
+	
 		
 		
 	}
+	/*
 	private boolean loadMap(String mapUri){
 		File mapFile = new File(mapUri);  
 	    Scanner mapScanner;
@@ -120,33 +135,31 @@ public class MapPart {
 		}
 	}
 	
-	
+	*/
 	
 	public Point getPoition(){
 		Point p=new Point(worldX,worldY);
 		return p;
 	}
+
+	
+	
 	public boolean generate(int higth, int with){
-		//TODO denna måste bli smart 
-		
+		 Random notRandomRandom = new Random(seed);
 		map= new Tile[higth][with][5];
 		//fyll den med gräs
 		for(int i=0;i<higth;i++){
 			for(int j=0;j<with;j++){
-				
-				if(i%3==0&&j%3==0){
+				if(notRandomRandom.nextFloat()*100>95){
 					map[i][j][1]=new Stone();
 				}
-				
-				
 				map[i][j][0]=new Grass();
-				
 				
 			}
 		}	
 		for(int i=0;i<higth;i++){
 			for(int j=0;j<with;j++){
-				if(i%9==0&&j%7==0){
+				if(notRandomRandom.nextFloat()*100>99){
 					createATree(i,j);
 				}
 			}
