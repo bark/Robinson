@@ -47,7 +47,7 @@ public class GameController implements MouseWheelListener, KeyListener,
 		gameGui = new GameGui();
 		gameGui.setMapView(mapView);
 		gameGui.setAlwaysOnTop(true);
-
+		
 		// för scrollen ska fungera
 		gameGui.addMouseWheelListener(this);
 		gameGui.addKeyListener(this);
@@ -67,14 +67,14 @@ public class GameController implements MouseWheelListener, KeyListener,
 	public void keyPressed(KeyEvent e) {
 		// System.out.println(e.getKeyCode());
 		if (shiftPressed) {
-			if (e.getKeyCode() == 87) {
+			if (e.getKeyCode() == 87|| e.getKeyCode() == 38) {
 				action = ACTION.RUNUP;
 				System.out.println("shift kay and W");
-			} else if (e.getKeyCode() == 83) {
+			} else if (e.getKeyCode() == 83|| e.getKeyCode() == 40) {
 				action = ACTION.RUNDOWN;
-			} else if (e.getKeyCode() == 65) {
+			} else if (e.getKeyCode() == 65|| e.getKeyCode() == 37) {
 				action = ACTION.RUNLEFT;
-			} else if (e.getKeyCode() == 68) {
+			} else if (e.getKeyCode() == 68|| e.getKeyCode() == 39) {
 				action = ACTION.RUNRIGTH;
 			}
 		} else {

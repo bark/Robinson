@@ -6,14 +6,18 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+
+import domain.Event.EVENTACTION;
 
 public class Map {
 	MapPart[][] worldMap = new MapPart[100][100];
 	int layers = 5;
 	int mapPiceSize = 100;
-
+	ArrayList<Event> eventList=new ArrayList<Event>();
+/*	
 	boolean LoadMap(String mapUri) {
 		File mapFile = new File(mapUri);
 		Scanner mapScanner;
@@ -56,13 +60,15 @@ public class Map {
 		return false;
 
 	}
-
+*/
 	private void generateWorldMap(int x, int y) {
-		
-		MapPart mapPart = new MapPart(x, y, mapPiceSize, mapPiceSize);
+		Long seed=(long) 234.124;
+		MapPart mapPart = new MapPart(x, y,seed, mapPiceSize, mapPiceSize);
+		eventList.add(new Event(0,EVENTACTION.GENERATE,x,y));
 		worldMap[x][y]=mapPart;
 
 	}
+
 
 
 	public int getLayers() {
