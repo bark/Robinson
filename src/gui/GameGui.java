@@ -17,6 +17,7 @@ public class GameGui extends JFrame{
 	MapView mapView= null;
 	LogView logView = null;
 	StatusView statusView = null;
+	ButtonPanel buttonPanel = null;
 
 	public GameGui(){
 		super();
@@ -84,6 +85,15 @@ public class GameGui extends JFrame{
 		mainPanel.revalidate();
 		mainPanel.repaint();
 		
+	}
+	
+	public void setButtonPanel(ButtonPanel buttonPanel){
+		this.buttonPanel = buttonPanel;
+		mainPanel.add(buttonPanel);
+		int x = mainPanel.getWidth()-statusView.getWidth()-buttonPanel.getWidth();
+		int y = mainPanel.getHeight()-buttonPanel.getHeight()-22;
+		buttonPanel.setBounds(x, y, buttonPanel.getWidth(), buttonPanel.getHeight());
+		System.out.println("setButtonPanel");
 	}
 
 }
