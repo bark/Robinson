@@ -63,8 +63,8 @@ public class GameController implements MouseWheelListener, KeyListener,
 
 		gameGui.setLogView(logView);
 		gameGui.setStatusView(statusView);
-		gameGui.setButtonPanel(new ButtonPanel(new ButtonPanelListener()));
 		gameGui.setInventoryView(inventoryView);
+		gameGui.setButtonPanel(new ButtonPanel(new ButtonPanelListener()));
 		gameGui.setMapView(mapView);
 		gameGui.setAlwaysOnTop(true);
 		
