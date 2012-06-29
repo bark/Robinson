@@ -3,6 +3,7 @@ package controller;
 import gui.ButtonPanel;
 import gui.GameGui;
 import gui.InventoryView;
+import gui.InventoryView.ItemButton;
 import gui.LogView;
 import gui.MapView;
 import gui.StatusView;
@@ -13,6 +14,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+
+import Items.Candle;
 
 import domain.Map;
 import domain.Player;
@@ -42,6 +45,10 @@ public class GameController implements MouseWheelListener, KeyListener,
 		worldMap = new Map();
 
 		player1 = new Player(25444, 25444, this);
+		player1.getInventory().add(new Candle());
+		player1.getInventory().add(new Candle());
+		player1.getInventory().add(new Candle());
+		player1.getInventory().add(new Candle());
 
 		// borde bara skicka det man ser.
 		System.out.println("tillverkat en mapPart");
@@ -49,7 +56,7 @@ public class GameController implements MouseWheelListener, KeyListener,
 		logView = new LogView();
 		mapView = new MapView(worldMap, player1);
 		statusView = new StatusView(player1);
-		inventoryView = new InventoryView(player1);
+		inventoryView = new InventoryView(player1, new InventoryListener());
 
 		gameGui = new GameGui();
 
@@ -216,10 +223,25 @@ public class GameController implements MouseWheelListener, KeyListener,
 		public void actionPerformed(ActionEvent e) {
 			if(e.getActionCommand().equals("inventory")){
 				inventoryView.setVisible(!inventoryView.isVisible());
+				player1.getInventory().add(new Candle());
+				inventoryView.updateView();
 			}
 			
 		}
 		
 	}
+	
+	class InventoryListener implements ActionListener {
 
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(e.getClass() != null && e.getSource() instanceof ItemButton){
+				ItemButton ib = (ItemButton)e.getSource();
+				player1.getInventory().remove(ib.getItem());
+				inventoryView.updateView();
+			}
+			
+		}
+		
+	}
 }
