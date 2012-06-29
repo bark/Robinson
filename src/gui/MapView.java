@@ -17,15 +17,15 @@ public class MapView extends JComponent{
 	private int leftCornerX;
 	private int leftCornerY;
 	Player player1;
-	private StatusView statusView;
-	private LogView logView;
+//	private StatusView statusView;
+//	private LogView logView;
 
-	public MapView(Map map,StatusView statusView,LogView logView, Player player1) {
+	public MapView(Map map, Player player1) {
 		this.map=map;
 		repaint();
 		this.player1=player1;
-		this.statusView=statusView;
-		this.logView=logView;
+//		this.statusView=statusView;
+//		this.logView=logView;
 		setVisible(true);
 		// TODO Auto-generated constructor stub
 	}
@@ -76,8 +76,8 @@ public class MapView extends JComponent{
 			}
 		}
 		
-		statusView.drawItSelf(g,this,(int)getWidth()-400,(int)getHeight()-200,zoom);
-		logView.drawItSelf(g, this, 0, getHeight()-100, zoom);
+//		statusView.drawItSelf(g,this,(int)getWidth()-400,(int)getHeight()-200,zoom);
+//		logView.drawItSelf(g, this, 0, getHeight()-100, zoom);
 	}
 	public void moveTo(int x,int y,float zoom){//move the center of the camera to this point
 		

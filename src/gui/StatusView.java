@@ -1,16 +1,28 @@
 package gui;
 
-import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.ImageObserver;
 
+import javax.swing.JComponent;
+
 import domain.Player;
 
-public class StatusView {
+public class StatusView extends JComponent {
 	Player player=null;
 	public StatusView(Player player) {
 		this.player=player;
+		this.setSize(400, 200);
+		this.setVisible(true);
+		repaint();
+		
+	}
+	
+	@Override
+	public void paint(Graphics g) {
+//		super.paint(g);
+		drawItSelf(g,null,0,0, 0f);
+		System.out.println("Drawing StatusView: "+getX()+","+getY());
 	}
 	
 	public void drawItSelf( Graphics g,ImageObserver io,int x,int y,float zoom){

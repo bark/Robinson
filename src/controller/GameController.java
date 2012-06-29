@@ -29,6 +29,7 @@ public class GameController implements MouseWheelListener, KeyListener,
 	Player player1 = null;
 	Map worldMap = null;
 	LogView logView = null;
+	StatusView statusView = null;
 
 	public GameController() {
 		System.out.println("gameController");
@@ -39,13 +40,21 @@ public class GameController implements MouseWheelListener, KeyListener,
 		// borde bara skicka det man ser.
 		System.out.println("tillverkat en mapPart");
 
-		StatusView statusView = new StatusView(player1);
 		logView = new LogView();
-		mapView = new MapView(worldMap, statusView, logView, player1);
+		mapView = new MapView(worldMap, player1);
+		statusView = new StatusView(player1);
 
 		gameGui = new GameGui();
+
+
+		gameGui.setLogView(logView);
+		gameGui.setStatusView(statusView);
 		gameGui.setMapView(mapView);
-		gameGui.setAlwaysOnTop(true);
+		
+		
+
+
+//		gameGui.setAlwaysOnTop(true);
 
 		// för scrollen ska fungera
 		gameGui.addMouseWheelListener(this);
@@ -157,6 +166,7 @@ public class GameController implements MouseWheelListener, KeyListener,
 				player1.action(action);
 				action=null;
 			}
+			gameGui.repaint();
 			//System.out.println("looping....");
 			// kolla vart den går
 			// kolla om den får gå dit
