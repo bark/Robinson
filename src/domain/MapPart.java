@@ -155,7 +155,7 @@ public class MapPart {
 					map[i][j][1]=new Stone();
 				}
 				map[i][j][0]=new Grass();
-				if(nrOf(Dirt))
+			//	if(nrOf(Dirt))
 				map[i][j][0]=new Dirt();
 			}
 		}	
@@ -171,9 +171,9 @@ public class MapPart {
 	}
 	int nrOf(Class<Tile> type,int x,int y,int layer){
 		int nr=0;
-		if(map[x-1][y][0] instanceof type){
+	//	if(map[x-1][y][0] instanceof type){
 			
-		}
+	//	}
 		return nr;
 	}
 	
