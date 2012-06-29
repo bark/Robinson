@@ -10,6 +10,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.SortedSet;
@@ -25,7 +26,7 @@ import domain.forgroundTile.Stone;
 import domain.forgroundTile.TreeBottom;
 import domain.forgroundTile.TreeTop;
 
-public class MapPart {
+public class MapPart implements Runnable{
 	SortedTileList[][] map;
 	MessageDigest m;
 
@@ -125,16 +126,10 @@ public class MapPart {
 				}
 			}
 		}
-		fixGrass();
-		fixGrass();
-		fixGrass();
-		fixGrass();
-		fixGrass();
-		fixGrass();// TODO FIX this
-		fixGrass();
-		fixGrass();
-		fixGrass();
-		fixGrass();// TODO FIX this
+		for(int i=0;i<10;i++){
+			fixGrass();
+		}
+		removeExtraTiles();
 		return true;
 	}
 
@@ -281,5 +276,28 @@ public class MapPart {
 
 	public SortedTileList getPoint(int x, int y) {
 		return map[x][y];
+	}
+	public void removeExtraTiles(){
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[0].length; j++) {
+				SortedTileList keep=new SortedTileList();
+				Iterator<Tile> iterator = map[i][j].descendingIterator();
+				while(iterator.hasNext()){
+					Tile tile=iterator.next();
+					keep.add(tile);
+					if(tile.isFullscreen()){
+						break;
+					}
+					
+				}
+				map[i][j]=keep;
+			}
+		}
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		//ska skapa saker
 	}
 }

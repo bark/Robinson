@@ -8,12 +8,13 @@ import java.awt.image.ImageObserver;
 import java.util.ArrayList;
 
 public class Grass extends BackgroundTile{
-	static Image pic;
+	static Image pic=null;
 	int part=0; //0-3 0 är standard.
 	public Grass(){
 		yvalure=10;
 		String uri="./res/pic/grass.png";
-		pic= Toolkit.getDefaultToolkit().getImage(uri);
+		if(pic==null)
+			pic= Toolkit.getDefaultToolkit().getImage(uri);
 		double rand=Math.random();
 		part=0;
 		
@@ -73,7 +74,8 @@ public class Grass extends BackgroundTile{
 		}else if(!directions.contains(DIRECTION.SOUTHWEST)){
 			part=1;
 		}else{
-			System.out.println("gräs runt omkring");
+//			System.out.println("gräs runt omkring");
+			//fullscreen=true;
 			double rand=Math.random();
 			if(rand<0.6){
 				part=10;
@@ -96,8 +98,8 @@ public class Grass extends BackgroundTile{
 		picY=((int)part/3)*32;
 		
 		g.drawImage(pic, x,y,x+(int) (64*zoom),y+(int)(64*zoom),picX, picY, picX+32, picY+32, io);
-		g.setColor(Color.black);
-		g.drawRect(x, y, 64, 64);
+	//	g.setColor(Color.black);
+	//	g.drawRect(x, y, 64, 64);
 		 //g.fillOval(x,y,(int) (64*zoom),(int)(64*zoom));
 	}
 	/*@Override

@@ -144,19 +144,7 @@ public class Player {
 	}
 
 	public void action(ACTION action) {
-		// this.action=action;
-
 		move(action);
-		/*
-		 * switch (action) {
-		 * 
-		 * case GOUP: goUp(); break; case GODOWN: goDown(); break; case GOLEFT:
-		 * goLeft(); break; case GORIGTH: goRigth(); break;
-		 * 
-		 * default: break; }
-		 */
-		// TODO Auto-generated method stub
-
 	}
 
 	private void move(ACTION action2) {

@@ -10,8 +10,10 @@ public class Dirt extends BackgroundTile{
 	int part=0; //0-3 0 är standard.
 	public Dirt(){
 		yvalure=0;
+		fullscreen=true;
 		String uri="./res/pic/dirt.png";
-		pic= Toolkit.getDefaultToolkit().getImage(uri);
+		if(pic==null)
+			pic= Toolkit.getDefaultToolkit().getImage(uri);
 		double rand=Math.random();
 		if(rand<0.6){
 			part=0;

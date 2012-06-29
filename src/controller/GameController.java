@@ -73,6 +73,8 @@ public class GameController implements MouseWheelListener, KeyListener,
 		// för scrollen ska fungera
 		gameGui.addMouseWheelListener(this);
 		gameGui.addKeyListener(this);
+		
+		
 		new Thread(this).start();
 	}
 
@@ -185,8 +187,9 @@ public class GameController implements MouseWheelListener, KeyListener,
 
 			// rita om
 			mapView.moveCameraTo(player1.getPosX(), player1.getPosY(), zoomlv);
+			mapView.repaint();
 			try {
-				Thread.sleep(50);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

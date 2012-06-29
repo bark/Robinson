@@ -14,7 +14,8 @@ public class Stone extends ForgroundTile{
 		sollid=true;
 		name="stone";
 		String uri="./res/pic/rock.png";
-		pic= Toolkit.getDefaultToolkit().getImage(uri);
+		if(pic==null)
+			pic= Toolkit.getDefaultToolkit().getImage(uri);
 		double rand=Math.random();
 		if(rand<0.7){
 			part=0;

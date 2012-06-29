@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Graphics;
+import java.awt.Image;
 
 import javax.swing.JComponent;
 
@@ -36,6 +37,11 @@ public class MapView extends JComponent{
 		setVisible(true);
 	}
 	public void paint(Graphics g) {
+		Image offscreen = null;
+		Graphics offgc;
+		offscreen = createImage(getWidth(),getHeight());
+		offgc = offscreen.getGraphics();
+		
 		
 		for(int x=(player1.getPosX()/64)-15;x<(player1.getPosX()/64)+15;x++){
 			for(int y=(player1.getPosY()/64)-15;y<(player1.getPosY()/64)+15;y++){
@@ -44,58 +50,24 @@ public class MapView extends JComponent{
 					if(tile.getYValure()>100){
 						break;
 					}
-					tile.drawItSelf(g,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
+					tile.drawItSelf(offgc,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
 				}
 			}
 		}
-		player1.drawItSelf(g,this,(int)getWidth()/2,(int)getHeight()/2,zoom);
+		player1.drawItSelf(offgc,this,(int)getWidth()/2,(int)getHeight()/2,zoom);
 		
 		
 		for(int x=(player1.getPosX()/64)-15;x<(player1.getPosX()/64)+15;x++){
 			for(int y=(player1.getPosY()/64)-15;y<(player1.getPosY()/64)+15;y++){
 				for(Tile tile:map.getPoint(x, y)){
 					if(tile.getYValure()>100){
-						tile.drawItSelf(g,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
+						tile.drawItSelf(offgc,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
 					}
 				}
 			}
 		}
-		
-		/*
-		
-		for(int x=(player1.getPosX()/64)-15;x<(player1.getPosX()/64)+15;x++){
-			for(int y=(player1.getPosY()/64)-15;y<(player1.getPosY()/64)+15;y++){
-				if(map.getPoint(x, y, 1)!=null)
-					map.getPoint(x, y, 1).drawItSelf(g,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
-			
-			}
-		}*/
-		
-		/*
-		for(int x=(player1.getPosX()/64)-15;x<(player1.getPosX()/64)+15;x++){
-			for(int y=(player1.getPosY()/64)-15;y<(player1.getPosY()/64)+15;y++){
-				if(map.getPoint(x, y, 2)!=null)
-					map.getPoint(x, y, 2).drawItSelf(g,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
-	
-			}
-		}
-		for(int x=(player1.getPosX()/64)-15;x<(player1.getPosX()/64)+15;x++){
-			for(int y=(player1.getPosY()/64)-15;y<(player1.getPosY()/64)+15;y++){
-				if(map.getPoint(x, y, 3)!=null)
-					map.getPoint(x, y, 3).drawItSelf(g,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
-	
-			}
-		}
-		for(int x=(player1.getPosX()/64)-15;x<(player1.getPosX()/64)+15;x++){
-			for(int y=(player1.getPosY()/64)-15;y<(player1.getPosY()/64)+15;y++){
-				if(map.getPoint(x, y, 4)!=null)
-					map.getPoint(x, y, 4).drawItSelf(g,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
-	
-			}
-		}
-		*/
-//		statusView.drawItSelf(g,this,(int)getWidth()-400,(int)getHeight()-200,zoom);
-//		logView.drawItSelf(g, this, 0, getHeight()-100, zoom);
+//		paint(offgc);
+		g.drawImage(offscreen, 0, 0, this);
 	}
 	public void moveCameraTo(int x,int y,float zoom){//move the center of the camera to this point
 		
@@ -104,6 +76,7 @@ public class MapView extends JComponent{
 		this.centerY=y;
 		this.leftCornerX=(int)((x*zoom)-((getWidth()/2)));//denna stämmer inte riktigt med zoom
 		this.leftCornerY=(int)((y*zoom)-((getHeight()/2)));//denna stämmer inte riktigt med zoom
-		repaint();
+//		repaint();
 	}
+
 }

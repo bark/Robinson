@@ -11,13 +11,16 @@ public class Tile implements Comparable{
 	}
 	protected int yvalure=0;//100 is the human
 	String url = "";
-
+	protected Boolean fullscreen=false;
 	protected String name = "tile";
 	protected Boolean sollid = false;
 
 	public void drawItSelf(Graphics g, ImageObserver io, int x, int y,
 			float zoom) {
 
+	}
+	public Boolean isFullscreen() {
+		return fullscreen;
 	}
 	public int getYValure(){
 		return yvalure;
