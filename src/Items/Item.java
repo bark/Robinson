@@ -1,11 +1,9 @@
 package Items;
 
-import java.awt.Graphics;
-import java.awt.image.ImageObserver;
+import java.awt.Image;
 
-public class Item {
-	public void drawItSelf(Graphics g, ImageObserver io, int x, int y,float zoom) {
-		
-	}
+public abstract class Item {
+	
+	public abstract Image getImage();
 
 }

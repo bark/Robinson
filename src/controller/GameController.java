@@ -2,10 +2,13 @@ package controller;
 
 import gui.ButtonPanel;
 import gui.GameGui;
+import gui.InventoryView;
 import gui.LogView;
 import gui.MapView;
 import gui.StatusView;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseWheelEvent;
@@ -32,6 +35,7 @@ public class GameController implements MouseWheelListener, KeyListener,
 	Map worldMap = null;
 	LogView logView = null;
 	StatusView statusView = null;
+	InventoryView inventoryView = null;
 
 	public GameController() {
 		System.out.println("gameController");
@@ -45,13 +49,15 @@ public class GameController implements MouseWheelListener, KeyListener,
 		logView = new LogView();
 		mapView = new MapView(worldMap, player1);
 		statusView = new StatusView(player1);
+		inventoryView = new InventoryView(player1);
 
 		gameGui = new GameGui();
 
 
 		gameGui.setLogView(logView);
 		gameGui.setStatusView(statusView);
-		gameGui.setButtonPanel(new ButtonPanel(null));
+		gameGui.setButtonPanel(new ButtonPanel(new ButtonPanelListener()));
+		gameGui.setInventoryView(inventoryView);
 		gameGui.setMapView(mapView);
 		gameGui.setAlwaysOnTop(true);
 		
@@ -202,6 +208,18 @@ public class GameController implements MouseWheelListener, KeyListener,
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	class ButtonPanelListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(e.getActionCommand().equals("inventory")){
+				inventoryView.setVisible(!inventoryView.isVisible());
+			}
+			
+		}
+		
 	}
 
 }

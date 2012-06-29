@@ -18,6 +18,7 @@ public class GameGui extends JFrame{
 	LogView logView = null;
 	StatusView statusView = null;
 	ButtonPanel buttonPanel = null;
+	InventoryView inventoryView = null;
 
 	public GameGui(){
 		super();
@@ -95,5 +96,16 @@ public class GameGui extends JFrame{
 		buttonPanel.setBounds(x, y, buttonPanel.getWidth(), buttonPanel.getHeight());
 		System.out.println("setButtonPanel");
 	}
+	
+	public void setInventoryView(InventoryView inventoryView) {
+		this.inventoryView = inventoryView;
+		mainPanel.add(inventoryView);
+		int x = mainPanel.getWidth()/2-inventoryView.getWidth()/2;
+		int y = mainPanel.getHeight()/2-inventoryView.getHeight()/2;
+		inventoryView.setBounds(x, y, inventoryView.getWidth(), inventoryView.getHeight());
+		System.out.println("setInventoryView");
+	}
+	
+	
 
 }
