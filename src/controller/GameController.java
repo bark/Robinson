@@ -1,5 +1,6 @@
 package controller;
 
+import gui.ButtonPanel;
 import gui.GameGui;
 import gui.LogView;
 import gui.MapView;
@@ -50,6 +51,7 @@ public class GameController implements MouseWheelListener, KeyListener,
 
 		gameGui.setLogView(logView);
 		gameGui.setStatusView(statusView);
+		gameGui.setButtonPanel(new ButtonPanel(null));
 		gameGui.setMapView(mapView);
 		gameGui.setAlwaysOnTop(true);
 		

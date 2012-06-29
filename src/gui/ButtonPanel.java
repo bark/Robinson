@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
@@ -17,6 +18,8 @@ public class ButtonPanel extends JPanel {
 	
 	public ButtonPanel(ActionListener a){
 		this.setLayout(new GridLayout(3, 1));
+		this.setSize(100, 200);
+		this.setBackground(Color.GRAY);
 		
 		
 		menuButton = new JButton("Menu");
