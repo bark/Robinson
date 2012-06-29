@@ -14,6 +14,7 @@ import java.util.Scanner;
 
 import javax.print.attribute.Size2DSyntax;
 
+import domain.backGroundTile.Dirt;
 import domain.backGroundTile.Grass;
 import domain.forgroundTile.Stone;
 import domain.forgroundTile.TreeBottom;
@@ -154,7 +155,8 @@ public class MapPart {
 					map[i][j][1]=new Stone();
 				}
 				map[i][j][0]=new Grass();
-				
+				if(nrOf(Dirt))
+				map[i][j][0]=new Dirt();
 			}
 		}	
 		for(int i=0;i<higth;i++){
@@ -165,12 +167,16 @@ public class MapPart {
 			}
 		}
 		
-		
-		
-		
-		
 		return true;
 	}
+	int nrOf(Class<Tile> type,int x,int y,int layer){
+		int nr=0;
+		if(map[x-1][y][0] instanceof type){
+			
+		}
+		return nr;
+	}
+	
 	void createATree(int x,int y){
 		if(x<90&&y<90){
 			
