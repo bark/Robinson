@@ -20,8 +20,6 @@ public class LogView extends JComponent {
 	
 	public void paint(Graphics g) {
 //		super.paint(g);
-		System.out.println("Drawing LogView: "+getX()+", "+getY());
-		System.out.println("LogView bounds: "+getBounds().x+","+getBounds().y+","+getBounds().width+","+getBounds().height);
 		
 		int count = 0;
 		g.setColor(Color.gray);
@@ -34,7 +32,6 @@ public class LogView extends JComponent {
 				g.setColor(Color.DARK_GRAY);
 			}
 			g.drawString(s, 5, (int)(90 - count * g.getFont().getSize() * 1.5));
-			System.out.println("LogView bounds: "+getBounds().x+5+","+(int)(getBounds().y+90-count*g.getFont().getSize() * 1.5)+","+getBounds().width+","+getBounds().height);
 			count++;
 			if(count == 5){
 				break;

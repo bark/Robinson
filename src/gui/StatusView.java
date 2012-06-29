@@ -22,7 +22,6 @@ public class StatusView extends JComponent {
 	public void paint(Graphics g) {
 //		super.paint(g);
 		drawItSelf(g,null,0,0, 0f);
-		System.out.println("Drawing StatusView: "+getX()+","+getY());
 	}
 	
 	public void drawItSelf( Graphics g,ImageObserver io,int x,int y,float zoom){
