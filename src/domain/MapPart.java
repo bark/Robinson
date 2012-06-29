@@ -8,12 +8,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
 
 import javax.print.attribute.Size2DSyntax;
 
+import domain.Tile.DIRECTION;
 import domain.backGroundTile.Dirt;
 import domain.backGroundTile.Grass;
 import domain.forgroundTile.Stone;
@@ -105,11 +107,12 @@ public class MapPart {
 		for (int i = 0; i < higth; i++) {
 			for (int j = 0; j < with; j++) {
 				if (notRandomRandom.nextFloat() * 100 < 5) {
-					map[i][j][1] = new Stone();
+					map[i][j][2] = new Stone();
 				}
-				map[i][j][0] = new Grass();
-				if (notRandomRandom.nextFloat() * 100  < 1+nrOf(new Dirt(),i,j,0)*25)
-					map[i][j][0] = new Dirt();
+				map[i][j][0] = new Dirt();
+				if (notRandomRandom.nextFloat() * 100 < 20 + nrOf(new Dirt(), i,
+						j, 0) * 18)
+					map[i][j][1] = new Grass();
 			}
 		}
 		for (int i = 0; i < higth; i++) {
@@ -119,48 +122,108 @@ public class MapPart {
 				}
 			}
 		}
-
+		fixGrass();
+		fixGrass();
+		fixGrass();
+		fixGrass();
+		fixGrass();
+		fixGrass();//TODO FIX this
+		fixGrass();
+		fixGrass();
+		fixGrass();
+		fixGrass();//TODO FIX this
 		return true;
 	}
 
-	private int nrOf(Tile tile, int x, int y, int layer) {
-		int nr = 0;
+	private void fixGrass() {
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[0].length; j++) {
+				if (map[i][j][1] != null) {
+					ArrayList<DIRECTION> directionsArr = generateArrayOfDirections(
+							new Grass(), i, j, 1);
+					if (!directionsArr.contains(DIRECTION.NORTH)
+							&& !directionsArr.contains(DIRECTION.SOUTH)) {
+						map[i][j][1] = null;
+					} else if (!directionsArr.contains(DIRECTION.WEST)
+							&& !directionsArr.contains(DIRECTION.EAST)) {
+						map[i][j][1] = null;
+					} else if (!directionsArr.contains(DIRECTION.NORTHEAST)
+							&& !directionsArr.contains(DIRECTION.SOUTHWEST)) {
+						map[i][j][1] = null;
+					} else if (!directionsArr.contains(DIRECTION.NORTHWEST)
+							&& !directionsArr.contains(DIRECTION.SOUTHEAST)) {
+						map[i][j][1] = null;
+					}// 
+						else if (!directionsArr.contains(DIRECTION.NORTH)
+								&& !directionsArr.contains(DIRECTION.WEST)&& !directionsArr.contains(DIRECTION.SOUTHEAST)) {
+							map[i][j][1] = null;
+						}else if (!directionsArr.contains(DIRECTION.NORTH)
+								&& !directionsArr.contains(DIRECTION.EAST)&& !directionsArr.contains(DIRECTION.SOUTHWEST)) {
+							map[i][j][1] = null;
+						}else if (!directionsArr.contains(DIRECTION.SOUTH)
+								&& !directionsArr.contains(DIRECTION.EAST)&& !directionsArr.contains(DIRECTION.NORTHWEST)) {
+							map[i][j][1] = null;
+						}else if (!directionsArr.contains(DIRECTION.SOUTH)
+								&& !directionsArr.contains(DIRECTION.WEST)&& !directionsArr.contains(DIRECTION.NORTHEAST)) {
+							map[i][j][1] = null;
+						}else 
+					
+					{
+						// System.out.println(directionsArr);
+
+						map[i][j][1].SetPart(directionsArr);
+					}
+				}
+			}
+		}
+	}
+
+	private ArrayList<DIRECTION> generateArrayOfDirections(Tile tile, int x,
+			int y, int layer) {
+		ArrayList<DIRECTION> directions = new ArrayList<DIRECTION>();
 		// layer1
-		if(isTileOfSort(tile,x - 1,y-1,layer)){
-			nr++;
+		if (isTileOfSort(tile, x - 1, y - 1, layer)) {
+			directions.add(DIRECTION.NORTHEAST);
 		}
-		if(isTileOfSort(tile,x - 1,y,layer)){
-			nr++;
+		if (isTileOfSort(tile, x , y-1, layer)) {
+			directions.add(DIRECTION.NORTH);
 		}
-		if(isTileOfSort(tile,x - 1,y+1,layer)){
-			nr++;
+		if (isTileOfSort(tile, x +1, y - 1, layer)) {
+			directions.add(DIRECTION.NORTHWEST);
 		}
 		// layer2
-		if(isTileOfSort(tile,x ,y+1,layer)){
-		nr++;
-		}if(isTileOfSort(tile,x ,y-1,layer)){
-			nr++;
+		if (isTileOfSort(tile, x-1, y , layer)) {
+			directions.add(DIRECTION.EAST);
+		}
+		if (isTileOfSort(tile, x+1, y, layer)) {
+			directions.add(DIRECTION.WEST);
 		}
 		// layer3
-		if(isTileOfSort(tile,x + 1,y-1,layer)){
-			nr++;
+		if (isTileOfSort(tile, x - 1, y + 1, layer)) {
+			directions.add(DIRECTION.SOUTHEAST);
 		}
-		if(isTileOfSort(tile,x + 1,y,layer)){
-			nr++;
+		if (isTileOfSort(tile, x , y+1, layer)) {
+			directions.add(DIRECTION.SOUTH);
 		}
-		if(isTileOfSort(tile,x + 1,y+1,layer)){
-			nr++;
+		if (isTileOfSort(tile, x + 1, y + 1, layer)) {
+			directions.add(DIRECTION.SOUTHWEST);
 		}
-		return nr;
+		return directions;
 	}
-	private boolean isTileOfSort(Tile tile,int x, int y,int layer){
-		if(x>0&&x<map.length)//kollar giltigt x värde
-			if( y>0 && y <map[x].length)//kollar gilltigt y värde
-				if(map[x][y][layer]!=null)//kollar så den innehåller något
-					if(  tile.getClass() ==  map[x][y][layer].getClass())
+
+	private int nrOf(Tile tile, int x, int y, int layer) {
+		return generateArrayOfDirections(tile, x, y, layer).size();
+	}
+
+	private boolean isTileOfSort(Tile tile, int x, int y, int layer) {
+		if (x > 0 && x < map.length)// kollar giltigt x värde
+			if (y > 0 && y < map[x].length)// kollar gilltigt y värde
+				if (map[x][y][layer] != null)// kollar så den innehåller något
+					if (tile.getClass() == map[x][y][layer].getClass())
 						return true;
 		return false;
 	}
+
 	/*
 	 * int nrOf(Object type,int x,int y,int layer){ int nr=0;
 	 * 
