@@ -27,6 +27,9 @@ public class GameController implements MouseWheelListener, KeyListener,
 	float zoomlv = 1;
 	boolean shiftPressed = false;
 
+	private static final int FRAME_DELAY = 100; // 20ms. implies 50fps (1000/20)
+												// = 50
+
 	public static enum ACTION {
 		GORIGTH, GOLEFT, GOUP, GODOWN, RUNDOWN, RUNUP, RUNLEFT, RUNRIGTH
 	}
@@ -40,6 +43,7 @@ public class GameController implements MouseWheelListener, KeyListener,
 	LogView logView = null;
 	StatusView statusView = null;
 	InventoryView inventoryView = null;
+	long cycleTime;
 
 	public GameController() {
 		System.out.println("gameController");
@@ -73,8 +77,7 @@ public class GameController implements MouseWheelListener, KeyListener,
 		// för scrollen ska fungera
 		gameGui.addMouseWheelListener(this);
 		gameGui.addKeyListener(this);
-		
-		
+
 		new Thread(this).start();
 	}
 
@@ -132,6 +135,7 @@ public class GameController implements MouseWheelListener, KeyListener,
 			System.out.println(" shiftkey reliased");
 			shiftPressed = false;
 		}
+		action = null;
 	}
 
 	@Override
@@ -176,10 +180,11 @@ public class GameController implements MouseWheelListener, KeyListener,
 	@Override
 	public void run() {// ska vara ca 60 fps
 		while (true) {
-			if (action != null) {
-				player1.action(action);
-				action = null;
-			}
+			cycleTime = System.currentTimeMillis();
+
+			player1.action(action);
+			action = null;
+
 			// System.out.println("looping....");
 			// System.out.println("looping....");
 			// kolla vart den går
@@ -188,12 +193,18 @@ public class GameController implements MouseWheelListener, KeyListener,
 			// rita om
 			mapView.moveCameraTo(player1.getPosX(), player1.getPosY(), zoomlv);
 			mapView.repaint();
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			synchFramerate();
+			// Thread.sleep(100);
+		}
+	}
+
+	private void synchFramerate() {
+		cycleTime = cycleTime + FRAME_DELAY;
+		long difference = cycleTime - System.currentTimeMillis();
+		try {
+			Thread.sleep(Math.max(0, difference));
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 

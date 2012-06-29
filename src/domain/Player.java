@@ -15,12 +15,14 @@ public class Player {
 
 	int posX = 0;
 	int posY = 0;
-
+	
+	float lowerTirednessStepp=(float) 0.8;
+	float lowerHungerStepp=(float) 0.1;
 	// stats
-	float spead = 4;
+	float spead = 6;
 
 	int maxhp = 100;
-
+	
 	// inventory
 	float hp = maxhp;
 	float hunger = 40;
@@ -144,9 +146,35 @@ public class Player {
 	}
 
 	public void action(ACTION action) {
-		move(action);
+		if(action!=null){
+			System.out.println("tiredness:"+tiredness);
+			if(tiredness<0){
+				System.out.println("tiredness =0");
+				if(action==ACTION.RUNLEFT){
+					action=ACTION.GOLEFT;
+				}else if(action==ACTION.RUNRIGTH){
+					action=ACTION.GORIGTH;
+				}else if(action==ACTION.RUNUP){
+					action=ACTION.GOUP;
+				}else if(action==ACTION.RUNDOWN){
+					action=ACTION.GODOWN;
+				}
+			}
+			move(action);
+			if(action==ACTION.RUNLEFT||action==ACTION.RUNDOWN||action==ACTION.RUNUP||action==ACTION.RUNRIGTH){
+				tiredness-=lowerTirednessStepp;
+			}
+		}else{
+			tiredness+=lowerTirednessStepp/2;
+		}
+		hunger-=(lowerHungerStepp*(tiredness/100));
+		
+		if(hunger==0){
+			System.out.println("you are dead!");
+		}
 	}
-
+	
+	
 	private void move(ACTION action2) {
 		int newposX =posX;
 		int newposY =posY; 
@@ -187,13 +215,8 @@ public class Player {
 		// kollar om den är sollid
 		if (gc.checkPositionIsOk(newposX + 16, newposY + 46, newposX + 44,
 				newposY + 64 -5)) {
-			System.out.println("punkten är" + newposX / 64 + ", " + newposY / 64
-					+ " och är gå bar");
-			posX = newposX;
+				posX = newposX;
 			posY = newposY;
-		} else {
-			System.out.println("punkten är" + (int) newposX / 64 + ", "
-					+ (int) posY / 64 + " och är INTE gå bar");
-		}
+		} 
 	}
 }
