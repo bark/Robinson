@@ -1,14 +1,15 @@
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.LayoutManager;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Toolkit;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+
+import Items.Item;
 
 public class GameGui extends JFrame{
 
@@ -19,6 +20,7 @@ public class GameGui extends JFrame{
 	StatusView statusView = null;
 	ButtonPanel buttonPanel = null;
 	InventoryView inventoryView = null;
+	Item itemToPaint = null;
 
 	public GameGui(){
 		super();
@@ -104,6 +106,64 @@ public class GameGui extends JFrame{
 		int y = mainPanel.getHeight()/2-inventoryView.getHeight()/2;
 		inventoryView.setBounds(x, y, inventoryView.getWidth(), inventoryView.getHeight());
 		System.out.println("setInventoryView");
+	}
+	
+	private void showItem(Item item){
+		ItemInfoPanel iip = new ItemInfoPanel(item);
+		mainPanel.add(iip);
+		iip.setBounds(inventoryView.getX()+inventoryView.getWidth()+10
+					, inventoryView.getY(), iip.getWidth(), iip.getHeight());
+	}
+	
+	public void setItemToPaint(Item item){
+		this.itemToPaint = item;
+		redoPaintOrder();
+	}
+	
+	class ItemInfoPanel extends JPanel {
+		
+		private Item item;
+		public ItemInfoPanel(Item item) {
+			setSize(120, 75);
+			setBackground(Color.GRAY);
+			setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+			setVisible(true);
+			this.item = item;
+		}
+		
+		@Override
+		public void paint(Graphics g) {
+			super.paint(g);
+			g.drawImage(item.getImage(), 2, 2, null);
+			g.drawString("ItemName", 5, item.getImage().getHeight(this)+15+g.getFont().getSize());
+			g.drawString("Desc desc desc desc desc", item.getImage().getWidth(this)+15, 5+g.getFont().getSize());
+			
+		}
+		
+		
+	}
+	
+	private void redoPaintOrder(){
+		
+		if(logView != null){
+			setLogView(logView);
+		}
+		if(statusView != null){
+			setStatusView(statusView);
+		}
+		if(inventoryView != null){
+			setInventoryView(inventoryView);
+		}
+		if(buttonPanel != null){
+			setButtonPanel(buttonPanel);
+		}
+		if(itemToPaint != null){
+			showItem(itemToPaint);
+		}
+		if(mapView != null){
+			setMapView(mapView);
+		}
+		
 	}
 	
 	

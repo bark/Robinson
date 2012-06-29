@@ -41,7 +41,6 @@ public class InventoryView extends JPanel{
 		for(Item item:player.getInventory()){
 			this.add(new ItemButton(item));
 		}
-		revalidate();
 		
 	}
 	

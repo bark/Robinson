@@ -13,4 +13,7 @@ public class Candle extends Item {
 		return img;
 	}
 
+	public String toString(){
+		return "Candle";
+	}
 }

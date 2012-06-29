@@ -237,8 +237,19 @@ public class GameController implements MouseWheelListener, KeyListener,
 		public void actionPerformed(ActionEvent e) {
 			if(e.getClass() != null && e.getSource() instanceof ItemButton){
 				ItemButton ib = (ItemButton)e.getSource();
-				player1.getInventory().remove(ib.getItem());
+				if((e.getModifiers() & e.SHIFT_MASK) != 0){
+					logView.addString("Used item: "+ib.getItem().toString());
+					System.out.println("SHIFT_INVENTORY_CLICK");
+				} else if((e.getModifiers() & e.CTRL_MASK) != 0){
+					player1.getInventory().remove(ib.getItem());
+					System.out.println("CTRL_INV_CLICK");
+				} else {
+					gameGui.setItemToPaint(ib.getItem());
+					System.out.println("INV CLICK");
+				}
+				
 				inventoryView.updateView();
+				inventoryView.validate();
 			}
 			
 		}
