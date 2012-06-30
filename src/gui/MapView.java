@@ -45,12 +45,13 @@ public class MapView extends JComponent{
 		
 		for(int x=(player1.getPosX()/64)-15;x<(player1.getPosX()/64)+15;x++){
 			for(int y=(player1.getPosY()/64)-15;y<(player1.getPosY()/64)+15;y++){
-				
-				for(Tile tile:map.getPoint(x, y)){
-					if(tile.getYValure()>100){
-						break;
+				if(map!=null&&map.getPoint(x, y)!=null){
+					for(Tile tile:map.getPoint(x, y)){
+						if(tile.getYValure()>100){
+							break;
+						}
+						tile.drawItSelf(offgc,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
 					}
-					tile.drawItSelf(offgc,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
 				}
 			}
 		}
@@ -59,9 +60,11 @@ public class MapView extends JComponent{
 		
 		for(int x=(player1.getPosX()/64)-15;x<(player1.getPosX()/64)+15;x++){
 			for(int y=(player1.getPosY()/64)-15;y<(player1.getPosY()/64)+15;y++){
-				for(Tile tile:map.getPoint(x, y)){
-					if(tile.getYValure()>100){
-						tile.drawItSelf(offgc,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
+				if(map!=null&&map.getPoint(x, y)!=null){
+					for(Tile tile:map.getPoint(x, y)){
+						if(tile.getYValure()>100){
+							tile.drawItSelf(offgc,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
+						}
 					}
 				}
 			}

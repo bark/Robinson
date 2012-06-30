@@ -6,10 +6,14 @@ import java.awt.Image;
 import java.awt.image.ImageObserver;
 import java.util.ArrayList;
 
+import domain.map.SortedTileList;
+
 public class Tile implements Comparable{
 	public static enum DIRECTION {
 		NORTH, SOUTH, WEST, EAST, NORTHWEST, NORTHEAST, SOUTHWEST, SOUTHEAST
 	}
+	protected ArrayList<Tile> canNotBeWhit=new ArrayList<Tile>();
+	protected ArrayList<Tile> haveToBeWhit=new ArrayList<Tile>();
 	protected Image pic;
 	protected int part=0;
 	protected int yvalure=0;//100 is the human
@@ -18,7 +22,26 @@ public class Tile implements Comparable{
 	protected String name = "tile";
 	protected Boolean sollid = false;
 
-
+	public Boolean canBeAdded(SortedTileList exist){
+		
+		for(Tile tile:exist){
+			for(Tile tile2:canNotBeWhit){
+				if(tile.getClass()==tile2.getClass()){
+					return false;
+				}
+			}
+			
+		}
+		for(Tile tile2:haveToBeWhit){
+			if(!exist.contains(tile2)){
+				return false;
+			}
+		}
+		
+		
+		return true;
+	}
+	
 	public Boolean isFullscreen() {
 		return fullscreen;
 	}

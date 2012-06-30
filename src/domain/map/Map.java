@@ -65,10 +65,12 @@ public class Map {
 */
 	private void generateWorldMap(int x, int y) {
 		Long seed=(long) 234.124;
-		MapPart mapPart = new MapPart(x, y,seed, mapPiceSize, mapPiceSize);
+		
+		MapPart mapPart = new MapPart(x, y, mapPiceSize, mapPiceSize,seed);
+		new Thread(mapPart).start();
 		eventList.add(new Event(0,EVENTACTION.GENERATE,x,y));
 		worldMap[x][y]=mapPart;
-
+		
 	}
 
 

@@ -96,7 +96,6 @@ public class GameController implements MouseWheelListener, KeyListener,
 		if (shiftPressed) {
 			if (e.getKeyCode() == 87 || e.getKeyCode() == 38) {
 				action = ACTION.RUNUP;
-				System.out.println("shift kay and W");
 			} else if (e.getKeyCode() == 83 || e.getKeyCode() == 40) {
 				action = ACTION.RUNDOWN;
 			} else if (e.getKeyCode() == 65 || e.getKeyCode() == 37) {
@@ -130,9 +129,7 @@ public class GameController implements MouseWheelListener, KeyListener,
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		System.out.println("reliased " + e.getKeyCode());
 		if (e.getKeyCode() == 16) {
-			System.out.println(" shiftkey reliased");
 			shiftPressed = false;
 		}
 		action = null;

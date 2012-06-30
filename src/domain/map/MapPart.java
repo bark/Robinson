@@ -18,6 +18,9 @@ import java.util.TreeSet;
 
 import javax.print.attribute.Size2DSyntax;
 
+import Items.Mushroom;
+import Items.MushroomBad;
+
 import domain.Tile;
 import domain.Tile.DIRECTION;
 import domain.backGroundTile.Dirt;
@@ -28,27 +31,23 @@ import domain.forgroundTile.TreeBottom;
 import domain.forgroundTile.TreeTop;
 
 public class MapPart implements Runnable {
-	SortedTileList[][] map;
+	private SortedTileList[][] map;
 	MessageDigest m;
 
 	private int worldX;
 	private int worldY;
 	Long seed;
-
+	int higth,with;
 	int extrawatter = 0;// borde kanse implimenteras
 	int extraHeeat = 0;// borde kanse implimenteras
 
-	public MapPart(int x, int y, Long i, int higth, int with) {
-		try {
-			m = MessageDigest.getInstance("MD5");
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		this.seed = i;
+	public MapPart(int x, int y,  int higth, int with,long seed) {
+		this.seed=seed;
+		this.higth=higth;
+		this.with=with;
 		worldX = x;
 		worldY = y;
-		generate(higth, with);
+		
 	}
 
 	public MapPart(String MapPartUrl) {
@@ -107,42 +106,6 @@ public class MapPart implements Runnable {
 		return p;
 	}
 
-	public boolean generate(int higth, int with) {
-		Random notRandomRandom = new Random(seed);
-		map = new SortedTileList[higth][with];
-		// fyll den med gräs
-		for (int i = 0; i < higth; i++) {
-			for (int j = 0; j < with; j++) {
-				map[i][j] = new SortedTileList();
-				if (notRandomRandom.nextFloat() * 100 < 5) {
-					map[i][j].add(new Stone());
-				}
-				map[i][j].add(new Dirt());
-				if (notRandomRandom.nextFloat() * 100 < 20 + nrOf(
-						((Tile) new Dirt()), i, j) * 18)
-					map[i][j].add(new Grass());
-			}
-		}
-		for (int i = 0; i < higth; i++) {
-			for (int j = 0; j < with; j++) {
-				if (notRandomRandom.nextFloat() * 100 > 99) {
-					createATree(i, j);
-				}
-			}
-		}
-		createARiver(96, 96,10 , 10, notRandomRandom);
-		
-		for (int i = 0; i < 10; i++) {
-			fixTile(new Water());
-		}
-		
-		for (int i = 0; i < 10; i++) {
-			fixTile(new Grass());
-		}
-		removeExtraTiles();
-	
-		return true;
-	}
 
 	private void fixTile(Tile tile) {
 		for (int i = 0; i < map.length; i++) {
@@ -183,8 +146,7 @@ public class MapPart implements Runnable {
 
 					{
 						// System.out.println(directionsArr);
-						map[i][j].getTileOfType(tile).SetPart(
-								directionsArr);
+						map[i][j].getTileOfType(tile).SetPart(directionsArr);
 					}
 				}
 			}
@@ -193,18 +155,18 @@ public class MapPart implements Runnable {
 
 	private boolean createARiver(int startX, int startY, int endX, int endY,
 			Random notRandomRandom) {
-		if(startX==endX&&startY==endY)
+		if (startX == endX && startY == endY)
 			return true;
 		if (startX > 0 && startY > 0 && endX > 0 && endY > 0
 				&& startX < map.length && startY < map[0].length
 				&& endX < map.length && endY < map[0].length) {
-			//System.out.println("kommer förbi mördar ifsatsen");
-			map[startX][startY].add(new Water());
-			map[startX+1][startY].add(new Water());
-			map[startX][startY+1].add(new Water());
-			map[startX-1][startY].add(new Water());
-			map[startX][startY-1].add(new Water());
-			boolean succsess=false;
+			// System.out.println("kommer förbi mördar ifsatsen");
+			map[startX][startY].addTile(new Water());
+			map[startX + 1][startY].addTile(new Water());
+			map[startX][startY + 1].addTile(new Water());
+			map[startX - 1][startY].addTile(new Water());
+			map[startX][startY - 1].addTile(new Water());
+			boolean succsess = false;
 			double nr1 = hypetunusan(startX + 1, startY, endX, endY)
 					* ((notRandomRandom.nextDouble() / 10) + 1);
 			double nr2 = hypetunusan(startX, startY + 1, endX, endY)
@@ -213,38 +175,40 @@ public class MapPart implements Runnable {
 					* ((notRandomRandom.nextDouble() / 10) + 1);
 			double nr4 = hypetunusan(startX, startY - 1, endX, endY)
 					* ((notRandomRandom.nextDouble() / 10) + 1);
-			double worst=theWorstNumber(nr1, nr2, nr3, nr4);
-			if(worst==nr1){
-				succsess=createARiver(startX+1, startY, endX, endY,
+			double worst = theWorstNumber(nr1, nr2, nr3, nr4);
+			if (worst == nr1) {
+				succsess = createARiver(startX + 1, startY, endX, endY,
 						notRandomRandom);
-			}else if(worst==nr2){
-				succsess=createARiver(startX, startY+1, endX, endY,
+			} else if (worst == nr2) {
+				succsess = createARiver(startX, startY + 1, endX, endY,
 						notRandomRandom);
-			}else if(worst==nr3){
-				succsess=createARiver(startX-1, startY, endX, endY,
+			} else if (worst == nr3) {
+				succsess = createARiver(startX - 1, startY, endX, endY,
 						notRandomRandom);
-			}else if(worst==nr4){
-				succsess=createARiver(startX, startY-1, endX, endY,
+			} else if (worst == nr4) {
+				succsess = createARiver(startX, startY - 1, endX, endY,
 						notRandomRandom);
 			}
-			
-			if(!succsess){
-				createARiver(startX, startY, endX, endY,
-						notRandomRandom);
+
+			if (!succsess) {
+				createARiver(startX, startY, endX, endY, notRandomRandom);
 			}
 			return true;
-		}else{ return false;}
+		} else {
+			return false;
+		}
 	}
-	double theWorstNumber(double a,double b, double c,double d){
-		double worst=a;
-		if(worst>b){
-			worst=b;
+
+	double theWorstNumber(double a, double b, double c, double d) {
+		double worst = a;
+		if (worst > b) {
+			worst = b;
 		}
-		if(worst>c){
-			worst=c;
+		if (worst > c) {
+			worst = c;
 		}
-		if(worst>d){
-			worst=d;
+		if (worst > d) {
+			worst = d;
 		}
 		return worst;
 	}
@@ -351,7 +315,10 @@ public class MapPart implements Runnable {
 	}
 
 	public SortedTileList getPoint(int x, int y) {
-		return map[x][y];
+		if(map!=null){
+			return map[x][y];
+		}
+		return null;
 	}
 
 	public void removeExtraTiles() {
@@ -371,10 +338,57 @@ public class MapPart implements Runnable {
 			}
 		}
 	}
-
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		// ska skapa saker
+		Random notRandomRandom = new Random(seed);
+		map = new SortedTileList[higth][with];
+		// fyll den med gräs
+		for (int i = 0; i < higth; i++) {
+			for (int j = 0; j < with; j++) {
+				map[i][j] = new SortedTileList();
+				if (notRandomRandom.nextFloat() * 100 < 5) {
+					map[i][j].add(new Stone());
+				}
+				map[i][j].add(new Dirt());
+				if (notRandomRandom.nextFloat() * 100 < 20 + nrOf(
+						((Tile) new Dirt()), i, j) * 18)
+					map[i][j].add(new Grass());
+
+			}
+		}
+		for (int i = 0; i < higth; i++) {
+			for (int j = 0; j < with; j++) {
+				if (notRandomRandom.nextFloat() * 100 > 99) {
+					createATree(i, j);
+				}
+			}
+		}
+		createARiver(96, 96, 10, 10, notRandomRandom);
+
+		for (int i = 0; i < 10; i++) {
+			fixTile(new Water());
+		}
+
+		for (int i = 0; i < 10; i++) {
+			fixTile(new Grass());
+		}
+		removeExtraTiles();
+
+		for (int i = 0; i < higth; i++) {
+			for (int j = 0; j < with; j++) {
+				if (notRandomRandom.nextFloat() * 100 < 0.5) {
+					if (new Mushroom().canBeAdded(map[i][j])) {
+						map[i][j].add(new Mushroom());
+					}
+				}
+				if (notRandomRandom.nextFloat() * 100 < 0.5) {
+					if (new Mushroom().canBeAdded(map[i][j])) {
+						map[i][j].add(new MushroomBad());
+					}
+				}
+			}
+		}
+
+
 	}
 }
