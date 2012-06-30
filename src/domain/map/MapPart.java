@@ -22,17 +22,21 @@ import domain.Tile;
 import domain.Tile.DIRECTION;
 import domain.backGroundTile.Dirt;
 import domain.backGroundTile.Grass;
+import domain.backGroundTile.Water;
 import domain.forgroundTile.Stone;
 import domain.forgroundTile.TreeBottom;
 import domain.forgroundTile.TreeTop;
 
-public class MapPart implements Runnable{
+public class MapPart implements Runnable {
 	SortedTileList[][] map;
 	MessageDigest m;
 
 	private int worldX;
 	private int worldY;
 	Long seed;
+
+	int extrawatter = 0;// borde kanse implimenteras
+	int extraHeeat = 0;// borde kanse implimenteras
 
 	public MapPart(int x, int y, Long i, int higth, int with) {
 		try {
@@ -126,10 +130,11 @@ public class MapPart implements Runnable{
 				}
 			}
 		}
-		for(int i=0;i<10;i++){
+		for (int i = 0; i < 10; i++) {
 			fixGrass();
 		}
 		removeExtraTiles();
+		createARiver(90, 90,10 , 10, notRandomRandom);
 		return true;
 	}
 
@@ -178,6 +183,71 @@ public class MapPart implements Runnable{
 				}
 			}
 		}
+	}
+
+	private void createARiver(int startX, int startY, int endX, int endY,
+			Random notRandomRandom) {
+		if (startX < 0 && startY < 0 && endX < 0 && endY < 0
+				&& startX > map.length && startY > map[0].length
+				&& endX > map.length && endY > map[0].length) {
+			map[startX][startY].add(new Water());
+
+			double nr1 = hypetunusan(startX + 1, startY, endX, endY)
+					* ((notRandomRandom.nextDouble() / 5) + 1);
+			double nr2 = hypetunusan(startX, startY + 1, endX, endY)
+					* ((notRandomRandom.nextDouble() / 5) + 1);
+			double nr3 = hypetunusan(startX - 1, startY, endX, endY)
+					* ((notRandomRandom.nextDouble() / 5) + 1);
+			double nr4 = hypetunusan(startX, startY - 1, endX, endY)
+					* ((notRandomRandom.nextDouble() / 5) + 1);
+
+			if (nr1 > nr2) {
+				if (nr1 > nr3) {
+					if (nr1 > nr4) {
+						createARiver(startX + 1, startY, endX, endY,
+								notRandomRandom);
+					} else {
+						createARiver(startX, startY - 1, endX, endY,
+								notRandomRandom);
+					}
+
+				} else {
+					if (nr3 > nr4) {
+						createARiver(startX - 1, startY, endX, endY,
+								notRandomRandom);
+					} else {
+						createARiver(startX, startY - 1, endX, endY,
+								notRandomRandom);
+					}
+				}
+			} else {
+				if (nr2 > nr3) {
+					if (nr2 > nr4) {
+						createARiver(startX, startY + 1, endX, endY,
+								notRandomRandom);
+					} else {
+						createARiver(startX, startY - 1, endX, endY,
+								notRandomRandom);
+					}
+
+				} else {
+					if (nr3 > nr4) {
+						createARiver(startX - 1, startY, endX, endY,
+								notRandomRandom);
+					} else {
+						createARiver(startX, startY - 1, endX, endY,
+								notRandomRandom);
+					}
+				}
+			}
+		}
+	}
+
+	private double hypetunusan(int startX, int startY, int endX, int endY) {
+		int lengthX = (startX - endX);
+		int lengthY = (startY - endY);
+		return Math.sqrt((lengthX * lengthX) + (lengthY * lengthY));
+
 	}
 
 	private ArrayList<DIRECTION> generateArrayOfDirections(Tile tile, int x,
@@ -277,20 +347,21 @@ public class MapPart implements Runnable{
 	public SortedTileList getPoint(int x, int y) {
 		return map[x][y];
 	}
-	public void removeExtraTiles(){
+
+	public void removeExtraTiles() {
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[0].length; j++) {
-				SortedTileList keep=new SortedTileList();
+				SortedTileList keep = new SortedTileList();
 				Iterator<Tile> iterator = map[i][j].descendingIterator();
-				while(iterator.hasNext()){
-					Tile tile=iterator.next();
+				while (iterator.hasNext()) {
+					Tile tile = iterator.next();
 					keep.add(tile);
-					if(tile.isFullscreen()){
+					if (tile.isFullscreen()) {
 						break;
 					}
-					
+
 				}
-				map[i][j]=keep;
+				map[i][j] = keep;
 			}
 		}
 	}
@@ -298,6 +369,6 @@ public class MapPart implements Runnable{
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		//ska skapa saker
+		// ska skapa saker
 	}
 }
