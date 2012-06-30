@@ -10,7 +10,7 @@ public class Stone extends ForgroundTile{
 	private int part;
 	
 	public Stone(){
-		yvalure=50;
+		yvalure=70;
 		sollid=true;
 		name="stone";
 		String uri="./res/pic/rock.png";

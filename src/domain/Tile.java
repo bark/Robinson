@@ -10,7 +10,7 @@ public class Tile implements Comparable{
 	public static enum DIRECTION {
 		NORTH, SOUTH, WEST, EAST, NORTHWEST, NORTHEAST, SOUTHWEST, SOUTHEAST
 	}
-	protected static Image pic;
+	protected Image pic;
 	protected int part=0;
 	protected int yvalure=0;//100 is the human
 	String url = "";
@@ -39,16 +39,7 @@ public class Tile implements Comparable{
 		return yvalure-((Tile)arg0).getYValure();
 	}
 	 public void drawItSelf( Graphics g,ImageObserver io, int x,int y,float zoom){
-		int picX=0;
-		int picY=0;
-		//part=3;
-		picX=((int)part%3)*32;
-		picY=((int)part/3)*32;
-		
-		g.drawImage(pic, x,y,x+(int) (64*zoom),y+(int)(64*zoom),picX, picY, picX+32, picY+32, io);
-	//	g.setColor(Color.black);
-	//	g.drawRect(x, y, 64, 64);
-		 //g.fillOval(x,y,(int) (64*zoom),(int)(64*zoom));
+
 	}
 	 
 		public void SetPart(ArrayList<DIRECTION> directions){

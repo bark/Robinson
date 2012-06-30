@@ -130,54 +130,60 @@ public class MapPart implements Runnable {
 				}
 			}
 		}
+		createARiver(96, 96,10 , 10, notRandomRandom);
+		
 		for (int i = 0; i < 10; i++) {
-			fixGrass();
+			fixTile(new Water());
+		}
+		
+		for (int i = 0; i < 10; i++) {
+			fixTile(new Grass());
 		}
 		removeExtraTiles();
-		createARiver(90, 90,10 , 10, notRandomRandom);
+	
 		return true;
 	}
 
-	private void fixGrass() {
+	private void fixTile(Tile tile) {
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[0].length; j++) {
-				if (map[i][j].contains(new Grass())) {
+				if (map[i][j].contains(tile)) {
 					ArrayList<DIRECTION> directionsArr = generateArrayOfDirections(
-							new Grass(), i, j);
+							tile, i, j);
 					if (!directionsArr.contains(DIRECTION.NORTH)
 							&& !directionsArr.contains(DIRECTION.SOUTH)) {
-						map[i][j].removeTileOfType(new Grass());
+						map[i][j].removeTileOfType(tile);
 					} else if (!directionsArr.contains(DIRECTION.WEST)
 							&& !directionsArr.contains(DIRECTION.EAST)) {
-						map[i][j].removeTileOfType(new Grass());
+						map[i][j].removeTileOfType(tile);
 					} else if (!directionsArr.contains(DIRECTION.NORTHEAST)
 							&& !directionsArr.contains(DIRECTION.SOUTHWEST)) {
-						map[i][j].removeTileOfType(new Grass());
+						map[i][j].removeTileOfType(tile);
 					} else if (!directionsArr.contains(DIRECTION.NORTHWEST)
 							&& !directionsArr.contains(DIRECTION.SOUTHEAST)) {
-						map[i][j].removeTileOfType(new Grass());
+						map[i][j].removeTileOfType(tile);
 					}//
 					else if (!directionsArr.contains(DIRECTION.NORTH)
 							&& !directionsArr.contains(DIRECTION.WEST)
 							&& !directionsArr.contains(DIRECTION.SOUTHEAST)) {
-						map[i][j].removeTileOfType(new Grass());
+						map[i][j].removeTileOfType(tile);
 					} else if (!directionsArr.contains(DIRECTION.NORTH)
 							&& !directionsArr.contains(DIRECTION.EAST)
 							&& !directionsArr.contains(DIRECTION.SOUTHWEST)) {
-						map[i][j].removeTileOfType(new Grass());
+						map[i][j].removeTileOfType(tile);
 					} else if (!directionsArr.contains(DIRECTION.SOUTH)
 							&& !directionsArr.contains(DIRECTION.EAST)
 							&& !directionsArr.contains(DIRECTION.NORTHWEST)) {
-						map[i][j].removeTileOfType(new Grass());
+						map[i][j].removeTileOfType(tile);
 					} else if (!directionsArr.contains(DIRECTION.SOUTH)
 							&& !directionsArr.contains(DIRECTION.WEST)
 							&& !directionsArr.contains(DIRECTION.NORTHEAST)) {
-						map[i][j].removeTileOfType(new Grass());
+						map[i][j].removeTileOfType(tile);
 					} else
 
 					{
 						// System.out.println(directionsArr);
-						map[i][j].getTileOfType(new Grass()).SetPart(
+						map[i][j].getTileOfType(tile).SetPart(
 								directionsArr);
 					}
 				}
@@ -185,62 +191,62 @@ public class MapPart implements Runnable {
 		}
 	}
 
-	private void createARiver(int startX, int startY, int endX, int endY,
+	private boolean createARiver(int startX, int startY, int endX, int endY,
 			Random notRandomRandom) {
-		if (startX < 0 && startY < 0 && endX < 0 && endY < 0
-				&& startX > map.length && startY > map[0].length
-				&& endX > map.length && endY > map[0].length) {
+		if(startX==endX&&startY==endY)
+			return true;
+		if (startX > 0 && startY > 0 && endX > 0 && endY > 0
+				&& startX < map.length && startY < map[0].length
+				&& endX < map.length && endY < map[0].length) {
+			//System.out.println("kommer förbi mördar ifsatsen");
 			map[startX][startY].add(new Water());
-
+			map[startX+1][startY].add(new Water());
+			map[startX][startY+1].add(new Water());
+			map[startX-1][startY].add(new Water());
+			map[startX][startY-1].add(new Water());
+			boolean succsess=false;
 			double nr1 = hypetunusan(startX + 1, startY, endX, endY)
-					* ((notRandomRandom.nextDouble() / 5) + 1);
+					* ((notRandomRandom.nextDouble() / 10) + 1);
 			double nr2 = hypetunusan(startX, startY + 1, endX, endY)
-					* ((notRandomRandom.nextDouble() / 5) + 1);
+					* ((notRandomRandom.nextDouble() / 10) + 1);
 			double nr3 = hypetunusan(startX - 1, startY, endX, endY)
-					* ((notRandomRandom.nextDouble() / 5) + 1);
+					* ((notRandomRandom.nextDouble() / 10) + 1);
 			double nr4 = hypetunusan(startX, startY - 1, endX, endY)
-					* ((notRandomRandom.nextDouble() / 5) + 1);
-
-			if (nr1 > nr2) {
-				if (nr1 > nr3) {
-					if (nr1 > nr4) {
-						createARiver(startX + 1, startY, endX, endY,
-								notRandomRandom);
-					} else {
-						createARiver(startX, startY - 1, endX, endY,
-								notRandomRandom);
-					}
-
-				} else {
-					if (nr3 > nr4) {
-						createARiver(startX - 1, startY, endX, endY,
-								notRandomRandom);
-					} else {
-						createARiver(startX, startY - 1, endX, endY,
-								notRandomRandom);
-					}
-				}
-			} else {
-				if (nr2 > nr3) {
-					if (nr2 > nr4) {
-						createARiver(startX, startY + 1, endX, endY,
-								notRandomRandom);
-					} else {
-						createARiver(startX, startY - 1, endX, endY,
-								notRandomRandom);
-					}
-
-				} else {
-					if (nr3 > nr4) {
-						createARiver(startX - 1, startY, endX, endY,
-								notRandomRandom);
-					} else {
-						createARiver(startX, startY - 1, endX, endY,
-								notRandomRandom);
-					}
-				}
+					* ((notRandomRandom.nextDouble() / 10) + 1);
+			double worst=theWorstNumber(nr1, nr2, nr3, nr4);
+			if(worst==nr1){
+				succsess=createARiver(startX+1, startY, endX, endY,
+						notRandomRandom);
+			}else if(worst==nr2){
+				succsess=createARiver(startX, startY+1, endX, endY,
+						notRandomRandom);
+			}else if(worst==nr3){
+				succsess=createARiver(startX-1, startY, endX, endY,
+						notRandomRandom);
+			}else if(worst==nr4){
+				succsess=createARiver(startX, startY-1, endX, endY,
+						notRandomRandom);
 			}
+			
+			if(!succsess){
+				createARiver(startX, startY, endX, endY,
+						notRandomRandom);
+			}
+			return true;
+		}else{ return false;}
+	}
+	double theWorstNumber(double a,double b, double c,double d){
+		double worst=a;
+		if(worst>b){
+			worst=b;
 		}
+		if(worst>c){
+			worst=c;
+		}
+		if(worst>d){
+			worst=d;
+		}
+		return worst;
 	}
 
 	private double hypetunusan(int startX, int startY, int endX, int endY) {
