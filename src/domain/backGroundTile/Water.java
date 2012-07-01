@@ -10,7 +10,7 @@ import domain.Tile;
 public class Water extends Tile {
 	Image pic;
 	public Water(){
-		yvalure=40;
+		zvalue=40;
 		sollid=true;
 		String uri="./res/pic/water.png";
 		if(pic==null)

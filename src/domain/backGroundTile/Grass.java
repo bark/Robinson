@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class Grass extends BackgroundTile{
 	
 	public Grass(){
-		yvalure=10;
+		zvalue=10;
 		String uri="./res/pic/grass.png";
 		if(pic==null)
 			pic= Toolkit.getDefaultToolkit().getImage(uri);

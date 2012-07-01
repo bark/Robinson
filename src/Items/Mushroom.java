@@ -13,7 +13,7 @@ public class Mushroom extends Item{
 	private static Image pic;
 	
 	public Mushroom(){
-		yvalure=65;
+		zvalue=65;
 		canNotBeWhit.add(new Water());
 		haveToBeWhit.add(new Grass());
 		String uri="./res/pic/tileset01.png";

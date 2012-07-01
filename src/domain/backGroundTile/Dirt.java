@@ -9,7 +9,7 @@ public class Dirt extends BackgroundTile{
 	static Image pic;
 	int part=0; //0-3 0 är standard.
 	public Dirt(){
-		yvalure=0;
+		zvalue=0;
 		fullscreen=true;
 		String uri="./res/pic/dirt.png";
 		if(pic==null)
@@ -42,6 +42,7 @@ public class Dirt extends BackgroundTile{
 			picX=64;
 			picY=160;
 		}
+		
 		g.drawImage(pic, x,y,x+(int) (64*zoom),y+(int)(64*zoom),picX, picY, picX+32, picY+32, io);
 		// g.setColor(Color.RED);
 		 //g.fillOval(x,y,(int) (64*zoom),(int)(64*zoom));

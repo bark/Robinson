@@ -116,8 +116,7 @@ public class Player {
 		picX = 64 * frame;
 		g.drawImage(paintImg, x, y, x + (int) (64 * zoom), y
 				+ (int) (64 * zoom), picX, picY, picX + 64, picY + 64, io);
-		// g.setColor(Color.RED);
-		// g.fillOval(x,y,(int) (64*zoom),(int)(64*zoom));
+
 	}
 
 	public int getPosX() {
@@ -197,13 +196,9 @@ public class Player {
 	}
 
 	public void action(ACTION action) {
-		System.out.println("1 currentaction: " + currentAction + " action: "
-				+ action);
 		if (currentAction != ACTION.DIE && currentAction != ACTION.PICKUP
 				&& currentAction != ACTION.SLASH) {// lockeble actions
-			System.out.println("2 action:" + action);
 			if (action != null) {
-				System.out.println("tiredness:" + tiredness);
 				if (tiredness < 0) {
 					System.out.println("tiredness =0");
 					if (action == ACTION.RUNLEFT) {

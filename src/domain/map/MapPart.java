@@ -388,7 +388,13 @@ public class MapPart implements Runnable {
 				}
 			}
 		}
-
+		
+		for (int i = 0; i < higth; i++) {
+			for (int j = 0; j < with; j++) {
+				//loading pictures to memory
+				map[i][j].calculateImage();
+			}
+		}
 
 	}
 }

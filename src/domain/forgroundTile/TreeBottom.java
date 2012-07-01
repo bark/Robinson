@@ -15,9 +15,9 @@ public class TreeBottom extends ForgroundTile{
 		
 		if(part==3)
 		{
-			yvalure=105;
+			zvalue=105;
 		}else{
-			yvalure=60;
+			zvalue=60;
 		}
 		String uri="./res/pic/trunk.png";
 		pic= Toolkit.getDefaultToolkit().getImage(uri);

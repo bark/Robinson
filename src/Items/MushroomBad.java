@@ -14,7 +14,7 @@ package Items;
 		private static Image pic;
 		
 		public MushroomBad(){
-			yvalure=66;
+			zvalue=66;
 			canNotBeWhit.add(new Water());
 			haveToBeWhit.add(new Grass());
 			String uri="./res/pic/tileset01.png";

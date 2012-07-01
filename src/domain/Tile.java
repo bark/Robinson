@@ -16,7 +16,7 @@ public class Tile implements Comparable{
 	protected ArrayList<Tile> haveToBeWhit=new ArrayList<Tile>();
 	protected Image pic;
 	protected int part=0;
-	protected int yvalure=0;//100 is the human
+	protected int zvalue=0;//100 is the human
 	String url = "";
 	protected Boolean fullscreen=false;
 	protected String name = "tile";
@@ -45,8 +45,8 @@ public class Tile implements Comparable{
 	public Boolean isFullscreen() {
 		return fullscreen;
 	}
-	public int getYValure(){
-		return yvalure;
+	public int getZValue(){
+		return zvalue;
 	}
 
 	public boolean isSollid() {
@@ -59,10 +59,10 @@ public class Tile implements Comparable{
 
 	@Override
 	public int compareTo(Object arg0) {
-		return yvalure-((Tile)arg0).getYValure();
+		return zvalue-((Tile)arg0).getZValue();
 	}
 	 public void drawItSelf( Graphics g,ImageObserver io, int x,int y,float zoom){
-
+		 
 	}
 	 
 		public void SetPart(ArrayList<DIRECTION> directions){

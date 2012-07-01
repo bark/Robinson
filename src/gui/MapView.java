@@ -46,12 +46,15 @@ public class MapView extends JComponent{
 		for(int x=(player1.getPosX()/64)-15;x<(player1.getPosX()/64)+15;x++){
 			for(int y=(player1.getPosY()/64)-15;y<(player1.getPosY()/64)+15;y++){
 				if(map!=null&&map.getPoint(x, y)!=null){
-					for(Tile tile:map.getPoint(x, y)){
-						if(tile.getYValure()>100){
+					/*for(Tile tile:map.getPoint(x, y)){
+						/if(tile.getZValue()>100){
 							break;
 						}
-						tile.drawItSelf(offgc,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
-					}
+					//	tile.drawItSelf(offgc,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
+
+					}*/
+				//	System.out.println("mitten"+centerX+" "+centerY);
+					map.getPoint(x, y).drawUnderIT(offgc, null,(int)( x*(64*zoom))-leftCornerX,(int) (y*(64*zoom))-leftCornerY, (float)1);
 				}
 			}
 		}
@@ -61,11 +64,13 @@ public class MapView extends JComponent{
 		for(int x=(player1.getPosX()/64)-15;x<(player1.getPosX()/64)+15;x++){
 			for(int y=(player1.getPosY()/64)-15;y<(player1.getPosY()/64)+15;y++){
 				if(map!=null&&map.getPoint(x, y)!=null){
-					for(Tile tile:map.getPoint(x, y)){
-						if(tile.getYValure()>100){
+					/*for(Tile tile:map.getPoint(x, y)){
+						if(tile.getZValue()>100){
 							tile.drawItSelf(offgc,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
 						}
-					}
+					}*/
+					
+					map.getPoint(x, y).drawOverIT(offgc, null,(int)( x*(64*zoom))-leftCornerX,(int) (y*(64*zoom))-leftCornerY, (float)1);
 				}
 			}
 		}
