@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import controller.GameController;
 import controller.GameController.ACTION;
+import domain.Tile.DIRECTION;
 
 import Items.Item;
 
@@ -16,14 +17,15 @@ public class Player {
 
 	int posX = 0;
 	int posY = 0;
-	
-	float lowerTirednessStepp=(float) 0.8;
-	float lowerHungerStepp=(float) 0.1;
+
+	DIRECTION facing = DIRECTION.SOUTH;
+	float lowerTirednessStepp = (float) 0.8;
+	float lowerHungerStepp = (float) 0.1;
 	// stats
 	float spead = 6;
 
 	int maxhp = 100;
-	
+
 	// inventory
 	float hp = maxhp;
 	float hunger = 40;
@@ -35,7 +37,7 @@ public class Player {
 	ACTION currentAction = null;
 	Image pic = null;
 	Image picDie = null;
-	Image picSlash=null;
+	Image picSlash = null;
 	int frame = 0;
 	GameController gc;
 
@@ -45,41 +47,75 @@ public class Player {
 		this.gc = gc;
 		String uri = "./res/pic/soldier_altcolor.png";
 		pic = Toolkit.getDefaultToolkit().getImage(uri);
-		
+
 		uri = "./res/pic/male_hurt.png";
 		picDie = Toolkit.getDefaultToolkit().getImage(uri);
-		
+
 		uri = "./res/pic/male_slash.png";
 		picSlash = Toolkit.getDefaultToolkit().getImage(uri);
-		
+
 	}
 
 	public void drawItSelf(Graphics g, ImageObserver io, int x, int y,
 			float zoom) {
 		int picX = 0;
 		int picY = 0;
-		Image paintImg=pic;
+		Image paintImg = pic;
 		if (currentAction == ACTION.GOUP || currentAction == ACTION.RUNUP) {
 
 			picY = 0;
-		} else if (currentAction == ACTION.GOLEFT || currentAction == ACTION.RUNLEFT) {
+		} else if (currentAction == ACTION.GOLEFT
+				|| currentAction == ACTION.RUNLEFT) {
 
 			picY = 64;
-		} else if (currentAction == ACTION.GODOWN || currentAction == ACTION.RUNDOWN) {
-
+		} else if (currentAction == ACTION.GODOWN
+				|| currentAction == ACTION.RUNDOWN) {
 			picY = 128;
-		} else if (currentAction == ACTION.GORIGTH || currentAction == ACTION.RUNRIGTH) {
+		} else if (currentAction == ACTION.GORIGTH
+				|| currentAction == ACTION.RUNRIGTH) {
 			picY = 128 + 64;
-		}else if(currentAction==ACTION.DIE||currentAction==ACTION.PICKUP){
+		} else if (currentAction == ACTION.DIE
+				|| currentAction == ACTION.PICKUP) {
 			picY = 0;
-			paintImg=picDie;
-		}else if(currentAction==ACTION.SLASH){
-			picY = 0;
-			paintImg=picSlash;
+			paintImg = picDie;
+		} else if (currentAction == ACTION.SLASH) {
+			switch (facing) {
+			case NORTH:
+				picY = 0;
+				break;
+			case SOUTH:
+				picY = 128;
+				break;
+			case WEST:
+				picY = 64;
+				break;
+			case EAST:
+				picY =192;
+			break;
+			
+			}
+			
+			paintImg = picSlash;
+		}else if (currentAction == null){
+			
+		}
+			switch (facing) {
+			case NORTH:
+				picY = 0;
+				break;
+			case SOUTH:
+				picY = 128;
+				break;
+			case WEST:
+				picY = 64;
+				break;
+			case EAST:
+				picY =192;
+			break;
 		}
 		picX = 64 * frame;
-		g.drawImage(paintImg, x, y, x + (int) (64 * zoom), y + (int) (64 * zoom),
-				picX, picY, picX + 64, picY + 64, io);
+		g.drawImage(paintImg, x, y, x + (int) (64 * zoom), y
+				+ (int) (64 * zoom), picX, picY, picX + 64, picY + 64, io);
 		// g.setColor(Color.RED);
 		// g.fillOval(x,y,(int) (64*zoom),(int)(64*zoom));
 	}
@@ -161,104 +197,116 @@ public class Player {
 	}
 
 	public void action(ACTION action) {
-		System.out.println("1 currentaction: "+currentAction+" action: " +action);
-		if(currentAction!=ACTION.DIE&&currentAction!=ACTION.PICKUP&&currentAction!=ACTION.SLASH){//lockeble actions  
-			System.out.println("2 action:" +action );
-			if(action!=null){
-				System.out.println("tiredness:"+tiredness);
-				if(tiredness<0){
+		System.out.println("1 currentaction: " + currentAction + " action: "
+				+ action);
+		if (currentAction != ACTION.DIE && currentAction != ACTION.PICKUP
+				&& currentAction != ACTION.SLASH) {// lockeble actions
+			System.out.println("2 action:" + action);
+			if (action != null) {
+				System.out.println("tiredness:" + tiredness);
+				if (tiredness < 0) {
 					System.out.println("tiredness =0");
-					if(action==ACTION.RUNLEFT){
-						action=ACTION.GOLEFT;
-					}else if(action==ACTION.RUNRIGTH){
-						action=ACTION.GORIGTH;
-					}else if(action==ACTION.RUNUP){
-						action=ACTION.GOUP;
-					}else if(action==ACTION.RUNDOWN){
-						action=ACTION.GODOWN;
+					if (action == ACTION.RUNLEFT) {
+						action = ACTION.GOLEFT;
+					} else if (action == ACTION.RUNRIGTH) {
+						action = ACTION.GORIGTH;
+					} else if (action == ACTION.RUNUP) {
+						action = ACTION.GOUP;
+					} else if (action == ACTION.RUNDOWN) {
+						action = ACTION.GODOWN;
 					}
 				}
 				move(action);
-				if(action==ACTION.RUNLEFT||action==ACTION.RUNDOWN||action==ACTION.RUNUP||action==ACTION.RUNRIGTH){
-					tiredness-=lowerTirednessStepp;
+				if (action == ACTION.RUNLEFT || action == ACTION.RUNDOWN
+						|| action == ACTION.RUNUP || action == ACTION.RUNRIGTH) {
+					tiredness -= lowerTirednessStepp;
 				}
-			}else{
-				if(tiredness<100)
-					tiredness+=lowerTirednessStepp/2;
+			} else {
+				if (tiredness < 100)
+					tiredness += lowerTirednessStepp / 2;
 			}
-			hunger-=(lowerHungerStepp*(tiredness/100));
-			if(action!=null)
-				currentAction=action;
-			
-			if(hunger==0){
+			hunger -= (lowerHungerStepp * (tiredness / 100));
+			if (action != null)
+				currentAction = action;
+
+			if (hunger == 0) {
 				System.out.println("you are dead!");
-				currentAction=ACTION.DIE;
-				//do death animation
+				currentAction = ACTION.DIE;
+				action=ACTION.DIE;
+				// do death animation
 			}
-		}else{System.out.println("currentaction: "+currentAction);
-			if(currentAction==ACTION.PICKUP){
+		} else {
+			System.out.println("currentaction: " + currentAction);
+			if (currentAction == ACTION.PICKUP) {
 				System.out.println("action pickup");
 				frame = (frame + 1) % 4;
-				if(frame==0){
-					currentAction=null;
+				if (frame == 0) {
+					currentAction = null;
 				}
 			}
-			if(currentAction==ACTION.DIE){
+			if (currentAction == ACTION.DIE) {
 				frame = (frame + 1) % 6;
 			}
-			if(currentAction==ACTION.SLASH){
+			if (currentAction == ACTION.SLASH) {
 				frame = (frame + 1) % 5;
-				if(frame==0){
-					currentAction=null;
+				if (frame == 0) {
+					currentAction = null;
 				}
 			}
-			
-			
+
 		}
-		
-	}	
+
+	}
 
 	private void move(ACTION action2) {
-		int newposX =posX;
-		int newposY =posY; 
+		int newposX = posX;
+		int newposY = posY;
 		if (currentAction == action2) {
 			frame = (frame + 1) % 9;
 		} else {
 			frame = 0;
 		}
 		switch (action2) {
-			case GODOWN:
-				newposY = (int) (posY + spead);
-				break;
-			case GOUP:
-				newposY = (int) (posY - spead);
-				break;
-			case GOLEFT:
-				newposX = (int) (posX - spead);
-				break;
-			case GORIGTH:
-				newposX = (int) (posX + spead);
-				break;
-			case RUNUP:
-				newposY = (int) (posY - (spead*3));
-				break;
-			case RUNDOWN:
-				newposY = (int) (posY + (spead*3));
-				break;
-			case RUNRIGTH:
-				newposX = (int) (posX +(spead*3));
-				break;
-			case RUNLEFT:
-				newposX = (int) (posX - (spead*3));
-				break;
-			default:
-				break;
+		case GODOWN:
+			newposY = (int) (posY + spead);
+			facing = DIRECTION.SOUTH;
+			break;
+		case GOUP:
+			facing = DIRECTION.NORTH;
+			newposY = (int) (posY - spead);
+			break;
+		case GOLEFT:
+			newposX = (int) (posX - spead);
+			facing = DIRECTION.WEST;
+			break;
+		case GORIGTH:
+			newposX = (int) (posX + spead);
+			facing = DIRECTION.EAST;
+			break;
+		case RUNUP:
+			facing = DIRECTION.NORTH;
+			newposY = (int) (posY - (spead * 3));
+			break;
+		case RUNDOWN:
+			newposY = (int) (posY + (spead * 3));
+			facing = DIRECTION.SOUTH;
+			break;
+		case RUNRIGTH:
+			newposX = (int) (posX + (spead * 3));
+			facing = DIRECTION.EAST;
+			break;
+		case RUNLEFT:
+			newposX = (int) (posX - (spead * 3));
+			facing = DIRECTION.WEST;
+			break;
+		default:
+			break;
 		}
 		// kollar om den är sollid
 		if (gc.checkPositionIsOk(newposX + 16, newposY + 46, newposX + 44,
-				newposY + 64 -5)) {
-				posX = newposX;
+				newposY + 64 - 5)) {
+			posX = newposX;
 			posY = newposY;
-		} 
+		}
 	}
 }
