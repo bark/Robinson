@@ -1,5 +1,6 @@
 package domain;
 
+import java.awt.Desktop.Action;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -31,8 +32,10 @@ public class Player {
 	float tiredness = 80;
 
 	ArrayList<Item> inventory = new ArrayList<Item>();
-	ACTION action = null;
+	ACTION currentAction = null;
 	Image pic = null;
+	Image picDie = null;
+	Image picSlash=null;
 	int frame = 0;
 	GameController gc;
 
@@ -42,28 +45,40 @@ public class Player {
 		this.gc = gc;
 		String uri = "./res/pic/soldier_altcolor.png";
 		pic = Toolkit.getDefaultToolkit().getImage(uri);
+		
+		uri = "./res/pic/male_hurt.png";
+		picDie = Toolkit.getDefaultToolkit().getImage(uri);
+		
+		uri = "./res/pic/male_slash.png";
+		picSlash = Toolkit.getDefaultToolkit().getImage(uri);
+		
 	}
 
 	public void drawItSelf(Graphics g, ImageObserver io, int x, int y,
 			float zoom) {
 		int picX = 0;
 		int picY = 0;
-		if (action == ACTION.GOUP || action == ACTION.RUNUP) {
+		Image paintImg=pic;
+		if (currentAction == ACTION.GOUP || currentAction == ACTION.RUNUP) {
 
 			picY = 0;
-		} else if (action == ACTION.GOLEFT || action == ACTION.RUNLEFT) {
+		} else if (currentAction == ACTION.GOLEFT || currentAction == ACTION.RUNLEFT) {
 
 			picY = 64;
-		} else if (action == ACTION.GODOWN || action == ACTION.RUNDOWN) {
+		} else if (currentAction == ACTION.GODOWN || currentAction == ACTION.RUNDOWN) {
 
 			picY = 128;
-		} else if (action == ACTION.GORIGTH || action == ACTION.RUNRIGTH) {
-
+		} else if (currentAction == ACTION.GORIGTH || currentAction == ACTION.RUNRIGTH) {
 			picY = 128 + 64;
+		}else if(currentAction==ACTION.DIE||currentAction==ACTION.PICKUP){
+			picY = 0;
+			paintImg=picDie;
+		}else if(currentAction==ACTION.SLASH){
+			picY = 0;
+			paintImg=picSlash;
 		}
 		picX = 64 * frame;
-
-		g.drawImage(pic, x, y, x + (int) (64 * zoom), y + (int) (64 * zoom),
+		g.drawImage(paintImg, x, y, x + (int) (64 * zoom), y + (int) (64 * zoom),
 				picX, picY, picX + 64, picY + 64, io);
 		// g.setColor(Color.RED);
 		// g.fillOval(x,y,(int) (64*zoom),(int)(64*zoom));
@@ -146,43 +161,70 @@ public class Player {
 	}
 
 	public void action(ACTION action) {
-		if(action!=null){
-			System.out.println("tiredness:"+tiredness);
-			if(tiredness<0){
-				System.out.println("tiredness =0");
-				if(action==ACTION.RUNLEFT){
-					action=ACTION.GOLEFT;
-				}else if(action==ACTION.RUNRIGTH){
-					action=ACTION.GORIGTH;
-				}else if(action==ACTION.RUNUP){
-					action=ACTION.GOUP;
-				}else if(action==ACTION.RUNDOWN){
-					action=ACTION.GODOWN;
+		System.out.println("1 currentaction: "+currentAction+" action: " +action);
+		if(currentAction!=ACTION.DIE&&currentAction!=ACTION.PICKUP&&currentAction!=ACTION.SLASH){//lockeble actions  
+			System.out.println("2 action:" +action );
+			if(action!=null){
+				System.out.println("tiredness:"+tiredness);
+				if(tiredness<0){
+					System.out.println("tiredness =0");
+					if(action==ACTION.RUNLEFT){
+						action=ACTION.GOLEFT;
+					}else if(action==ACTION.RUNRIGTH){
+						action=ACTION.GORIGTH;
+					}else if(action==ACTION.RUNUP){
+						action=ACTION.GOUP;
+					}else if(action==ACTION.RUNDOWN){
+						action=ACTION.GODOWN;
+					}
+				}
+				move(action);
+				if(action==ACTION.RUNLEFT||action==ACTION.RUNDOWN||action==ACTION.RUNUP||action==ACTION.RUNRIGTH){
+					tiredness-=lowerTirednessStepp;
+				}
+			}else{
+				if(tiredness<100)
+					tiredness+=lowerTirednessStepp/2;
+			}
+			hunger-=(lowerHungerStepp*(tiredness/100));
+			if(action!=null)
+				currentAction=action;
+			
+			if(hunger==0){
+				System.out.println("you are dead!");
+				currentAction=ACTION.DIE;
+				//do death animation
+			}
+		}else{System.out.println("currentaction: "+currentAction);
+			if(currentAction==ACTION.PICKUP){
+				System.out.println("action pickup");
+				frame = (frame + 1) % 4;
+				if(frame==0){
+					currentAction=null;
 				}
 			}
-			move(action);
-			if(action==ACTION.RUNLEFT||action==ACTION.RUNDOWN||action==ACTION.RUNUP||action==ACTION.RUNRIGTH){
-				tiredness-=lowerTirednessStepp;
+			if(currentAction==ACTION.DIE){
+				frame = (frame + 1) % 6;
 			}
-		}else{
-			tiredness+=lowerTirednessStepp/2;
+			if(currentAction==ACTION.SLASH){
+				frame = (frame + 1) % 5;
+				if(frame==0){
+					currentAction=null;
+				}
+			}
+			
+			
 		}
-		hunger-=(lowerHungerStepp*(tiredness/100));
 		
-		if(hunger==0){
-			System.out.println("you are dead!");
-		}
-	}
-	
-	
+	}	
+
 	private void move(ACTION action2) {
 		int newposX =posX;
 		int newposY =posY; 
-		if (action == action2) {
+		if (currentAction == action2) {
 			frame = (frame + 1) % 9;
 		} else {
 			frame = 0;
-			action = action2;
 		}
 		switch (action2) {
 			case GODOWN:

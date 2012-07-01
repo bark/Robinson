@@ -31,7 +31,7 @@ public class GameController implements MouseWheelListener, KeyListener,
 												// = 50
 
 	public static enum ACTION {
-		GORIGTH, GOLEFT, GOUP, GODOWN, RUNDOWN, RUNUP, RUNLEFT, RUNRIGTH
+		GORIGTH, GOLEFT, GOUP, GODOWN, RUNDOWN, RUNUP, RUNLEFT, RUNRIGTH,SLASH,PICKUP,DIE
 	}
 
 	ACTION action = null;
@@ -92,7 +92,7 @@ public class GameController implements MouseWheelListener, KeyListener,
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// System.out.println(e.getKeyCode());
+		 //System.out.println(e.getKeyCode());
 		if (shiftPressed) {
 			if (e.getKeyCode() == 87 || e.getKeyCode() == 38) {
 				action = ACTION.RUNUP;
@@ -113,6 +113,10 @@ public class GameController implements MouseWheelListener, KeyListener,
 				action = ACTION.GOLEFT;
 			} else if (e.getKeyChar() == 'd' || e.getKeyCode() == 39) {
 				action = ACTION.GORIGTH;
+			}else if ( e.getKeyCode() == 32) {
+				action = ACTION.SLASH;
+			}else if ( e.getKeyCode() == 69) {
+				action = ACTION.PICKUP;
 			}
 		}
 		if (e.getKeyChar() == 'z') {
