@@ -38,7 +38,8 @@ public class Player {
 	Image pic = null;
 	Image picDie = null;
 	Image picSlash = null;
-	int frame = 0;
+	int showFrame = 0;
+	int realframe = 0;
 	GameController gc;
 
 	public Player(int x, int y, GameController gc) {
@@ -90,15 +91,14 @@ public class Player {
 				picY = 64;
 				break;
 			case EAST:
-				picY =192;
-			break;
-			
+				picY = 192;
+				break;
+
 			}
-			
+
 			paintImg = picSlash;
-		}else if (currentAction == null){
-			
-		}
+		} else if (currentAction == null) {
+
 			switch (facing) {
 			case NORTH:
 				picY = 0;
@@ -110,10 +110,12 @@ public class Player {
 				picY = 64;
 				break;
 			case EAST:
-				picY =192;
-			break;
+				picY = 192;
+				break;
+			}
 		}
-		picX = 64 * frame;
+		picX = 64 * showFrame;
+		System.out.println("picY: " + picY);
 		g.drawImage(paintImg, x, y, x + (int) (64 * zoom), y
 				+ (int) (64 * zoom), picX, picY, picX + 64, picY + 64, io);
 
@@ -220,31 +222,38 @@ public class Player {
 				if (tiredness < 100)
 					tiredness += lowerTirednessStepp / 2;
 			}
-			hunger -= (lowerHungerStepp * (tiredness / 100));
+			hunger -= (lowerHungerStepp * ((100 - tiredness) / 100));
 			if (action != null)
 				currentAction = action;
 
 			if (hunger == 0) {
 				System.out.println("you are dead!");
 				currentAction = ACTION.DIE;
-				action=ACTION.DIE;
+				action = ACTION.DIE;
 				// do death animation
 			}
 		} else {
 			System.out.println("currentaction: " + currentAction);
 			if (currentAction == ACTION.PICKUP) {
 				System.out.println("action pickup");
-				frame = (frame + 1) % 4;
-				if (frame == 0) {
+
+				if (realframe < 3) {
+					showFrame = (showFrame + 1);
+				}
+				if (realframe >= 3) {
+					showFrame = (showFrame - 1);
+				}
+				realframe = (realframe + 1) % 6;
+				if (realframe == 0) {
 					currentAction = null;
 				}
 			}
 			if (currentAction == ACTION.DIE) {
-				frame = (frame + 1) % 6;
+				showFrame = (showFrame + 1) % 6;
 			}
 			if (currentAction == ACTION.SLASH) {
-				frame = (frame + 1) % 5;
-				if (frame == 0) {
+				showFrame = (showFrame + 1) % 5;
+				if (showFrame == 0) {
 					currentAction = null;
 				}
 			}
@@ -257,9 +266,9 @@ public class Player {
 		int newposX = posX;
 		int newposY = posY;
 		if (currentAction == action2) {
-			frame = (frame + 1) % 9;
+			showFrame = (showFrame + 1) % 9;
 		} else {
-			frame = 0;
+			showFrame = 0;
 		}
 		switch (action2) {
 		case GODOWN:

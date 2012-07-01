@@ -372,7 +372,7 @@ public class MapPart implements Runnable {
 		for (int i = 0; i < 10; i++) {
 			fixTile(new Grass());
 		}
-		removeExtraTiles();
+//		removeExtraTiles();
 
 		for (int i = 0; i < higth; i++) {
 			for (int j = 0; j < with; j++) {

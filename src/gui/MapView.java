@@ -54,7 +54,7 @@ public class MapView extends JComponent{
 
 					}*/
 				//	System.out.println("mitten"+centerX+" "+centerY);
-					map.getPoint(x, y).drawUnderIT(offgc, null,(int)( x*(64*zoom))-leftCornerX,(int) (y*(64*zoom))-leftCornerY, (float)1);
+					map.getPoint(x, y).drawUnderIT(offgc, null,(int)( x*(64*zoom))-leftCornerX,(int) (y*(64*zoom))-leftCornerY, zoom);
 				}
 			}
 		}
@@ -70,7 +70,7 @@ public class MapView extends JComponent{
 						}
 					}*/
 					
-					map.getPoint(x, y).drawOverIT(offgc, null,(int)( x*(64*zoom))-leftCornerX,(int) (y*(64*zoom))-leftCornerY, (float)1);
+					map.getPoint(x, y).drawOverIT(offgc, null,(int)( x*(64*zoom))-leftCornerX,(int) (y*(64*zoom))-leftCornerY, zoom);
 				}
 			}
 		}

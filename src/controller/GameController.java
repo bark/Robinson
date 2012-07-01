@@ -92,7 +92,7 @@ public class GameController implements MouseWheelListener, KeyListener,
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		 //System.out.println(e.getKeyCode());
+		 System.out.println(e.getKeyCode());
 		if (shiftPressed) {
 			if (e.getKeyCode() == 87 || e.getKeyCode() == 38) {
 				action = ACTION.RUNUP;
