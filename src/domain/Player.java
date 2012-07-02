@@ -113,7 +113,6 @@ public class Player {
 			}
 		}
 		picX = 64 * showFrame;
-		System.out.println("picY: " + picY);
 		g.drawImage(paintImg, x, y, x + (int) (64 * zoom), y
 				+ (int) (64 * zoom), picX, picY, picX + 64, picY + 64, io);
 
@@ -196,7 +195,6 @@ public class Player {
 	}
 
 	public void action(ACTION action) {
-		System.out.println("currentAction: "+currentAction);
 		
 		if (currentAction != ACTION.DIE && currentAction != ACTION.PICKUP
 				&& currentAction != ACTION.SLASH) {// lockeble actions
@@ -248,6 +246,7 @@ public class Player {
 				}
 				realframe = (realframe + 1) % 6;
 				if (realframe == 0) {
+					inventory.add(gc.picUp(this));
 					currentAction = null;
 				}
 			}

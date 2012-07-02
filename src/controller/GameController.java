@@ -16,6 +16,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
 import Items.Candle;
+import Items.Item;
 
 import domain.Player;
 import domain.Tile;
@@ -27,7 +28,7 @@ public class GameController implements MouseWheelListener, KeyListener,
 	float zoomlv = 1;
 	boolean shiftPressed = false;
 
-	private static final int FRAME_DELAY = 100; // 20ms. implies 50fps (1000/20)
+	private static final int FRAME_DELAY = 50; // 20ms. implies 50fps (1000/20)
 												// = 50
 
 	public static enum ACTION {
@@ -92,7 +93,7 @@ public class GameController implements MouseWheelListener, KeyListener,
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		 System.out.println(e.getKeyCode());
+		// System.out.println(e.getKeyCode());
 		if (shiftPressed) {
 			if (e.getKeyCode() == 87 || e.getKeyCode() == 38) {
 				action = ACTION.RUNUP;
@@ -150,7 +151,7 @@ public class GameController implements MouseWheelListener, KeyListener,
 		int tileX = (int) ((x / 64));
 		int tileY = (int) ((y / 64));
 
-		System.out.println("punkten är" + tileX + ", " + tileY);
+		
 		return worldMap.getPoint(tileX, tileY);
 	}
 
@@ -164,7 +165,8 @@ public class GameController implements MouseWheelListener, KeyListener,
 	}
 
 	public boolean checkPositionIsOk(int topX, int topY, int botX, int botY) {
-
+		System.out.println("punkten är" + topX + ", " + topY+"tiles: "+topX/64+":"+topY/64);
+				
 		if (checkPointIsOk(topX, botY)) {
 			if (checkPointIsOk(topX, topY)) {
 				if (checkPointIsOk(botX, botY)) {
@@ -246,5 +248,11 @@ public class GameController implements MouseWheelListener, KeyListener,
 
 		}
 
+	}
+
+	public Item picUp(Player player) {
+		System.out.println("pass on pickup:"+player.getPosX()+":"+player.getPosY()+"tiles: "+player.getPosX()/64+":"+player.getPosY()/64);
+		return worldMap.getPointFromPx(player.getPosX()+64,player.getPosY()+64).pickUp();		// TODO Auto-generated method stub
+		
 	}
 }

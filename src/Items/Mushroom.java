@@ -3,6 +3,7 @@ package Items;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 
 import domain.backGroundTile.Dirt;
@@ -29,6 +30,14 @@ public class Mushroom extends Item{
 	@Override
 	public Image getImage() {
 		// TODO Auto-generated method stub
-		return null;
+		BufferedImage image = new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB);
+		Graphics imageG = image.getGraphics();
+		int picX=606;
+		int picY=480;
+		imageG.drawImage(pic, 0,0,(int) (32),(int)(32),picX, picY, picX+32, picY+32, null);
+		
+		
+	
+		return image;
 	}
 }

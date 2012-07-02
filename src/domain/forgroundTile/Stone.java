@@ -10,6 +10,7 @@ public class Stone extends ForgroundTile{
 	private int part;
 	
 	public Stone(){
+		canNotBeWhit.add(new TreeBottom(0, 0));
 		zvalue=70;
 		sollid=true;
 		name="stone";

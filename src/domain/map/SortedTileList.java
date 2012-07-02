@@ -6,6 +6,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.util.TreeSet;
 
+import Items.Item;
+
 import domain.Tile;
 import domain.backGroundTile.Grass;
 import domain.backGroundTile.Water;
@@ -61,6 +63,26 @@ public class SortedTileList extends TreeSet<Tile> {
 		g.drawImage(under, x,y,x+(int) (64*zoom),y+(int)(64*zoom),0, 0,(int)(64*zoom),(int) (64*zoom), io);
 	}
 	public void drawOverIT( Graphics g,ImageObserver io, int x,int y,float zoom){
+	//	Graphics overG = over.getGraphics();
+	//	overG.drawChars((size()+"").toCharArray(), 0, 1, 10, 10);
 		g.drawImage(over, x,y,x+(int) (64*zoom),y+(int)(64*zoom),0, 0, 64,64, io);
+	}
+	public Item pickUp(){
+		
+		Item item=null;
+		System.out.println(size());
+		for(Tile tile:this){
+			System.out.println(tile);
+			System.out.println(tile.getClass());
+			System.out.println(tile.getClass().getSuperclass());
+			
+			if(tile.getClass().getSuperclass().equals(Item.class)) {
+				item=(Item)tile;
+			}
+		}if(item!=null){
+			remove(item);
+			calculateImage();
+		}
+		return item;
 	}
 }

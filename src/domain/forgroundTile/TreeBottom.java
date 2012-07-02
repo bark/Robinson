@@ -5,13 +5,15 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.ImageObserver;
 
+import domain.backGroundTile.Water;
+
 public class TreeBottom extends ForgroundTile{
 	private static Image pic;
 	private int part;
 	private int treeType;
 	
 	public TreeBottom(int treeType,int part){
-		
+		canNotBeWhit.add(new Water());
 		
 		if(part==3)
 		{
