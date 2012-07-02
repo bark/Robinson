@@ -16,9 +16,6 @@ public class MainMenuController implements ActionListener {
 		mainMenu.SetButtonListner(this);
 	}
 
-	
-
-	
 	public static void main(String[] args){
 		System.out.println("starting epic game!!!");
 		if(args.length>0){
@@ -30,8 +27,6 @@ public class MainMenuController implements ActionListener {
 		new MainMenuController();
 
 	}
-
-	
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {

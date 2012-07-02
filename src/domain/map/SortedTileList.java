@@ -57,9 +57,7 @@ public class SortedTileList extends TreeSet<Tile> {
 		}
 	}
 	public void drawUnderIT( Graphics g,ImageObserver io, int x,int y,float zoom){
-		if(under==null){
-			System.out.println("dont paint " +x+" "+y);
-		}
+		
 		g.drawImage(under, x,y,x+(int) (64*zoom),y+(int)(64*zoom),0, 0,(int)(64*zoom),(int) (64*zoom), io);
 	}
 	public void drawOverIT( Graphics g,ImageObserver io, int x,int y,float zoom){

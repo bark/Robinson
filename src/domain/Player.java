@@ -28,10 +28,10 @@ public class Player {
 
 	// inventory
 	float hp = maxhp;
-	float hunger = 40;
+	float hunger = 100;
 	float thirst = 100;
-	float tempratur = 47;
-	float tiredness = 80;
+	float tempratur = 100;
+	float tiredness = 100;
 
 	ArrayList<Item> inventory = new ArrayList<Item>();
 	ACTION currentAction = null;
@@ -93,9 +93,7 @@ public class Player {
 			case EAST:
 				picY = 192;
 				break;
-
 			}
-
 			paintImg = picSlash;
 		} else if (currentAction == null) {
 
@@ -198,6 +196,8 @@ public class Player {
 	}
 
 	public void action(ACTION action) {
+		System.out.println("currentAction: "+currentAction);
+		
 		if (currentAction != ACTION.DIE && currentAction != ACTION.PICKUP
 				&& currentAction != ACTION.SLASH) {// lockeble actions
 			if (action != null) {
@@ -226,8 +226,11 @@ public class Player {
 			if (action != null)
 				currentAction = action;
 
-			if (hunger == 0) {
-				System.out.println("you are dead!");
+			if (hunger < 0) {
+				for (int i = 0; i < 100; i++) {
+					System.out.println("you are dead!");
+				}
+				
 				currentAction = ACTION.DIE;
 				action = ACTION.DIE;
 				// do death animation
@@ -249,7 +252,8 @@ public class Player {
 				}
 			}
 			if (currentAction == ACTION.DIE) {
-				showFrame = (showFrame + 1) % 6;
+				if(showFrame!=5)
+					showFrame = (showFrame + 1) % 6;
 			}
 			if (currentAction == ACTION.SLASH) {
 				showFrame = (showFrame + 1) % 5;
