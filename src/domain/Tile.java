@@ -61,7 +61,7 @@ public class Tile implements Comparable{
 	public int compareTo(Object arg0) {
 		return zvalue-((Tile)arg0).getZValue();
 	}
-	 public void drawItSelf( Graphics g,ImageObserver io, int x,int y,float zoom){
+	 public void drawItSelf( Graphics g,ImageObserver io, int x,int y,int with,int higth,float zoom){
 		 
 	}
 	 

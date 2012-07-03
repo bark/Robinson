@@ -44,23 +44,23 @@ public class SortedTileList extends TreeSet<Tile> {
 		
 	}
 	void calculateImage(){
-		over = new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB);
+		over = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
 		Graphics overG = over.getGraphics();
 		
-		under = new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB);
+		under = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
 		Graphics underG = under.getGraphics();
 		
 		for(Tile tile:this){
 			if(tile.getZValue()>100){
-				tile.drawItSelf(overG, null, 0, 0, 1);
+				tile.drawItSelf(overG, null, 0, 0,32,32, 1);
 			}else{
-				tile.drawItSelf(underG,null, 0, 0, 1);
+				tile.drawItSelf(underG,null, 0, 0,32,32, 1);
 			}
 		}
 	}
 	public void drawUnderIT( Graphics g,ImageObserver io, int x,int y,float zoom){
 		
-		g.drawImage(under, x,y,x+(int) (64*zoom),y+(int)(64*zoom),0, 0,(int)(64*zoom),(int) (64*zoom), io);
+		g.drawImage(under, x,y,x+(int) (32*zoom),y+(int)(32*zoom),0, 0,(int)(32*zoom),(int) (32*zoom), io);
 	}
 	public void drawOverIT( Graphics g,ImageObserver io, int x,int y,float zoom){
 	//	Graphics overG = over.getGraphics();

@@ -28,7 +28,7 @@ public class GameController implements MouseWheelListener, KeyListener,
 	float zoomlv = 1;
 	boolean shiftPressed = false;
 
-	private static final int FRAME_DELAY = 50; // 20ms. implies 50fps (1000/20)
+	private static final int FRAME_DELAY = 200; // 20ms. implies 50fps (1000/20)
 												// = 50
 
 	public static enum ACTION {
@@ -50,7 +50,7 @@ public class GameController implements MouseWheelListener, KeyListener,
 		System.out.println("gameController");
 		worldMap = new Map();
 
-		player1 = new Player(25444, 25444, this);
+		player1 = new Player(25500, 25444, this);
 		player1.getInventory().add(new Candle());
 		player1.getInventory().add(new Candle());
 		player1.getInventory().add(new Candle());
@@ -148,8 +148,8 @@ public class GameController implements MouseWheelListener, KeyListener,
 
 	public SortedTileList translatePxToTileList(int x, int y) {
 
-		int tileX = (int) ((x / 64));
-		int tileY = (int) ((y / 64));
+		int tileX = (int) ((x / 32));
+		int tileY = (int) ((y / 32));
 
 		
 		return worldMap.getPoint(tileX, tileY);
@@ -252,7 +252,7 @@ public class GameController implements MouseWheelListener, KeyListener,
 
 	public Item picUp(Player player) {
 		System.out.println("pass on pickup:"+player.getPosX()+":"+player.getPosY()+"tiles: "+player.getPosX()/64+":"+player.getPosY()/64);
-		return worldMap.getPointFromPx(player.getPosX()+64,player.getPosY()+64).pickUp();		// TODO Auto-generated method stub
+		return worldMap.getPointFromPx(player.getPosX()+32,player.getPosY()+32).pickUp();		// TODO Auto-generated method stub
 		
 	}
 }

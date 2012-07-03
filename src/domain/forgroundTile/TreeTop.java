@@ -17,8 +17,9 @@ public class TreeTop extends ForgroundTile{
 		name="treeTop";
 		this.part=part;
 	}
-	 public void drawItSelf( Graphics g,ImageObserver io, int x,int y,float zoom){
-			int picX=0;
+
+	 public void drawItSelf( Graphics g,ImageObserver io, int x,int y,int with,int higth,float zoom){
+		 	int picX=0;
 			int picY=0;
 			if(treeType==0){
 				picX=0;
@@ -50,6 +51,6 @@ public class TreeTop extends ForgroundTile{
 				picY+=64;
 				picX+=64;
 			}
-			g.drawImage(pic, x,y,x+(int) (64*zoom),y+(int)(64*zoom),picX, picY, picX+32, picY+32, io);
+			g.drawImage(pic, x,y,x+(int) (with*zoom),y+(int)(higth*zoom),picX, picY, picX+32, picY+32, io);
 	 }	
 }

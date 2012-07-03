@@ -18,14 +18,14 @@ public class Grass extends BackgroundTile{
 		part=0;
 		
 	}
-	 public void drawItSelf( Graphics g,ImageObserver io, int x,int y,float zoom){
+	 public void drawItSelf( Graphics g,ImageObserver io, int x,int y,int with,int higth,float zoom){
 		int picX=0;
 		int picY=0;
 		//part=3;
 		picX=((int)part%3)*32;
 		picY=((int)part/3)*32;
 		
-		g.drawImage(pic, x,y,x+(int) (64*zoom),y+(int)(64*zoom),picX, picY, picX+32, picY+32, io);
+		g.drawImage(pic, x,y,x+(int) (with*zoom),y+(int)(higth*zoom),picX, picY, picX+32, picY+32, io);
 	//	g.setColor(Color.black);
 	//	g.drawRect(x, y, 64, 64);
 		 //g.fillOval(x,y,(int) (64*zoom),(int)(64*zoom));

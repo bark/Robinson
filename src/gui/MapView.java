@@ -41,10 +41,12 @@ public class MapView extends JComponent{
 		Graphics offgc;
 		offscreen = createImage(getWidth(),getHeight());
 		offgc = offscreen.getGraphics();
+		int tileSize=32;
 		
 		
-		for(int x=(player1.getPosX()/64)-15;x<(player1.getPosX()/64)+15;x++){
-			for(int y=(player1.getPosY()/64)-15;y<(player1.getPosY()/64)+15;y++){
+		
+		for(int x=(player1.getPosX()/tileSize)-30;x<(player1.getPosX()/tileSize)+30;x++){
+			for(int y=(player1.getPosY()/tileSize)-15;y<(player1.getPosY()/tileSize)+15;y++){
 				if(map!=null&&map.getPoint(x, y)!=null){
 					/*for(Tile tile:map.getPoint(x, y)){
 						/if(tile.getZValue()>100){
@@ -54,15 +56,15 @@ public class MapView extends JComponent{
 
 					}*/
 				//	System.out.println("mitten"+centerX+" "+centerY);
-					map.getPoint(x, y).drawUnderIT(offgc, null,(int)( x*(64*zoom))-leftCornerX,(int) (y*(64*zoom))-leftCornerY, zoom);
+					map.getPoint(x, y).drawUnderIT(offgc, null,(int)( x*(tileSize*zoom))-leftCornerX,(int) (y*(tileSize*zoom))-leftCornerY, zoom);
 				}
 			}
 		}
 		player1.drawItSelf(offgc,this,(int)getWidth()/2,(int)getHeight()/2,zoom);
 		
 		
-		for(int x=(player1.getPosX()/64)-15;x<(player1.getPosX()/64)+15;x++){
-			for(int y=(player1.getPosY()/64)-15;y<(player1.getPosY()/64)+15;y++){
+		for(int x=(player1.getPosX()/tileSize)-30;x<(player1.getPosX()/tileSize)+30;x++){
+			for(int y=(player1.getPosY()/tileSize)-15;y<(player1.getPosY()/tileSize)+15;y++){
 				if(map!=null&&map.getPoint(x, y)!=null){
 					/*for(Tile tile:map.getPoint(x, y)){
 						if(tile.getZValue()>100){
@@ -70,7 +72,7 @@ public class MapView extends JComponent{
 						}
 					}*/
 					
-					map.getPoint(x, y).drawOverIT(offgc, null,(int)( x*(64*zoom))-leftCornerX,(int) (y*(64*zoom))-leftCornerY, zoom);
+					map.getPoint(x, y).drawOverIT(offgc, null,(int)( x*(tileSize*zoom))-leftCornerX,(int) (y*(tileSize*zoom))-leftCornerY, zoom);
 				}
 			}
 		}
