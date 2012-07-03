@@ -23,14 +23,13 @@ import domain.backGroundTile.Water;
 				pic= Toolkit.getDefaultToolkit().getImage(uri);
 			
 		}
-		 public void drawItSelf( Graphics g,ImageObserver io, int x,int y,float zoom){
+		 public void drawItSelf( Graphics g,ImageObserver io, int x,int y,int with,int higth,float zoom){
 				int picX=606;
 				int picY=445;
-				g.drawImage(pic, x,y,x+(int) (32*zoom),y+(int)(32*zoom),picX, picY, picX+32, picY+32, io);
+				g.drawImage(pic, x,y,x+(int) (with*zoom),y+(int)(higth*zoom),picX, picY, picX+32, picY+32, io);
 		 }
 		@Override
 		public Image getImage() {
-			// TODO Auto-generated method stub
 			BufferedImage image = new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB);
 			Graphics imageG = image.getGraphics();
 			int picX=606;
