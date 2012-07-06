@@ -23,9 +23,7 @@ public class Player {
 	float lowerHungerStepp = (float) 0.1;
 	// stats
 	float spead = 6;
-
 	int maxhp = 100;
-
 	// inventory
 	float hp = maxhp;
 	float hunger = 100;
@@ -234,7 +232,6 @@ public class Player {
 				// do death animation
 			}
 		} else {
-			System.out.println("currentaction: " + currentAction);
 			if (currentAction == ACTION.PICKUP) {
 				System.out.println("action pickup");
 

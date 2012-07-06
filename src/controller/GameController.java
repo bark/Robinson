@@ -14,6 +14,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.ArrayList;
+
+import moveble.Moveable;
 
 import Items.Candle;
 import Items.Item;
@@ -45,7 +48,8 @@ public class GameController implements MouseWheelListener, KeyListener,
 	StatusView statusView = null;
 	InventoryView inventoryView = null;
 	long cycleTime;
-
+	ArrayList<Moveable> djur= new ArrayList<Moveable>();
+	
 	public GameController() {
 		System.out.println("gameController");
 		worldMap = new Map();
@@ -55,7 +59,9 @@ public class GameController implements MouseWheelListener, KeyListener,
 		player1.getInventory().add(new Candle());
 		player1.getInventory().add(new Candle());
 		player1.getInventory().add(new Candle());
-
+		
+		//djur.add(new Hare(25564,25500));
+		
 		// borde bara skicka det man ser.
 		System.out.println("tillverkat en mapPart");
 
@@ -65,7 +71,7 @@ public class GameController implements MouseWheelListener, KeyListener,
 		inventoryView = new InventoryView(player1, new InventoryListener());
 
 		gameGui = new GameGui();
-
+		
 		gameGui.setLogView(logView);
 		gameGui.setStatusView(statusView);
 		gameGui.setInventoryView(inventoryView);
@@ -165,7 +171,7 @@ public class GameController implements MouseWheelListener, KeyListener,
 	}
 
 	public boolean checkPositionIsOk(int topX, int topY, int botX, int botY) {
-		System.out.println("punkten är" + topX + ", " + topY+"tiles: "+topX/64+":"+topY/64);
+		System.out.println("punkten är" + topX + ", " + topY+"tiles: "+topX/32+":"+topY/32);
 				
 		if (checkPointIsOk(topX, botY)) {
 			if (checkPointIsOk(topX, topY)) {
@@ -251,8 +257,11 @@ public class GameController implements MouseWheelListener, KeyListener,
 	}
 
 	public Item picUp(Player player) {
-		System.out.println("pass on pickup:"+player.getPosX()+":"+player.getPosY()+"tiles: "+player.getPosX()/64+":"+player.getPosY()/64);
-		return worldMap.getPointFromPx(player.getPosX()+32,player.getPosY()+32).pickUp();		// TODO Auto-generated method stub
+		
+		int xvalure=(player.getPosX()+32)/32;
+		int yvalure=(player.getPosY()+64)/32;
+		System.out.println("pass on pickup:"+xvalure+":"+yvalure);
+		return worldMap.getPointFromPx(player.getPosX()+32,player.getPosY()+64).pickUp();		
 		
 	}
 }

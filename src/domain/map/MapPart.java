@@ -321,7 +321,7 @@ public class MapPart implements Runnable {
 		return null;
 	}
 
-	public void removeExtraTiles() {
+/*	public void removeExtraTiles() {
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[0].length; j++) {
 				SortedTileList keep = new SortedTileList();
@@ -337,7 +337,7 @@ public class MapPart implements Runnable {
 				map[i][j] = keep;
 			}
 		}
-	}
+	}*/
 	@Override
 	public void run() {
 		Random notRandomRandom = new Random(seed);
@@ -345,7 +345,7 @@ public class MapPart implements Runnable {
 		// fyll den med gräs
 		for (int i = 0; i < higth; i++) {
 			for (int j = 0; j < with; j++) {
-				map[i][j] = new SortedTileList();
+				map[i][j] = new SortedTileList(i,j);
 				if (notRandomRandom.nextFloat() * 100 < 5) {
 					map[i][j].add(new Stone());
 				}
@@ -363,7 +363,7 @@ public class MapPart implements Runnable {
 				}
 			}
 		}
-		createARiver(96, 96, 10, 10, notRandomRandom);
+		createARiver((int)notRandomRandom.nextFloat() * 100,(int)notRandomRandom.nextFloat() * 100,(int)notRandomRandom.nextFloat() * 100, (int)notRandomRandom.nextFloat() * 100, notRandomRandom);
 
 		for (int i = 0; i < 10; i++) {
 			fixTile(new Water());
@@ -376,12 +376,12 @@ public class MapPart implements Runnable {
 
 		for (int i = 0; i < higth; i++) {
 			for (int j = 0; j < with; j++) {
-				if (notRandomRandom.nextFloat() * 100 < 0.5) {
+				if (notRandomRandom.nextFloat() * 100 < 0.2) {
 					if (new Mushroom().canBeAdded(map[i][j])) {
 						map[i][j].add(new Mushroom());
 					}
 				}
-				if (notRandomRandom.nextFloat() * 100 < 0.5) {
+				if (notRandomRandom.nextFloat() * 100 < 0.2) {
 					if (new Mushroom().canBeAdded(map[i][j])) {
 						map[i][j].add(new MushroomBad());
 					}

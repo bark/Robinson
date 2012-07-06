@@ -91,7 +91,7 @@ public class Map {
 	}
 	
 	public SortedTileList getPointFromPx(int x, int y) {
-		return getPoint(x/64,y/64);
+		return getPoint(x/32,y/32);
 	}
 
 	public SortedTileList getPoint(int x, int y) {
