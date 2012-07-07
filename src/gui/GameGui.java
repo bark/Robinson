@@ -42,11 +42,11 @@ public class GameGui extends JFrame{
 		mainPanel.setSize(getContentPane().getWidth(), getContentPane().getHeight()-22);
 		mainPanel.setVisible(true);
 		this.add(mainPanel);
-
-
-
-
 	}
+	
+	
+
+
 
 	public void setMapView(MapView mapView) {
 		this.mapView=mapView;

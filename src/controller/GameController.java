@@ -16,15 +16,19 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 
+import moveble.Hare;
 import moveble.Moveable;
 
 import Items.Candle;
 import Items.Item;
 
+import domain.GameModel;
 import domain.Player;
 import domain.Tile;
 import domain.map.Map;
 import domain.map.SortedTileList;
+
+//TODO dela denna klassen till game model med.
 
 public class GameController implements MouseWheelListener, KeyListener,
 		Runnable {
@@ -42,31 +46,29 @@ public class GameController implements MouseWheelListener, KeyListener,
 	GameGui gameGui = null;
 
 	MapView mapView = null;
-	Player player1 = null;
-	Map worldMap = null;
+//	Map worldMap = null;
 	LogView logView = null;
 	StatusView statusView = null;
 	InventoryView inventoryView = null;
 	long cycleTime;
-	ArrayList<Moveable> djur= new ArrayList<Moveable>();
 	
 	public GameController() {
 		System.out.println("gameController");
-		worldMap = new Map();
+	
 
-		player1 = new Player(25500, 25444, this);
+		Player player1 = new Player(25500, 25444, this);
 		player1.getInventory().add(new Candle());
 		player1.getInventory().add(new Candle());
 		player1.getInventory().add(new Candle());
 		player1.getInventory().add(new Candle());
-		
-		//djur.add(new Hare(25564,25500));
+		GameModel.addPlayers(player1);
+		GameModel.addAnimals(new Hare(25600,25644));
 		
 		// borde bara skicka det man ser.
 		System.out.println("tillverkat en mapPart");
 
 		logView = new LogView();
-		mapView = new MapView(worldMap, player1);
+		mapView = new MapView();
 		statusView = new StatusView(player1);
 		inventoryView = new InventoryView(player1, new InventoryListener());
 
@@ -94,7 +96,7 @@ public class GameController implements MouseWheelListener, KeyListener,
 		// System.out.println("zoomlv :"+zoomlv +""+ change+" change");
 		zoomlv = zoomlv + change;
 		// System.out.println("new zoom valure:"+ zoomlv);
-		mapView.moveCameraTo(player1.getPosX(), player1.getPosY(), zoomlv);
+		mapView.moveCameraTo(GameModel.getPlayers().get(0).getPosX(), GameModel.getPlayers().get(0).getPosY(), zoomlv);
 	}
 
 	@Override
@@ -148,59 +150,28 @@ public class GameController implements MouseWheelListener, KeyListener,
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
 		// System.out.println("keyTyped");
 	}
 
-	public SortedTileList translatePxToTileList(int x, int y) {
-
-		int tileX = (int) ((x / 32));
-		int tileY = (int) ((y / 32));
-
-		
-		return worldMap.getPoint(tileX, tileY);
-	}
-
-	public boolean checkPointIsOk(int x, int y) {
-		for (Tile tile : translatePxToTileList(x, y)) {
-			if (tile.isSollid()) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	public boolean checkPositionIsOk(int topX, int topY, int botX, int botY) {
-		System.out.println("punkten är" + topX + ", " + topY+"tiles: "+topX/32+":"+topY/32);
-				
-		if (checkPointIsOk(topX, botY)) {
-			if (checkPointIsOk(topX, topY)) {
-				if (checkPointIsOk(botX, botY)) {
-					if (checkPointIsOk(botX, topY)) {
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
 
 	// game loop
 	@Override
 	public void run() {// ska vara ca 60 fps
 		while (true) {
 			cycleTime = System.currentTimeMillis();
-
-			player1.action(action);
+			
+			GameModel.getPlayers().get(0).action(action);
 			action = null;
-
+			for(Moveable aAnimal:GameModel.getAnimals()){
+				aAnimal.action();
+			}
 			// System.out.println("looping....");
 			// System.out.println("looping....");
 			// kolla vart den går
 			// kolla om den får gå dit
 
 			// rita om
-			mapView.moveCameraTo(player1.getPosX(), player1.getPosY(), zoomlv);
+			mapView.moveCameraTo(GameModel.getPlayers().get(0).getPosX(), GameModel.getPlayers().get(0).getPosY(), zoomlv);
 			mapView.repaint();
 			synchFramerate();
 			// Thread.sleep(100);
@@ -223,7 +194,7 @@ public class GameController implements MouseWheelListener, KeyListener,
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("inventory")) {
 				inventoryView.setVisible(!inventoryView.isVisible());
-				player1.getInventory().add(new Candle());
+				GameModel.getPlayers().get(0).getInventory().add(new Candle());
 				inventoryView.updateView();
 			}
 
@@ -241,7 +212,7 @@ public class GameController implements MouseWheelListener, KeyListener,
 					logView.addString("Used item: " + ib.getItem().toString());
 					System.out.println("SHIFT_INVENTORY_CLICK");
 				} else if ((e.getModifiers() & e.CTRL_MASK) != 0) {
-					player1.getInventory().remove(ib.getItem());
+					GameModel.getPlayers().get(0).getInventory().remove(ib.getItem());
 					System.out.println("CTRL_INV_CLICK");
 				} else {
 					gameGui.setItemToPaint(ib.getItem());
@@ -261,7 +232,7 @@ public class GameController implements MouseWheelListener, KeyListener,
 		int xvalure=(player.getPosX()+32)/32;
 		int yvalure=(player.getPosY()+64)/32;
 		System.out.println("pass on pickup:"+xvalure+":"+yvalure);
-		return worldMap.getPointFromPx(player.getPosX()+32,player.getPosY()+64).pickUp();		
+		return GameModel.GetWorldMap().getPointFromPx(player.getPosX()+32,player.getPosY()+64).pickUp();		
 		
 	}
 }

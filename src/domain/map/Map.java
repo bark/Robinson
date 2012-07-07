@@ -63,6 +63,35 @@ public class Map {
 
 	}
 */
+	public boolean checkPositionIsOk(int topX, int topY, int botX, int botY) {
+		System.out.println("punkten är" + topX + ", " + topY+"tiles: "+topX/32+":"+topY/32);
+				
+		if (checkPointIsOk(topX, botY)) {
+			if (checkPointIsOk(topX, topY)) {
+				if (checkPointIsOk(botX, botY)) {
+					if (checkPointIsOk(botX, topY)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	public boolean checkPointIsOk(int x, int y) {
+		SortedTileList tileArr = getPointFromPx(x, y);
+		if(tileArr!=null){
+			for (Tile tile : tileArr) {
+				if (tile.isSollid()) {
+					return false;
+				}
+			}
+		}else{
+			return false;
+		}
+		return true;
+	}
+
+	
 	private void generateWorldMap(int x, int y) {
 		Long seed=(long) 234.124;
 		
@@ -75,10 +104,7 @@ public class Map {
 
 
 
-	public int getLayers() {
-		return layers;
 
-	}
 
 	public int getHigth() {
 		return mapPiceSize;// worldMap.get(new Point(0,0)).getHigth();

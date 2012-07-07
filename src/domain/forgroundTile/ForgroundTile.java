@@ -2,6 +2,6 @@ package domain.forgroundTile;
 
 import domain.Tile;
 
-public class ForgroundTile  extends Tile{
+public abstract class ForgroundTile  extends Tile{
 
 }

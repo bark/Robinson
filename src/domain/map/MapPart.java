@@ -50,10 +50,6 @@ public class MapPart implements Runnable {
 		
 	}
 
-	public MapPart(String MapPartUrl) {
-
-	}
-
 	/*
 	 * private boolean loadMap(String mapUri){ File mapFile = new File(mapUri);
 	 * Scanner mapScanner;
@@ -275,33 +271,35 @@ public class MapPart implements Runnable {
 	 * } return nr; }
 	 */
 	void createATree(int x, int y) {
+		Random random = new Random();
+		int prio= (int)(random.nextDouble()*30);
 		if (x < 90 && y < 90) {
 
 			// stammen
-			map[x][y + 2].add(new TreeBottom(0, 0));
-			map[x][y + 1 + 2].add(new TreeBottom(0, 1));
-			map[x][y + 2 + 2].add(new TreeBottom(0, 2));
+			map[x][y + 2].add(new TreeBottom(0, 0,prio));
+			map[x][y + 1 + 2].add(new TreeBottom(0, 1,prio));
+			map[x][y + 2 + 2].add(new TreeBottom(0, 2,prio));
 
-			map[x + 1][y + 2].add(new TreeBottom(0, 3));
-			map[x + 1][y + 1 + 2].add(new TreeBottom(0, 4));
-			map[x + 1][y + 2 + 2].add(new TreeBottom(0, 5));
+			map[x + 1][y + 2].add(new TreeBottom(0, 3,prio));
+			map[x + 1][y + 1 + 2].add(new TreeBottom(0, 4,prio));
+			map[x + 1][y + 2 + 2].add(new TreeBottom(0, 5,prio));
 
-			map[x + 2][y + 2].add(new TreeBottom(0, 6));
-			map[x + 2][y + 1 + 2].add(new TreeBottom(0, 7));
-			map[x + 2][y + 2 + 2].add(new TreeBottom(0, 8));
+			map[x + 2][y + 2].add(new TreeBottom(0, 6,prio));
+			map[x + 2][y + 1 + 2].add(new TreeBottom(0, 7,prio));
+			map[x + 2][y + 2 + 2].add(new TreeBottom(0, 8,prio));
 
 			// träd toppen
-			map[x][y].add(new TreeTop(0, 0));
-			map[x][y + 1].add(new TreeTop(0, 1));
-			map[x][y + 2].add(new TreeTop(0, 2));
+			map[x][y].add(new TreeTop(0, 0,prio));
+			map[x][y + 1].add(new TreeTop(0, 1,prio));
+			map[x][y + 2].add(new TreeTop(0, 2,prio));
 
-			map[x + 1][y].add(new TreeTop(0, 3));
-			map[x + 1][y + 1].add(new TreeTop(0, 4));
-			map[x + 1][y + 2].add(new TreeTop(0, 5));
+			map[x + 1][y].add(new TreeTop(0, 3,prio));
+			map[x + 1][y + 1].add(new TreeTop(0, 4,prio));
+			map[x + 1][y + 2].add(new TreeTop(0, 5,prio));
 
-			map[x + 2][y].add(new TreeTop(0, 6));
-			map[x + 2][y + 1].add(new TreeTop(0, 7));
-			map[x + 2][y + 2].add(new TreeTop(0, 8));
+			map[x + 2][y].add(new TreeTop(0, 6,prio));
+			map[x + 2][y + 1].add(new TreeTop(0, 7,prio));
+			map[x + 2][y + 2].add(new TreeTop(0, 8,prio));
 
 		}
 	}
@@ -358,7 +356,7 @@ public class MapPart implements Runnable {
 		}
 		for (int i = 0; i < higth; i++) {
 			for (int j = 0; j < with; j++) {
-				if (notRandomRandom.nextFloat() * 100 > 99) {
+				if (notRandomRandom.nextFloat() * 100 < 6) {
 					createATree(i, j);
 				}
 			}

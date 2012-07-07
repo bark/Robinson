@@ -307,7 +307,7 @@ public class Player {
 			break;
 		}
 		// kollar om den är sollid
-		if (gc.checkPositionIsOk(newposX + 16, newposY + 46, newposX + 44,
+		if (GameModel.GetWorldMap().checkPositionIsOk(newposX + 16, newposY + 46, newposX + 44,
 				newposY + 64 - 5)) {
 			posX = newposX;
 			posY = newposY;

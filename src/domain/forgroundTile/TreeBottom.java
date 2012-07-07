@@ -12,14 +12,17 @@ public class TreeBottom extends ForgroundTile{
 	private int part;
 	private int treeType;
 	
-	public TreeBottom(int treeType,int part){
+	public TreeBottom(int treeType,int part,int prio){
 		canNotBeWhit.add(new Water());
 		
 		if(part==3)
 		{
-			zvalue=105;
+			zvalue=105+prio;
+		}else if(part==7){
+			zvalue=69+prio;
 		}else{
-			zvalue=60;
+		
+			zvalue=60+prio;
 		}
 		String uri="./res/pic/trunk.png";
 		pic= Toolkit.getDefaultToolkit().getImage(uri);

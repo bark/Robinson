@@ -4,13 +4,15 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.ImageObserver;
+import java.util.Random;
 
 public class TreeTop extends ForgroundTile{
 	private Image pic;
 	private int part;
 	private int treeType;
-	public TreeTop(int treeType,int part){
-		zvalue=140;
+	public TreeTop(int treeType,int part,int prio){
+	
+		zvalue=(int) (140+prio);
 		String uri="./res/pic/treetop.png";
 		pic= Toolkit.getDefaultToolkit().getImage(uri);
 		this.treeType=treeType;
