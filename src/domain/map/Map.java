@@ -93,7 +93,7 @@ public class Map {
 
 	
 	private void generateWorldMap(int x, int y) {
-		Long seed=(long) 234.124;
+		Long seed=(long) 13*x*1000+y*42;//13 and 42 is random chosen numbers
 		
 		MapPart mapPart = new MapPart(x, y, mapPiceSize, mapPiceSize,seed);
 		new Thread(mapPart).start();

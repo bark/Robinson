@@ -28,8 +28,15 @@ public class TreeTop extends ForgroundTile{
 				picY=0;
 			}else if(treeType==1){
 				picX=94;
+				picY=94;
+			}else if(treeType==2){
+				picX=94;
 				picY=0;
+			}else if(treeType==3){
+				picX=94;
+				picY=94;
 			}
+			
 			if(part==0){
 				
 			}if(part==1){

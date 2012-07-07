@@ -58,9 +58,6 @@ public class GameController implements MouseWheelListener, KeyListener,
 
 		Player player1 = new Player(25500, 25444, this);
 		player1.getInventory().add(new Candle());
-		player1.getInventory().add(new Candle());
-		player1.getInventory().add(new Candle());
-		player1.getInventory().add(new Candle());
 		GameModel.addPlayers(player1);
 		GameModel.addAnimals(new Hare(25600,25644));
 		
