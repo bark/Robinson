@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.ImageObserver;
 
+import domain.backGroundTile.Grass;
 import domain.backGroundTile.Water;
 
 public class TreeBottom extends ForgroundTile{
@@ -14,7 +15,6 @@ public class TreeBottom extends ForgroundTile{
 	
 	public TreeBottom(int treeType,int part,int prio){
 		canNotBeWhit.add(new Water());
-		
 		if(part==3)
 		{
 			zvalue=105+prio;

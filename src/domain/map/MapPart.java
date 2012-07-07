@@ -271,36 +271,41 @@ public class MapPart implements Runnable {
 	 * } return nr; }
 	 */
 	void createATree(int x, int y, int type) {
-		Random random = new Random();
-		int prio= (int)(random.nextDouble()*30);
-		if (x < 90 && y < 90) {
-
-			// stammen
-			map[x][y + 2].add(new TreeBottom(type, 0,prio));
-			map[x][y + 1 + 2].add(new TreeBottom(type, 1,prio));
-			map[x][y + 2 + 2].add(new TreeBottom(type, 2,prio));
-
-			map[x + 1][y + 2].add(new TreeBottom(type, 3,prio));
-			map[x + 1][y + 1 + 2].add(new TreeBottom(type, 4,prio));
-			map[x + 1][y + 2 + 2].add(new TreeBottom(type, 5,prio));
-
-			map[x + 2][y + 2].add(new TreeBottom(type, 6,prio));
-			map[x + 2][y + 1 + 2].add(new TreeBottom(type, 7,prio));
-			map[x + 2][y + 2 + 2].add(new TreeBottom(type, 8,prio));
-
-			// träd toppen
-			map[x][y].add(new TreeTop(type, 0,prio));
-			map[x][y + 1].add(new TreeTop(type, 1,prio));
-			map[x][y + 2].add(new TreeTop(type, 2,prio));
-
-			map[x + 1][y].add(new TreeTop(type, 3,prio));
-			map[x + 1][y + 1].add(new TreeTop(type, 4,prio));
-			map[x + 1][y + 2].add(new TreeTop(type, 5,prio));
-
-			map[x + 2][y].add(new TreeTop(type, 6,prio));
-			map[x + 2][y + 1].add(new TreeTop(type, 7,prio));
-			map[x + 2][y + 2].add(new TreeTop(type, 8,prio));
-
+		if(nrOf(new Water(),x,y)==0){
+		
+			Random random = new Random();
+			
+			int prio= (int)(random.nextDouble()*30);
+			if (x < 90 && y < 90) {
+	
+				// stammen
+				map[x][y + 2].add(new TreeBottom(type, 0,prio));
+				map[x][y + 1 + 2].add(new TreeBottom(type, 1,prio));
+				map[x][y + 2 + 2].add(new TreeBottom(type, 2,prio));
+	
+				map[x + 1][y + 2].add(new TreeBottom(type, 3,prio));
+				map[x + 1][y + 1 + 2].add(new TreeBottom(type, 4,prio));
+				map[x + 1][y + 2 + 2].add(new TreeBottom(type, 5,prio));
+	
+				map[x + 2][y + 2].add(new TreeBottom(type, 6,prio));
+				map[x + 2][y + 1 + 2].add(new TreeBottom(type, 7,prio));
+				map[x + 2][y + 2 + 2].add(new TreeBottom(type, 8,prio));
+	
+				// träd toppen
+				map[x][y].add(new TreeTop(type, 0,prio));
+				map[x][y + 1].add(new TreeTop(type, 1,prio));
+				map[x][y + 2].add(new TreeTop(type, 2,prio));
+	
+				map[x + 1][y].add(new TreeTop(type, 3,prio));
+				map[x + 1][y + 1].add(new TreeTop(type, 4,prio));
+				map[x + 1][y + 2].add(new TreeTop(type, 5,prio));
+	
+				map[x + 2][y].add(new TreeTop(type, 6,prio));
+				map[x + 2][y + 1].add(new TreeTop(type, 7,prio));
+				map[x + 2][y + 2].add(new TreeTop(type, 8,prio));
+			}
+		}else{
+			System.out.println("found water so cant place tree");
 		}
 	}
 
@@ -357,13 +362,7 @@ public class MapPart implements Runnable {
 			
 			
 		}
-		for (int i = 0; i < higth; i++) {
-			for (int j = 0; j < with; j++) {
-				if (notRandomRandom.nextFloat() * 100 < 6) {
-					createATree(i, j,(int)(notRandomRandom.nextDouble()*4));
-				}
-			}
-		}
+
 		createARiver(90,90,10, 10, notRandomRandom);
 
 		for (int i = 0; i < 10; i++) {
@@ -389,7 +388,13 @@ public class MapPart implements Runnable {
 				}
 			}
 		}
-		
+		for (int i = 0; i < higth; i++) {
+			for (int j = 0; j < with; j++) {
+				if (notRandomRandom.nextFloat() * 100 < 6) {
+					createATree(i, j,(int)(notRandomRandom.nextDouble()*4));
+				}
+			}
+		}
 		for (int i = 0; i < higth; i++) {
 			for (int j = 0; j < with; j++) {
 				//loading pictures to memory
