@@ -48,10 +48,8 @@ public class SortedTileList extends TreeSet<Tile> {
 	}
 	
 	public void addTile(Tile tile){
-		System.out.println("adding tile "+tile);
 		this.add(tile);
 		if(updateOnChange){
-			System.out.println("updateing:"+x+":"+y);
 			calculateImage();
 		}
 			

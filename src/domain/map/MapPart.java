@@ -276,7 +276,7 @@ public class MapPart implements Runnable {
 		
 			Random random = new Random();
 			
-			double prio= (y*10)+(x);
+			double prio= (y*10)-(x);
 			if (x < 90 && y < 90) {
 	
 				// stammen

@@ -16,6 +16,11 @@ public class Tree extends ForgroundTile {
 
 	public Tree(int treeType, int part, Double prio, Boolean top) {
 		zvalue = (int) (140 + prio);
+		if(!top){
+			if(part==4){
+				zvalue=20;
+			}
+		}
 		String uri = "./res/pic/treetop.png";
 		picTop = Toolkit.getDefaultToolkit().getImage(uri);
 		this.treeType = treeType;
