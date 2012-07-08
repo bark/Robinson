@@ -64,7 +64,7 @@ public class Map {
 	}
 */
 	public boolean checkPositionIsOk(int topX, int topY, int botX, int botY) {
-		System.out.println("punkten är" + topX + ", " + topY+"tiles: "+topX/32+":"+topY/32);
+		//System.out.println("punkten är" + topX + ", " + topY+"tiles: "+topX/32+":"+topY/32);
 				
 		if (checkPointIsOk(topX, botY)) {
 			if (checkPointIsOk(topX, topY)) {

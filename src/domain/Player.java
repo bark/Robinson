@@ -195,7 +195,7 @@ public class Player {
 	public void action(ACTION action) {
 		
 		if (currentAction != ACTION.DIE && currentAction != ACTION.PICKUP
-				&& currentAction != ACTION.SLASH) {// lockeble actions
+				&& currentAction != ACTION.SLASH && currentAction != ACTION.USE) {// lockeble actions
 			if (action != null) {
 				if (tiredness < 0) {
 					System.out.println("tiredness =0");
@@ -257,7 +257,11 @@ public class Player {
 					currentAction = null;
 				}
 			}
-
+			if (currentAction == ACTION.USE) {
+				System.out.println("action use");
+				gc.use(this);
+				currentAction = null;
+			}
 		}
 
 	}

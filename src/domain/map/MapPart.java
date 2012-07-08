@@ -26,9 +26,10 @@ import domain.Tile.DIRECTION;
 import domain.backGroundTile.Dirt;
 import domain.backGroundTile.Grass;
 import domain.backGroundTile.Water;
+import domain.forgroundTile.PapricaPlant;
 import domain.forgroundTile.Stone;
-import domain.forgroundTile.TreeBottom;
-import domain.forgroundTile.TreeTop;
+import domain.forgroundTile.TomatPlant;
+import domain.forgroundTile.Tree;
 
 public class MapPart implements Runnable {
 	private SortedTileList[][] map;
@@ -275,37 +276,35 @@ public class MapPart implements Runnable {
 		
 			Random random = new Random();
 			
-			int prio= (int)(random.nextDouble()*30);
+			double prio= (y*10)+(x);
 			if (x < 90 && y < 90) {
 	
 				// stammen
-				map[x][y + 2].add(new TreeBottom(type, 0,prio));
-				map[x][y + 1 + 2].add(new TreeBottom(type, 1,prio));
-				map[x][y + 2 + 2].add(new TreeBottom(type, 2,prio));
+				map[x][y + 2].add(new Tree(type, 0,prio,false));
+				map[x][y + 1 + 2].add(new Tree(type, 1,prio,false));
+				map[x][y + 2 + 2].add(new Tree(type, 2,prio,false));
 	
-				map[x + 1][y + 2].add(new TreeBottom(type, 3,prio));
-				map[x + 1][y + 1 + 2].add(new TreeBottom(type, 4,prio));
-				map[x + 1][y + 2 + 2].add(new TreeBottom(type, 5,prio));
+				map[x + 1][y + 2].add(new Tree(type, 3,prio,false));
+				map[x + 1][y + 1 + 2].add(new Tree(type, 4,prio,false));
+				map[x + 1][y + 2 + 2].add(new Tree(type, 5,prio,false));
 	
-				map[x + 2][y + 2].add(new TreeBottom(type, 6,prio));
-				map[x + 2][y + 1 + 2].add(new TreeBottom(type, 7,prio));
-				map[x + 2][y + 2 + 2].add(new TreeBottom(type, 8,prio));
+				map[x + 2][y + 2].add(new Tree(type, 6,prio,false));
+				map[x + 2][y + 1 + 2].add(new Tree(type, 7,prio,false));
+				map[x + 2][y + 2 + 2].add(new Tree(type, 8,prio,false));
 	
 				// träd toppen
-				map[x][y].add(new TreeTop(type, 0,prio));
-				map[x][y + 1].add(new TreeTop(type, 1,prio));
-				map[x][y + 2].add(new TreeTop(type, 2,prio));
+				map[x][y].add(new Tree(type, 0,prio,true));
+				map[x][y + 1].add(new Tree(type, 1,prio,true));
+				map[x][y + 2].add(new Tree(type, 2,prio,true));
 	
-				map[x + 1][y].add(new TreeTop(type, 3,prio));
-				map[x + 1][y + 1].add(new TreeTop(type, 4,prio));
-				map[x + 1][y + 2].add(new TreeTop(type, 5,prio));
+				map[x + 1][y].add(new Tree(type, 3,prio,true));
+				map[x + 1][y + 1].add(new Tree(type, 4,prio,true));
+				map[x + 1][y + 2].add(new Tree(type, 5,prio,true));
 	
-				map[x + 2][y].add(new TreeTop(type, 6,prio));
-				map[x + 2][y + 1].add(new TreeTop(type, 7,prio));
-				map[x + 2][y + 2].add(new TreeTop(type, 8,prio));
+				map[x + 2][y].add(new Tree(type, 6,prio,true));
+				map[x + 2][y + 1].add(new Tree(type, 7,prio,true));
+				map[x + 2][y + 2].add(new Tree(type, 8,prio,true));
 			}
-		}else{
-			System.out.println("found water so cant place tree");
 		}
 	}
 
@@ -384,6 +383,16 @@ public class MapPart implements Runnable {
 				if (notRandomRandom.nextFloat() * 100 < 0.2) {
 					if (new Mushroom().canBeAdded(map[i][j])) {
 						map[i][j].add(new MushroomBad());
+					}
+				}
+				if (notRandomRandom.nextFloat() * 100 < 0.01) {
+					if (new TomatPlant(i,j).canBeAdded(map[i][j])) {
+						map[i][j].add(new TomatPlant(i,j));
+					}
+				}
+				if (notRandomRandom.nextFloat() * 100 < 0.01) {
+					if (new PapricaPlant(i,j).canBeAdded(map[i][j])) {
+						map[i][j].add(new PapricaPlant(i,j));
 					}
 				}
 			}

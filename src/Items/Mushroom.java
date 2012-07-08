@@ -6,11 +6,12 @@ import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 
+import domain.useble;
 import domain.backGroundTile.Dirt;
 import domain.backGroundTile.Grass;
 import domain.backGroundTile.Water;
 
-public class Mushroom extends Item{
+public class Mushroom extends Item {
 	private static Image pic;
 	
 	public Mushroom(){

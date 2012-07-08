@@ -39,7 +39,7 @@ public class GameController implements MouseWheelListener, KeyListener,
 												// = 50
 
 	public static enum ACTION {
-		GORIGTH, GOLEFT, GOUP, GODOWN, RUNDOWN, RUNUP, RUNLEFT, RUNRIGTH,SLASH,PICKUP,DIE
+		GORIGTH, GOLEFT, GOUP, GODOWN, RUNDOWN, RUNUP, RUNLEFT, RUNRIGTH,SLASH,PICKUP,USE,DIE
 	}
 
 	ACTION action = null;
@@ -123,6 +123,8 @@ public class GameController implements MouseWheelListener, KeyListener,
 				action = ACTION.SLASH;
 			}else if ( e.getKeyCode() == 69) {
 				action = ACTION.PICKUP;
+			}else if(e.getKeyCode() == 81) {
+				action = ACTION.USE;
 			}
 		}
 		if (e.getKeyChar() == 'z') {
@@ -229,7 +231,15 @@ public class GameController implements MouseWheelListener, KeyListener,
 		int xvalure=(player.getPosX()+32)/32;
 		int yvalure=(player.getPosY()+64)/32;
 		System.out.println("pass on pickup:"+xvalure+":"+yvalure);
-		return GameModel.GetWorldMap().getPointFromPx(player.getPosX()+32,player.getPosY()+64).pickUp();		
+		return GameModel.GetWorldMap().getPointFromPx(player.getPosX()+32,player.getPosY()+64).pickUp(player);		
+		
+	}
+	public void use(Player player) {
+		
+		int xvalure=(player.getPosX()+32)/32;
+		int yvalure=(player.getPosY()+64)/32;
+		System.out.println("pass on use:"+xvalure+":"+yvalure);
+		GameModel.GetWorldMap().getPointFromPx(player.getPosX()+32,player.getPosY()+64).use(player);		
 		
 	}
 }

@@ -43,9 +43,14 @@ public class MapView extends JComponent{
 		offgc = offscreen.getGraphics();
 		int tileSize=32;
 		
-		for(int x=(GameModel.getPlayers().get(0).getPosX()/tileSize)-30;x<(GameModel.getPlayers().get(0).getPosX()/tileSize)+30;x++){
-			for(int y=(GameModel.getPlayers().get(0).getPosY()/tileSize)-15;y<(GameModel.getPlayers().get(0).getPosY()/tileSize)+15;y++){
+		int playerPosX=(GameModel.getPlayers().get(0).getPosX()/tileSize);
+		int playerPosY=(GameModel.getPlayers().get(0).getPosY()/tileSize);
+		
+		for(int x=playerPosX-30;x<playerPosX+30;x++){
+			for(int y=playerPosY-15;y<playerPosY+15;y++){
 				SortedTileList tileArr=GameModel.GetWorldMap().getPoint(x, y);
+				
+				
 				if(tileArr!=null){
 					/*for(Tile tile:map.getPoint(x, y)){
 						/if(tile.getZValue()>100){
@@ -61,7 +66,7 @@ public class MapView extends JComponent{
 		}
 		
 
-		GameModel.getPlayers().get(0).drawItSelf(offgc,this,(int)getWidth()/2,(int)getHeight()/2,zoom);
+		
 		
 		
 		for(Moveable animal:GameModel.getAnimals()){
@@ -72,19 +77,23 @@ public class MapView extends JComponent{
 			
 		}
 		
-		for(int x=(GameModel.getPlayers().get(0).getPosX()/tileSize)-30;x<(GameModel.getPlayers().get(0).getPosX()/tileSize)+30;x++){
-			for(int y=(GameModel.getPlayers().get(0).getPosY()/tileSize)-15;y<(GameModel.getPlayers().get(0).getPosY()/tileSize)+15;y++){
+		for(int x=playerPosX-30;x<playerPosX+30;x++){
+			for(int y=playerPosY-15;y<playerPosY+15;y++){
 				SortedTileList tileArr=GameModel.GetWorldMap().getPoint(x, y);
+				
+				
 				if(tileArr!=null){
-					/*for(Tile tile:map.getPoint(x, y)){
-						if(tile.getZValue()>100){
-							tile.drawItSelf(offgc,this,x*(int)(64*zoom)-leftCornerX,y*(int)(64*zoom)-leftCornerY,zoom);
-						}
-					}*/
+					
+					
+					
 					
 					tileArr.drawOverIT(offgc, null,(int)( x*(tileSize*zoom))-leftCornerX,(int) (y*(tileSize*zoom))-leftCornerY, zoom);
 				}
+				if(playerPosX==x&&playerPosY==y){
+					GameModel.getPlayers().get(0).drawItSelf(offgc,this,(int)getWidth()/2,(int)getHeight()/2,zoom);
+				}
 			}
+			
 		}
 		g.drawImage(offscreen, 0, 0, this);
 	}

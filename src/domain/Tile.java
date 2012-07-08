@@ -17,8 +17,10 @@ public abstract class Tile implements Comparable {
 	protected ArrayList<Tile> haveToBeWhit = new ArrayList<Tile>();
 	protected Image pic;
 	protected int part = 0;
-	protected int zvalue = 0;// 100 is the human
+	protected double zvalue = 0;// 100 is the human
 	String url = "";
+	protected int x=0;
+	protected int y=0;
 	protected Boolean fullscreen = false;
 	protected String name = "tile";
 	protected Boolean sollid = false;
@@ -45,7 +47,7 @@ public abstract class Tile implements Comparable {
 	// public Boolean isFullscreen() {//shodent be used any more
 	// return fullscreen;
 	// }
-	public int getZValue() {
+	public double getZValue() {
 		return zvalue;
 	}
 
@@ -59,7 +61,7 @@ public abstract class Tile implements Comparable {
 
 	@Override
 	public int compareTo(Object arg0) {
-		return zvalue - ((Tile) arg0).getZValue();
+		return (int) (zvalue - ((Tile) arg0).getZValue());
 	}
 
 	public abstract void drawItSelf(Graphics g, ImageObserver io, int x, int y,
