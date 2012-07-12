@@ -10,6 +10,7 @@ import domain.GameModel;
 import domain.Player;
 import domain.Tile;
 import domain.useble;
+import domain.backGroundTile.Water;
 
 public class PapricaPlant  extends Tile implements useble{
 	
@@ -21,7 +22,7 @@ public class PapricaPlant  extends Tile implements useble{
 		this.y=y;
 		picX=128;
 		picY=220;
-		
+		canNotBeWhit.add(new Water());
 		String uri = "./res/pic/plants.png";
 		pic = Toolkit.getDefaultToolkit().getImage(uri);
 		zvalue = 40;
@@ -42,13 +43,13 @@ public class PapricaPlant  extends Tile implements useble{
 		GameModel.GetWorldMap().getPoint(x, y).calculateImage();
 		
 		if(GameModel.GetWorldMap().checkPointIsOk(x, y+1)){
-			GameModel.GetWorldMap().getPoint(x, y+1).addTile(new Paprica());
+			GameModel.GetWorldMap().getPoint(x, y+1).add(new Paprica());
 		}else if(GameModel.GetWorldMap().checkPointIsOk(x-1, y)){
-			GameModel.GetWorldMap().getPoint(x-1, y).addTile(new Paprica());
+			GameModel.GetWorldMap().getPoint(x-1, y).add(new Paprica());
 		}else if(GameModel.GetWorldMap().checkPointIsOk(x+1, y)){
-			GameModel.GetWorldMap().getPoint(x+1, y).addTile(new Paprica());
+			GameModel.GetWorldMap().getPoint(x+1, y).add(new Paprica());
 		}else if(GameModel.GetWorldMap().checkPointIsOk(x, y+1)){
-			GameModel.GetWorldMap().getPoint(x, y-1).addTile(new Paprica());
+			GameModel.GetWorldMap().getPoint(x, y-1).add(new Paprica());
 		}
 		
 	}

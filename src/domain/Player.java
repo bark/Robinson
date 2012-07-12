@@ -131,7 +131,12 @@ public class Player {
 	public void setPosY(int posY) {
 		this.posY = posY;
 	}
-
+	public void loseHp(int hp) {
+		this.hp-=hp;
+		if(this.hp<0){
+			currentAction=ACTION.DIE;
+		}
+	}
 	public int getHpLeft() {
 		return (int) (getMaxhp() / getHp()) * 100;
 	}

@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 	import domain.backGroundTile.Dirt;
 	import domain.backGroundTile.Grass;
 import domain.backGroundTile.Water;
+import domain.forgroundTile.Stone;
 
 	public class MushroomBad extends Item{
 		private static Image pic;
@@ -17,6 +18,7 @@ import domain.backGroundTile.Water;
 		public MushroomBad(){
 			zvalue=66;
 			canNotBeWhit.add(new Water());
+			canNotBeWhit.add(new Stone());
 			haveToBeWhit.add(new Grass());
 			String uri="./res/pic/tileset01.png";
 			if(pic==null)

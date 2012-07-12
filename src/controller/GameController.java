@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 import moveble.Hare;
 import moveble.Moveable;
+import moveble.Wolf;
 
 import Items.Candle;
 import Items.Item;
@@ -58,8 +59,9 @@ public class GameController implements MouseWheelListener, KeyListener,
 
 		Player player1 = new Player(25500, 25444, this);
 		player1.getInventory().add(new Candle());
-		GameModel.addPlayers(player1);
-		GameModel.addAnimals(new Hare(25600,25644));
+		LocalPlayer localPlayer = new LocalPlayer(player1);
+		GameModel.addPlayers(localPlayer);
+		GameModel.addAnimals(new Wolf(25600,25844));
 		
 		// borde bara skicka det man ser.
 		System.out.println("tillverkat en mapPart");
@@ -93,40 +95,11 @@ public class GameController implements MouseWheelListener, KeyListener,
 		// System.out.println("zoomlv :"+zoomlv +""+ change+" change");
 		zoomlv = zoomlv + change;
 		// System.out.println("new zoom valure:"+ zoomlv);
-		mapView.moveCameraTo(GameModel.getPlayers().get(0).getPosX(), GameModel.getPlayers().get(0).getPosY(), zoomlv);
+		mapView.moveCameraTo(GameModel.getLocalPlayer().getPosX(), GameModel.getLocalPlayer().getPosY(), zoomlv);
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// System.out.println(e.getKeyCode());
-		if (shiftPressed) {
-			if (e.getKeyCode() == 87 || e.getKeyCode() == 38) {
-				action = ACTION.RUNUP;
-			} else if (e.getKeyCode() == 83 || e.getKeyCode() == 40) {
-				action = ACTION.RUNDOWN;
-			} else if (e.getKeyCode() == 65 || e.getKeyCode() == 37) {
-				action = ACTION.RUNLEFT;
-			} else if (e.getKeyCode() == 68 || e.getKeyCode() == 39) {
-				action = ACTION.RUNRIGTH;
-			}
-		} else {
-			if (e.getKeyChar() == 'w' || e.getKeyCode() == 38) {
-
-				action = ACTION.GOUP;
-			} else if (e.getKeyChar() == 's' || e.getKeyCode() == 40) {
-				action = ACTION.GODOWN;
-			} else if (e.getKeyChar() == 'a' || e.getKeyCode() == 37) {
-				action = ACTION.GOLEFT;
-			} else if (e.getKeyChar() == 'd' || e.getKeyCode() == 39) {
-				action = ACTION.GORIGTH;
-			}else if ( e.getKeyCode() == 32) {
-				action = ACTION.SLASH;
-			}else if ( e.getKeyCode() == 69) {
-				action = ACTION.PICKUP;
-			}else if(e.getKeyCode() == 81) {
-				action = ACTION.USE;
-			}
-		}
 		if (e.getKeyChar() == 'z') {
 			zoomlv += 0.1;
 			logView.addString("Zoomade med z");
@@ -137,6 +110,8 @@ public class GameController implements MouseWheelListener, KeyListener,
 		if (e.getKeyCode() == 16) {
 			shiftPressed = true;
 		}
+		((LocalPlayer)GameModel.getPlayers().get(0)).keyPressed(e,shiftPressed);
+		
 	}
 
 	@Override
@@ -159,18 +134,24 @@ public class GameController implements MouseWheelListener, KeyListener,
 		while (true) {
 			cycleTime = System.currentTimeMillis();
 			
-			GameModel.getPlayers().get(0).action(action);
+		//	GameModel.getPlayers().get(0).action(action);
 			action = null;
+			for(PlayerInterface player:GameModel.getPlayers()){
+				player.tick();
+			}
+			
+			
 			for(Moveable aAnimal:GameModel.getAnimals()){
 				aAnimal.action();
 			}
+			GameModel.removeAnimals();
 			// System.out.println("looping....");
 			// System.out.println("looping....");
 			// kolla vart den går
 			// kolla om den får gå dit
 
 			// rita om
-			mapView.moveCameraTo(GameModel.getPlayers().get(0).getPosX(), GameModel.getPlayers().get(0).getPosY(), zoomlv);
+			mapView.moveCameraTo(GameModel.getLocalPlayer().getPosX(), GameModel.getLocalPlayer().getPosY(), zoomlv);
 			mapView.repaint();
 			synchFramerate();
 			// Thread.sleep(100);
@@ -193,7 +174,7 @@ public class GameController implements MouseWheelListener, KeyListener,
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("inventory")) {
 				inventoryView.setVisible(!inventoryView.isVisible());
-				GameModel.getPlayers().get(0).getInventory().add(new Candle());
+				GameModel.getLocalPlayer().getInventory().add(new Candle());
 				inventoryView.updateView();
 			}
 
@@ -211,7 +192,7 @@ public class GameController implements MouseWheelListener, KeyListener,
 					logView.addString("Used item: " + ib.getItem().toString());
 					System.out.println("SHIFT_INVENTORY_CLICK");
 				} else if ((e.getModifiers() & e.CTRL_MASK) != 0) {
-					GameModel.getPlayers().get(0).getInventory().remove(ib.getItem());
+					GameModel.getLocalPlayer().getInventory().remove(ib.getItem());
 					System.out.println("CTRL_INV_CLICK");
 				} else {
 					gameGui.setItemToPaint(ib.getItem());

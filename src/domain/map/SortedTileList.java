@@ -6,11 +6,16 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.util.TreeSet;
 
+import moveble.Hare;
+import moveble.Moveable;
+import moveble.Wolf;
+
 import Items.Item;
 
 import domain.Player;
 import domain.Tile;
 import domain.useble;
+import domain.backGroundTile.Dirt;
 import domain.backGroundTile.Grass;
 import domain.backGroundTile.Water;
 
@@ -18,6 +23,8 @@ public class SortedTileList extends TreeSet<Tile> {
 	BufferedImage over,under=null;
 	int x,y=0;
 	boolean updateOnChange=false;
+	boolean animalOnTileList=false;
+	
 	public SortedTileList(int x, int y) {
 		super();
 		this.x=x;
@@ -47,11 +54,21 @@ public class SortedTileList extends TreeSet<Tile> {
 		return false;
 	}
 	
-	public void addTile(Tile tile){
-		this.add(tile);
+	public boolean add(Tile tile){
+		
+		super.add(tile);
+		
+		
+		if(tile instanceof Moveable){
+			System.out.println("adding animal on the list");
+		
+			animalOnTileList=true;
+			
+		}
 		if(updateOnChange){
 			calculateImage();
 		}
+		return true;
 			
 	}
 	void removeTile(Tile tile){
@@ -82,7 +99,11 @@ public class SortedTileList extends TreeSet<Tile> {
 		}while(size()<1);
 	}
 	public void drawUnderIT( Graphics g,ImageObserver io, int x,int y,float zoom){
+//		System.out.println("animalOnTileList:"+animalOnTileList);
 		
+		if(animalOnTileList){
+			vakeUpAllAnimals();
+		}
 		g.drawImage(under, x,y,x+(int) (32*zoom),y+(int)(32*zoom),0, 0,(int)(32*zoom),(int) (32*zoom), io);
 	}
 	public void drawOverIT( Graphics g,ImageObserver io, int x,int y,float zoom){
@@ -95,14 +116,9 @@ public class SortedTileList extends TreeSet<Tile> {
 		Item item=null;
 		System.out.println(size());
 		for(Tile tile:this){
-			System.out.println(x +" : "+ y);
-			System.out.println(tile);
-			System.out.println(tile.getClass());
-			System.out.println(tile.getClass().getSuperclass());
 			
 			if(tile.getClass().getSuperclass().equals(Item.class)) {
 				item=(Item)tile;
-				System.out.println("pickup mushrom");
 			}
 		}if(item!=null){
 			removeTile(item);
@@ -120,6 +136,15 @@ public class SortedTileList extends TreeSet<Tile> {
 				System.out.println("updateing:"+x+":"+y);
 				((useble) tile).use(pl);
 				break;
+			}
+		}
+	}
+	private void vakeUpAllAnimals(){
+		System.out.println("vakeUpAllAnimals on pont:"+x+":"+y);
+		for(Tile tile:this){
+			if(tile instanceof Moveable){
+				((Moveable)tile).TransformToAnimal();
+				animalOnTileList=false;
 			}
 		}
 	}

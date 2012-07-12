@@ -11,6 +11,7 @@ import domain.GameModel;
 import domain.Player;
 import domain.Tile;
 import domain.useble;
+import domain.backGroundTile.Water;
 
 public class TomatPlant extends Tile implements useble{
 	private int picX;
@@ -18,7 +19,7 @@ public class TomatPlant extends Tile implements useble{
 	public TomatPlant(int x,int y){
 		this.x=x;
 		this.y=y;
-
+		canNotBeWhit.add(new Water());
 		picX=0;
 		picY=220;
 		String uri="./res/pic/plants.png";

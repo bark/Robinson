@@ -10,6 +10,7 @@ import domain.useble;
 import domain.backGroundTile.Dirt;
 import domain.backGroundTile.Grass;
 import domain.backGroundTile.Water;
+import domain.forgroundTile.Stone;
 
 public class Mushroom extends Item {
 	private static Image pic;
@@ -17,6 +18,7 @@ public class Mushroom extends Item {
 	public Mushroom(){
 		zvalue=65;
 		canNotBeWhit.add(new Water());
+		canNotBeWhit.add(new Stone());
 		haveToBeWhit.add(new Grass());
 		String uri="./res/pic/tileset01.png";
 		if(pic==null)

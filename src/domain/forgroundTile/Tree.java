@@ -18,7 +18,7 @@ public class Tree extends ForgroundTile {
 		zvalue = (int) (140 + prio);
 		if(!top){
 			if(part==4){
-				zvalue=20;
+				zvalue=30;
 			}
 		}
 		String uri = "./res/pic/treetop.png";

@@ -43,8 +43,8 @@ public class MapView extends JComponent{
 		offgc = offscreen.getGraphics();
 		int tileSize=32;
 		
-		int playerPosX=(GameModel.getPlayers().get(0).getPosX()/tileSize);
-		int playerPosY=(GameModel.getPlayers().get(0).getPosY()/tileSize);
+		int playerPosX=(GameModel.getLocalPlayer().getPosX()/tileSize);
+		int playerPosY=(GameModel.getLocalPlayer().getPosY()/tileSize);
 		
 		for(int x=playerPosX-30;x<playerPosX+30;x++){
 			for(int y=playerPosY-15;y<playerPosY+15;y++){
@@ -90,7 +90,7 @@ public class MapView extends JComponent{
 					tileArr.drawOverIT(offgc, null,(int)( x*(tileSize*zoom))-leftCornerX,(int) (y*(tileSize*zoom))-leftCornerY, zoom);
 				}
 				if(playerPosX==x&&playerPosY==y){
-					GameModel.getPlayers().get(0).drawItSelf(offgc,this,(int)getWidth()/2,(int)getHeight()/2,zoom);
+					GameModel.getLocalPlayer().drawItSelf(offgc,this,(int)getWidth()/2,(int)getHeight()/2,zoom);
 				}
 			}
 			

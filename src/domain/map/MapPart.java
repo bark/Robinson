@@ -38,17 +38,38 @@ public class MapPart implements Runnable {
 	private int worldX;
 	private int worldY;
 	Long seed;
-	int higth,with;
-	int extrawatter = 0;// borde kanse implimenteras
-	int extraHeeat = 0;// borde kanse implimenteras
+	int higth, with;
+	float water = 0;// detta är hur många procent som borde bli 100 är hela
+					// saken är vatten
+	float heat = 0;
 
-	public MapPart(int x, int y,  int higth, int with,long seed) {
-		this.seed=seed;
-		this.higth=higth;
-		this.with=with;
+	float flatness = 0; // who flatt the world is going to be //not used
+	float vegitation = 0;
+	float friendliness = 100; // this is a number how dangerus this place is.
+	int nr = 0; // this is the number of mapparts created before.
+	MapPart north, south, west, east;
+
+	public MapPart(int x, int y, int higth, int with, long seed, float water,
+			float heat, float flatness, float vegitation, float friendliness,
+			MapPart north, MapPart south, MapPart west, MapPart east) {
+		this.seed = seed;
+
+		this.higth = higth;
+		this.with = with;
+
+		this.water = water;
+		this.heat = heat;
+		this.flatness = flatness;
+		this.vegitation = vegitation;
+		this.friendliness = friendliness;
+
+		this.north = north;
+		this.south = south;
+		this.west = west;
+		this.east = east;
 		worldX = x;
 		worldY = y;
-		
+
 	}
 
 	/*
@@ -102,7 +123,6 @@ public class MapPart implements Runnable {
 		Point p = new Point(worldX, worldY);
 		return p;
 	}
-
 
 	private void fixTile(Tile tile) {
 		for (int i = 0; i < map.length; i++) {
@@ -158,11 +178,11 @@ public class MapPart implements Runnable {
 				&& startX < map.length && startY < map[0].length
 				&& endX < map.length && endY < map[0].length) {
 			// System.out.println("kommer förbi mördar ifsatsen");
-			map[startX][startY].addTile(new Water());
-			map[startX + 1][startY].addTile(new Water());
-			map[startX][startY + 1].addTile(new Water());
-			map[startX - 1][startY].addTile(new Water());
-			map[startX][startY - 1].addTile(new Water());
+			map[startX][startY].add(new Water());
+			map[startX + 1][startY].add(new Water());
+			map[startX][startY + 1].add(new Water());
+			map[startX - 1][startY].add(new Water());
+			map[startX][startY - 1].add(new Water());
 			boolean succsess = false;
 			double nr1 = hypetunusan(startX + 1, startY, endX, endY)
 					* ((notRandomRandom.nextDouble() / 10) + 1);
@@ -272,38 +292,36 @@ public class MapPart implements Runnable {
 	 * } return nr; }
 	 */
 	void createATree(int x, int y, int type) {
-		if(nrOf(new Water(),x,y)==0){
-		
-			Random random = new Random();
-			
-			double prio= (y*10)-(x);
+		if (nrOf(new Water(), x, y) == 0) {
+
+			double prio = (y * 10) - (x);
 			if (x < 90 && y < 90) {
-	
+
 				// stammen
-				map[x][y + 2].add(new Tree(type, 0,prio,false));
-				map[x][y + 1 + 2].add(new Tree(type, 1,prio,false));
-				map[x][y + 2 + 2].add(new Tree(type, 2,prio,false));
-	
-				map[x + 1][y + 2].add(new Tree(type, 3,prio,false));
-				map[x + 1][y + 1 + 2].add(new Tree(type, 4,prio,false));
-				map[x + 1][y + 2 + 2].add(new Tree(type, 5,prio,false));
-	
-				map[x + 2][y + 2].add(new Tree(type, 6,prio,false));
-				map[x + 2][y + 1 + 2].add(new Tree(type, 7,prio,false));
-				map[x + 2][y + 2 + 2].add(new Tree(type, 8,prio,false));
-	
+				map[x][y + 2].add(new Tree(type, 0, prio, false));
+				map[x][y + 1 + 2].add(new Tree(type, 1, prio, false));
+				map[x][y + 2 + 2].add(new Tree(type, 2, prio, false));
+
+				map[x + 1][y + 2].add(new Tree(type, 3, prio, false));
+				map[x + 1][y + 1 + 2].add(new Tree(type, 4, prio, false));
+				map[x + 1][y + 2 + 2].add(new Tree(type, 5, prio, false));
+
+				map[x + 2][y + 2].add(new Tree(type, 6, prio, false));
+				map[x + 2][y + 1 + 2].add(new Tree(type, 7, prio, false));
+				map[x + 2][y + 2 + 2].add(new Tree(type, 8, prio, false));
+
 				// träd toppen
-				map[x][y].add(new Tree(type, 0,prio,true));
-				map[x][y + 1].add(new Tree(type, 1,prio,true));
-				map[x][y + 2].add(new Tree(type, 2,prio,true));
-	
-				map[x + 1][y].add(new Tree(type, 3,prio,true));
-				map[x + 1][y + 1].add(new Tree(type, 4,prio,true));
-				map[x + 1][y + 2].add(new Tree(type, 5,prio,true));
-	
-				map[x + 2][y].add(new Tree(type, 6,prio,true));
-				map[x + 2][y + 1].add(new Tree(type, 7,prio,true));
-				map[x + 2][y + 2].add(new Tree(type, 8,prio,true));
+				map[x][y].add(new Tree(type, 0, prio, true));
+				map[x][y + 1].add(new Tree(type, 1, prio, true));
+				map[x][y + 2].add(new Tree(type, 2, prio, true));
+
+				map[x + 1][y].add(new Tree(type, 3, prio, true));
+				map[x + 1][y + 1].add(new Tree(type, 4, prio, true));
+				map[x + 1][y + 2].add(new Tree(type, 5, prio, true));
+
+				map[x + 2][y].add(new Tree(type, 6, prio, true));
+				map[x + 2][y + 1].add(new Tree(type, 7, prio, true));
+				map[x + 2][y + 2].add(new Tree(type, 8, prio, true));
 			}
 		}
 	}
@@ -317,52 +335,33 @@ public class MapPart implements Runnable {
 	}
 
 	public SortedTileList getPoint(int x, int y) {
-		if(map!=null){
+		if (map != null) {
 			return map[x][y];
 		}
 		return null;
 	}
 
-/*	public void removeExtraTiles() {
-		for (int i = 0; i < map.length; i++) {
-			for (int j = 0; j < map[0].length; j++) {
-				SortedTileList keep = new SortedTileList();
-				Iterator<Tile> iterator = map[i][j].descendingIterator();
-				while (iterator.hasNext()) {
-					Tile tile = iterator.next();
-					keep.add(tile);
-					if (tile.isFullscreen()) {
-						break;
-					}
-
-				}
-				map[i][j] = keep;
-			}
-		}
-	}*/
 	@Override
 	public void run() {
 		Random notRandomRandom = new Random(seed);
+		System.out.println("seed: " + seed);
 		map = new SortedTileList[higth][with];
-		// fyll den med gräs
 		for (int i = 0; i < higth; i++) {
 			for (int j = 0; j < with; j++) {
-				map[i][j] = new SortedTileList(i,j);
-				if (notRandomRandom.nextFloat() * 100 < 5) {
+				map[i][j] = new SortedTileList(i, j);
+				if (notRandomRandom.nextFloat() * 100 < flatness / 20) {
 					map[i][j].add(new Stone());
 				}
 				map[i][j].add(new Dirt());
-				if (notRandomRandom.nextFloat() * 100 < 20 + nrOf(
-						((Tile) new Dirt()), i, j) * 18)
+				if (notRandomRandom.nextFloat() * 100 < ((vegitation) / 2)
+						+ nrOf(((Tile) new Grass()), i, j) * (vegitation / 10))
 					map[i][j].add(new Grass());
 
 			}
-			
-			
-			
+
 		}
 
-		createARiver(90,90,10, 10, notRandomRandom);
+		createARiver(90, 90, 10, 10, notRandomRandom);
 
 		for (int i = 0; i < 10; i++) {
 			fixTile(new Water());
@@ -371,42 +370,46 @@ public class MapPart implements Runnable {
 		for (int i = 0; i < 10; i++) {
 			fixTile(new Grass());
 		}
-//		removeExtraTiles();
+		// removeExtraTiles();
 
 		for (int i = 0; i < higth; i++) {
 			for (int j = 0; j < with; j++) {
-				if (notRandomRandom.nextFloat() * 100 < 0.2) {
+				if (notRandomRandom.nextFloat() * 100 < vegitation / 600) {
 					if (new Mushroom().canBeAdded(map[i][j])) {
 						map[i][j].add(new Mushroom());
 					}
 				}
-				if (notRandomRandom.nextFloat() * 100 < 0.2) {
+				if (notRandomRandom.nextFloat() * 100 < vegitation / 600) {
 					if (new Mushroom().canBeAdded(map[i][j])) {
 						map[i][j].add(new MushroomBad());
 					}
 				}
-				if (notRandomRandom.nextFloat() * 100 < 0.01) {
-					if (new TomatPlant(i,j).canBeAdded(map[i][j])) {
-						map[i][j].add(new TomatPlant(i,j));
+				if (notRandomRandom.nextFloat() * 100 < vegitation / 1000) {
+					if (new TomatPlant(i, j).canBeAdded(map[i][j])) {
+						map[i][j].add(new TomatPlant(i, j));
 					}
 				}
-				if (notRandomRandom.nextFloat() * 100 < 0.01) {
-					if (new PapricaPlant(i,j).canBeAdded(map[i][j])) {
-						map[i][j].add(new PapricaPlant(i,j));
+				if (notRandomRandom.nextFloat() * 100 < vegitation / 800) {
+					if (new PapricaPlant(i, j).canBeAdded(map[i][j])) {
+						map[i][j].add(new PapricaPlant(i, j));
 					}
 				}
 			}
 		}
 		for (int i = 0; i < higth; i++) {
 			for (int j = 0; j < with; j++) {
-				if (notRandomRandom.nextFloat() * 100 < 6) {
-					createATree(i, j,(int)(notRandomRandom.nextDouble()*4));
+				if (notRandomRandom.nextFloat() * 100 < vegitation / 50) {
+					if (notRandomRandom.nextDouble() * 100 > heat) {
+						createATree(i, j, 1);
+					} else {
+						createATree(i, j, 3);
+					}
 				}
 			}
 		}
 		for (int i = 0; i < higth; i++) {
 			for (int j = 0; j < with; j++) {
-				//loading pictures to memory
+				// loading pictures to memory
 				map[i][j].calculateImage();
 			}
 		}

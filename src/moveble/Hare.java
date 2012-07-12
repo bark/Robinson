@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
+
+import controller.PlayerInterface;
 
 import domain.GameModel;
 import domain.Player;
@@ -20,7 +23,9 @@ public class Hare extends Moveable{
 	
 	@Override
 	public void action() {
-		for(Player player :GameModel.getPlayers()){
+		for(PlayerInterface PlayerInterface :GameModel.getPlayers()){
+			Player player=PlayerInterface.getPlayer();
+			
 			if(hypetunusan(x,y,player.getPosX(),player.getPosY())<400){
 				double vinkeln=Math.atan2((x-player.getPosX()), (y-player.getPosY()+1));
 				
@@ -40,9 +45,15 @@ public class Hare extends Moveable{
 				}else if(GameModel.GetWorldMap().checkPositionIsOk(x-diffY, y, x-diffY+32,y+32)){
 					x-=diffY;
 				}
-			
 			}
 		}
+	}
+
+	@Override
+	public void drawItSelf(Graphics g, ImageObserver io, int x, int y,
+			int with, int higth, float zoom) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 
