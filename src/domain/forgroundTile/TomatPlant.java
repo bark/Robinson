@@ -42,15 +42,13 @@ public class TomatPlant extends Tile implements useble{
 		GameModel.GetWorldMap().getPoint(x, y).calculateImage();
 		
 		if(GameModel.GetWorldMap().checkPointIsOk(x, y+1)){
-			System.out.println("rakt ner");
-			GameModel.GetWorldMap().getPoint(x, y+1).addTile(new Tomat());
+			GameModel.GetWorldMap().getPoint(x, y+1).add(new Tomat());
 		}else if(GameModel.GetWorldMap().checkPointIsOk(x-1, y)){
-			System.out.println("höger");
-			GameModel.GetWorldMap().getPoint(x-1, y).addTile(new Tomat());
+			GameModel.GetWorldMap().getPoint(x-1, y).add(new Tomat());
 		}else if(GameModel.GetWorldMap().checkPointIsOk(x+1, y)){
-			GameModel.GetWorldMap().getPoint(x+1, y).addTile(new Tomat());
+			GameModel.GetWorldMap().getPoint(x+1, y).add(new Tomat());
 		}else if(GameModel.GetWorldMap().checkPointIsOk(x, y+1)){
-			GameModel.GetWorldMap().getPoint(x, y-1).addTile(new Tomat());
+			GameModel.GetWorldMap().getPoint(x, y-1).add(new Tomat());
 		}
 	}
 }
