@@ -3,7 +3,7 @@ package controller;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import controller.GameController.ACTION;
+import domain.GameModel.ACTION;
 import domain.Player;
 
 public class LocalPlayer implements PlayerInterface{

@@ -13,6 +13,14 @@ public class GameModel {
 	static ArrayList<PlayerInterface> players= new ArrayList<PlayerInterface>(); //ska användas
 	static Map worldMap= new Map();
 	static ArrayList<Moveable> animalsRemoveQueue=new ArrayList<Moveable>();
+	public static enum ACTION {
+		GORIGTH, GOLEFT, GOUP, GODOWN, RUNDOWN, RUNUP, RUNLEFT, RUNRIGTH,SLASH,PICKUP,USE,DIE
+	}
+	public static enum PLAYERMODES {
+		BROKENLEG, SIC,HURT
+	}
+	
+	
 	public static void addPlayers(PlayerInterface player){
 		players.add(player);
 	}

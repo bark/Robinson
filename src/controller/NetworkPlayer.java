@@ -12,6 +12,7 @@ public class NetworkPlayer implements PlayerInterface{
 
 	@Override
 	public void tick() {
+		
 		// TODO Auto-generated method stub
 		
 	}

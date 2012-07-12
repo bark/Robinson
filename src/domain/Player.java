@@ -1,6 +1,5 @@
 package domain;
 
-import java.awt.Desktop.Action;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -8,12 +7,13 @@ import java.awt.image.ImageObserver;
 import java.util.ArrayList;
 
 import controller.GameController;
-import controller.GameController.ACTION;
+import domain.GameModel.ACTION;
 import domain.Tile.DIRECTION;
 
 import Items.Item;
 
-public class Player {
+public class Player {//todo bryt ut lite till player controller.
+
 
 	int posX = 0;
 	int posY = 0;
@@ -31,6 +31,7 @@ public class Player {
 	float tempratur = 100;
 	float tiredness = 100;
 
+	ArrayList<PLAYERMODES> modes = new ArrayList<PLAYERMODES>();
 	ArrayList<Item> inventory = new ArrayList<Item>();
 	ACTION currentAction = null;
 	Image pic = null;
