@@ -37,7 +37,7 @@ public class TomatPlant extends Tile implements useble{
 
 	@Override
 	public void use(Player pl) {
-		System.out.println("lägger ut paprikan");
+		System.out.println("lägger ut tomaten på "+x+":"+y);
 		picY=280;
 		GameModel.GetWorldMap().getPoint(x, y).calculateImage();
 		

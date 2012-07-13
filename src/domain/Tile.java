@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import domain.map.SortedTileList;
 
-public abstract class Tile implements Comparable {
+public abstract class Tile implements Comparable<Tile> {
 	public static enum DIRECTION {
 		NORTH, SOUTH, WEST, EAST, NORTHWEST, NORTHEAST, SOUTHWEST, SOUTHEAST
 	}
@@ -60,8 +60,8 @@ public abstract class Tile implements Comparable {
 	}
 
 	@Override
-	public int compareTo(Object arg0) {
-		return (int) (zvalue - ((Tile) arg0).getZValue());
+	public int compareTo(Tile arg0) {
+		return (int) (zvalue -  arg0.getZValue());
 	}
 
 	public abstract void drawItSelf(Graphics g, ImageObserver io, int x, int y,

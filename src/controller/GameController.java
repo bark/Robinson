@@ -24,6 +24,7 @@ import Items.Candle;
 import Items.Item;
 
 import domain.GameModel;
+import domain.GameModel.ACTION;
 import domain.Player;
 import domain.Tile;
 import domain.map.Map;
@@ -39,9 +40,7 @@ public class GameController implements MouseWheelListener, KeyListener,
 	private static final int FRAME_DELAY = 200; // 20ms. implies 50fps (1000/20)
 												// = 50
 
-	public static enum ACTION {
-		GORIGTH, GOLEFT, GOUP, GODOWN, RUNDOWN, RUNUP, RUNLEFT, RUNRIGTH,SLASH,PICKUP,USE,DIE
-	}
+	
 
 	ACTION action = null;
 	GameGui gameGui = null;
@@ -61,7 +60,7 @@ public class GameController implements MouseWheelListener, KeyListener,
 		player1.getInventory().add(new Candle());
 		LocalPlayer localPlayer = new LocalPlayer(player1);
 		GameModel.addPlayers(localPlayer);
-		GameModel.addAnimals(new Wolf(25600,25844));
+		//GameModel.addAnimals(new Wolf(25600,25844));
 		
 		// borde bara skicka det man ser.
 		System.out.println("tillverkat en mapPart");

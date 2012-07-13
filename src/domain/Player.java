@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import controller.GameController;
 import domain.GameModel.ACTION;
+import domain.GameModel.PLAYERMODES;
 import domain.Tile.DIRECTION;
 
 import Items.Item;

@@ -124,7 +124,32 @@ public class MapPart implements Runnable {
 		return p;
 	}
 
-	private void fixTile(Tile tile) {
+	private void fixTileLayout(Tile tile) {
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[0].length; j++) {
+				if (map[i][j].contains(tile)) {
+					ArrayList<DIRECTION> directionsArr = generateArrayOfDirections(
+							tile, i, j);
+						map[i][j].getTileOfType(tile).SetPart(directionsArr);
+				}
+			}
+		}
+	}
+	private void addTiles(Tile tile) {
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[0].length; j++) {
+				if (!map[i][j].contains(tile)) {
+					int nr = generateArrayOfCrossDirections(tile, i, j).size();
+					if(nr>2){
+						System.out.println("adding tiles");
+						map[i][j].add(new Grass());//this shood not be hard coded.
+					}
+				}
+			}
+		}
+	}
+	
+	private void removeTiles(Tile tile) {
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[0].length; j++) {
 				if (map[i][j].contains(tile)) {
@@ -159,12 +184,7 @@ public class MapPart implements Runnable {
 							&& !directionsArr.contains(DIRECTION.WEST)
 							&& !directionsArr.contains(DIRECTION.NORTHEAST)) {
 						map[i][j].removeTileOfType(tile);
-					} else
-
-					{
-						// System.out.println(directionsArr);
-						map[i][j].getTileOfType(tile).SetPart(directionsArr);
-					}
+					} 
 				}
 			}
 		}
@@ -237,36 +257,53 @@ public class MapPart implements Runnable {
 
 	}
 
-	private ArrayList<DIRECTION> generateArrayOfDirections(Tile tile, int x,
-			int y) {
+	private ArrayList<DIRECTION> generateArrayOfCrossDirections(Tile tile,
+			int x, int y) {
 		ArrayList<DIRECTION> directions = new ArrayList<DIRECTION>();
-		// layer1
-		if (isTileOfSort(tile, x - 1, y - 1)) {
-			directions.add(DIRECTION.NORTHEAST);
-		}
 		if (isTileOfSort(tile, x, y - 1)) {
 			directions.add(DIRECTION.NORTH);
 		}
-		if (isTileOfSort(tile, x + 1, y - 1)) {
-			directions.add(DIRECTION.NORTHWEST);
-		}
-		// layer2
 		if (isTileOfSort(tile, x - 1, y)) {
 			directions.add(DIRECTION.EAST);
 		}
 		if (isTileOfSort(tile, x + 1, y)) {
 			directions.add(DIRECTION.WEST);
 		}
+		if (isTileOfSort(tile, x, y + 1)) {
+			directions.add(DIRECTION.SOUTH);
+		}
+		return directions;
+	}
+
+	private ArrayList<DIRECTION> generateArrayOfDiganalDirections(Tile tile,
+			int x, int y) {
+		ArrayList<DIRECTION> directions = new ArrayList<DIRECTION>();
+		// layer1
+		if (isTileOfSort(tile, x - 1, y - 1)) {
+			directions.add(DIRECTION.NORTHEAST);
+		}
+
+		if (isTileOfSort(tile, x + 1, y - 1)) {
+			directions.add(DIRECTION.NORTHWEST);
+		}
+		// layer2
+
 		// layer3
 		if (isTileOfSort(tile, x - 1, y + 1)) {
 			directions.add(DIRECTION.SOUTHEAST);
 		}
-		if (isTileOfSort(tile, x, y + 1)) {
-			directions.add(DIRECTION.SOUTH);
-		}
+
 		if (isTileOfSort(tile, x + 1, y + 1)) {
 			directions.add(DIRECTION.SOUTHWEST);
 		}
+		return directions;
+	}
+
+	private ArrayList<DIRECTION> generateArrayOfDirections(Tile tile, int x,
+			int y) {
+		ArrayList<DIRECTION> directions = generateArrayOfDiganalDirections(
+				tile, x, y);
+		directions.addAll(generateArrayOfCrossDirections(tile, x, y));
 		return directions;
 	}
 
@@ -361,17 +398,17 @@ public class MapPart implements Runnable {
 
 		}
 
-		createARiver(90, 90, 10, 10, notRandomRandom);
+	//	createARiver(90, 90, 10, 10, notRandomRandom);
 
-		for (int i = 0; i < 10; i++) {
-			fixTile(new Water());
-		}
-
-		for (int i = 0; i < 10; i++) {
-			fixTile(new Grass());
-		}
-		// removeExtraTiles();
-
+		for (int i = 0; i < 5; i++) {addTiles(new Grass());}
+		for (int i = 0; i < 10; i++) { removeTiles(new Grass()); }
+		fixTileLayout(new Grass()); 
+		/*
+		 * for (int i = 0; i < 10; i++) { fixTile(new Water()); }
+		 * 
+		 * for (int i = 0; i < 10; i++) { fixTile(new Grass()); } //
+		 * removeExtraTiles();
+		 */
 		for (int i = 0; i < higth; i++) {
 			for (int j = 0; j < with; j++) {
 				if (notRandomRandom.nextFloat() * 100 < vegitation / 600) {
@@ -386,12 +423,14 @@ public class MapPart implements Runnable {
 				}
 				if (notRandomRandom.nextFloat() * 100 < vegitation / 1000) {
 					if (new TomatPlant(i, j).canBeAdded(map[i][j])) {
-						map[i][j].add(new TomatPlant(i, j));
+						map[i][j].add(new TomatPlant(i + worldX * 100, j
+								+ worldY * 100));
 					}
 				}
 				if (notRandomRandom.nextFloat() * 100 < vegitation / 800) {
 					if (new PapricaPlant(i, j).canBeAdded(map[i][j])) {
-						map[i][j].add(new PapricaPlant(i, j));
+						map[i][j].add(new PapricaPlant(i + worldX * 100, j
+								+ worldY * 100));
 					}
 				}
 			}

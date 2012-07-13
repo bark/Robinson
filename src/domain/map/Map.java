@@ -71,10 +71,10 @@ public class Map {
 	public boolean checkPositionIsOk(int topX, int topY, int botX, int botY) {
 		//System.out.println("punkten är" + topX + ", " + topY+"tiles: "+topX/32+":"+topY/32);
 				
-		if (checkPointIsOk(topX, botY)) {
-			if (checkPointIsOk(topX, topY)) {
-				if (checkPointIsOk(botX, botY)) {
-					if (checkPointIsOk(botX, topY)) {
+		if (checkPointIsOkInPix(topX, botY)) {
+			if (checkPointIsOkInPix(topX, topY)) {
+				if (checkPointIsOkInPix(botX, botY)) {
+					if (checkPointIsOkInPix(botX, topY)) {
 						return true;
 					}
 				}
@@ -82,8 +82,21 @@ public class Map {
 		}
 		return false;
 	}
-	public boolean checkPointIsOk(int x, int y) {
+	public boolean checkPointIsOkInPix(int x, int y) {
 		SortedTileList tileArr = getPointFromPx(x, y);
+		if(tileArr!=null){
+			for (Tile tile : tileArr) {
+				if (tile.isSollid()) {
+					return false;
+				}
+			}
+		}else{
+			return false;
+		}
+		return true;
+	}
+	public boolean checkPointIsOk(int x, int y) {
+		SortedTileList tileArr = getPoint(x, y);
 		if(tileArr!=null){
 			for (Tile tile : tileArr) {
 				if (tile.isSollid()) {
