@@ -117,7 +117,7 @@ public class SortedTileList extends TreeSet<Tile> {
 		System.out.println(size());
 		for(Tile tile:this){
 			
-			if(tile.getClass().getSuperclass().equals(Item.class)) {
+			if(tile instanceof Item) {
 				item=(Item)tile;
 			}
 		}if(item!=null){

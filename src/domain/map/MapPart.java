@@ -1,5 +1,9 @@
 package domain.map;
 
+import items.food.Mushroom;
+import items.food.MushroomBad;
+import items.food.Potato;
+
 import java.awt.Point;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -18,18 +22,20 @@ import java.util.TreeSet;
 
 import javax.print.attribute.Size2DSyntax;
 
-import Items.Mushroom;
-import Items.MushroomBad;
 
 import domain.Tile;
 import domain.Tile.DIRECTION;
 import domain.backGroundTile.Dirt;
 import domain.backGroundTile.Grass;
 import domain.backGroundTile.Water;
-import domain.forgroundTile.PapricaPlant;
 import domain.forgroundTile.Stone;
-import domain.forgroundTile.TomatPlant;
 import domain.forgroundTile.Tree;
+import domain.plants.CarrotPlant;
+import domain.plants.PalsternackaPlant;
+import domain.plants.PapricaPlant;
+import domain.plants.PotatoPlant;
+import domain.plants.SquashPlant;
+import domain.plants.TomatPlant;
 
 public class MapPart implements Runnable {
 	private SortedTileList[][] map;
@@ -141,7 +147,6 @@ public class MapPart implements Runnable {
 				if (!map[i][j].contains(tile)) {
 					int nr = generateArrayOfCrossDirections(tile, i, j).size();
 					if(nr>2){
-						System.out.println("adding tiles");
 						map[i][j].add(new Grass());//this shood not be hard coded.
 					}
 				}
@@ -189,6 +194,60 @@ public class MapPart implements Runnable {
 			}
 		}
 	}
+	
+	private boolean createASee(int curentX, int curentY, int seeCenterX, int seeCenterY,int nr,
+			Random notRandomRandom) {
+		System.out.println("createASee");
+		if (nr==0){
+			System.out.println("return true");
+			return true;
+		}
+		if (curentX > 0 && curentY > 0 && seeCenterX > 0 && seeCenterY > 0
+				&& curentX < map.length-1 && curentY < map[0].length-1
+				&& seeCenterX < map.length-1 && seeCenterY < map[0].length-1) {
+			
+			System.out.println("water on point:"+curentX+":"+curentY);
+			map[curentX][curentY].add(new Water());
+			map[curentX + 1][curentY].add(new Water());
+			map[curentX][curentY + 1].add(new Water());
+			map[curentX - 1][curentY].add(new Water());
+			map[curentX][curentY - 1].add(new Water());
+			boolean succsess = false;
+			nr--;
+			double nr1 = hypetunusan(curentX + 1, curentY, seeCenterX, seeCenterY)+5
+					* ((notRandomRandom.nextDouble()*10 ) + 1);
+			double nr2 = hypetunusan(curentX, curentY + 1, seeCenterX, seeCenterY)+5
+					* ((notRandomRandom.nextDouble()*10) + 1);
+			double nr3 = hypetunusan(curentX - 1, curentY, seeCenterX, seeCenterY)+5
+					* ((notRandomRandom.nextDouble() *10) + 1);
+			double nr4 = hypetunusan(curentX, curentY - 1, seeCenterX, seeCenterY)+5
+					* ((notRandomRandom.nextDouble()*10) + 1);
+			double worst = theWorstNumber(nr1, nr2, nr3, nr4);
+			if (worst == nr1) {
+				succsess = createASee(curentX + 1, curentY, seeCenterX, seeCenterY,nr,
+						notRandomRandom);
+			} else if (worst == nr2) {
+				succsess = createASee(curentX, curentY + 1, seeCenterX, seeCenterY,nr,
+						notRandomRandom);
+			} else if (worst == nr3) {
+				succsess = createASee(curentX - 1, curentY, seeCenterX, seeCenterY,nr,
+						notRandomRandom);
+			} else if (worst == nr4) {
+				succsess = createASee(curentX, curentY - 1, seeCenterX, seeCenterY,nr,
+						notRandomRandom);
+			}
+
+			if (!succsess) {
+				createASee(curentX, curentY, seeCenterX, seeCenterY,nr, notRandomRandom);
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	
+	
 
 	private boolean createARiver(int startX, int startY, int endX, int endY,
 			Random notRandomRandom) {
@@ -397,20 +456,51 @@ public class MapPart implements Runnable {
 			}
 
 		}
+		createASee(80 ,80 ,80,80,1000, notRandomRandom);
 
-	//	createARiver(90, 90, 10, 10, notRandomRandom);
-
+//		if(water>50){
+//			createARiver((int)(notRandomRandom.nextFloat() * 100) ,(int)( notRandomRandom.nextFloat() * 100) ,(int)( notRandomRandom.nextFloat() * 100) ,(int)( notRandomRandom.nextFloat() * 100) , notRandomRandom);
+//		}
 		for (int i = 0; i < 5; i++) {addTiles(new Grass());}
 		for (int i = 0; i < 10; i++) { removeTiles(new Grass()); }
+		
+		
+		for (int i = 0; i < 10; i++) { removeTiles(new Water()); }
 		fixTileLayout(new Grass()); 
+		fixTileLayout(new Water()); 
+		//fix so corect tile sort on corect place.
 		/*
 		 * for (int i = 0; i < 10; i++) { fixTile(new Water()); }
 		 * 
 		 * for (int i = 0; i < 10; i++) { fixTile(new Grass()); } //
 		 * removeExtraTiles();
 		 */
+		
+		
 		for (int i = 0; i < higth; i++) {
 			for (int j = 0; j < with; j++) {
+				if (notRandomRandom.nextFloat() * 100 < vegitation / 60) {
+					if (new Mushroom().canBeAdded(map[i][j])) {
+						map[i][j].add(new PotatoPlant(i+worldX*100,j+worldY*100));
+					}
+				}
+				if (notRandomRandom.nextFloat() * 100 < vegitation / 60) {
+					if (new Mushroom().canBeAdded(map[i][j])) {
+						map[i][j].add(new SquashPlant(i+worldX*100,j+worldY*100));
+					}
+				}
+				if (notRandomRandom.nextFloat() * 100 < vegitation / 60) {
+					if (new Mushroom().canBeAdded(map[i][j])) {
+						map[i][j].add(new CarrotPlant(i+worldX*100,j+worldY*100));
+					}
+				}
+				if (notRandomRandom.nextFloat() * 100 < vegitation / 60) {
+					if (new Mushroom().canBeAdded(map[i][j])) {
+						map[i][j].add(new PalsternackaPlant(i+worldX*100,j+worldY*100));
+					}
+				}
+				
+				
 				if (notRandomRandom.nextFloat() * 100 < vegitation / 600) {
 					if (new Mushroom().canBeAdded(map[i][j])) {
 						map[i][j].add(new Mushroom());

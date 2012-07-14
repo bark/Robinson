@@ -276,6 +276,7 @@ public class Player {//todo bryt ut lite till player controller.
 	private void move(ACTION action2) {
 		int newposX = posX;
 		int newposY = posY;
+		System.out.println("pos:" + posX/32+":"+posY/32);
 		if (currentAction == action2) {
 			showFrame = (showFrame + 1) % 9;
 		} else {
