@@ -15,12 +15,12 @@ import domain.Tile;
 import domain.useble;
 import domain.backGroundTile.Water;
 
-public class PotatoPlant extends plant{
+public class PotatoPlant extends Plant{
 
 	public PotatoPlant(int x,int y){
 		super(x,y);
 		picX=32;
-		picY=220;
+		picY=224;
 		drops=new Potato();
 		String uri="./res/pic/plants.png";
 		pic= Toolkit.getDefaultToolkit().getImage(uri);

@@ -27,6 +27,8 @@ import domain.Tile;
 import domain.Tile.DIRECTION;
 import domain.backGroundTile.Dirt;
 import domain.backGroundTile.Grass;
+import domain.backGroundTile.MountainSide;
+import domain.backGroundTile.Mountains;
 import domain.backGroundTile.Water;
 import domain.forgroundTile.Stone;
 import domain.forgroundTile.Tree;
@@ -131,6 +133,10 @@ public class MapPart implements Runnable {
 	}
 
 	private void fixTileLayout(Tile tile) {
+		//if(tile instanceof Mountains){
+		//	fixTileLayoutMountan();
+		//	return;
+		//}
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[0].length; j++) {
 				if (map[i][j].contains(tile)) {
@@ -141,13 +147,34 @@ public class MapPart implements Runnable {
 			}
 		}
 	}
+	private void addMountanSides(){
+		for (int i = 0; i < map.length-2; i++) {
+			for (int j = 0; j < map[0].length-2; j++) {
+				if (map[i][j].existTileOfType(new Mountains())) {
+				//if(! map[i][j+1].existTileOfType(new Mountains() )){
+						map[i][j+1].add(new MountainSide());
+						
+						map[i][j+2].add(new MountainSide());
+						
+					//}
+				}
+			}
+		}
+	}
+	
 	private void addTiles(Tile tile) {
 		for (int i = 0; i < map.length; i++) {
 			for (int j = 0; j < map[0].length; j++) {
 				if (!map[i][j].contains(tile)) {
 					int nr = generateArrayOfCrossDirections(tile, i, j).size();
 					if(nr>2){
-						map[i][j].add(new Grass());//this shood not be hard coded.
+						if(tile instanceof Grass)
+							map[i][j].add(new Grass());
+						else if(tile instanceof Mountains){
+							map[i][j].add(new Mountains());
+						}else if(tile instanceof Water){
+							map[i][j].add(new Water());
+						}
 					}
 				}
 			}
@@ -195,7 +222,7 @@ public class MapPart implements Runnable {
 		}
 	}
 	
-	private boolean createASee(int curentX, int curentY, int seeCenterX, int seeCenterY,int nr,
+	private boolean CreaateAAriaOf(Tile tile, int curentX, int curentY, int seeCenterX, int seeCenterY,double probeblility,int nr,
 			Random notRandomRandom) {
 		System.out.println("createASee");
 		if (nr==0){
@@ -207,38 +234,47 @@ public class MapPart implements Runnable {
 				&& seeCenterX < map.length-1 && seeCenterY < map[0].length-1) {
 			
 			System.out.println("water on point:"+curentX+":"+curentY);
-			map[curentX][curentY].add(new Water());
-			map[curentX + 1][curentY].add(new Water());
-			map[curentX][curentY + 1].add(new Water());
-			map[curentX - 1][curentY].add(new Water());
-			map[curentX][curentY - 1].add(new Water());
+			if(tile instanceof Water){
+				map[curentX][curentY].add(new Water());
+				map[curentX + 1][curentY].add(new Water());
+				map[curentX][curentY + 1].add(new Water());
+				map[curentX - 1][curentY].add(new Water());
+				map[curentX][curentY-1 ].add(new Water());
+				
+			}else if(tile instanceof Mountains){
+				map[curentX][curentY].add(new Mountains());
+				map[curentX + 1][curentY].add(new Mountains());
+				map[curentX][curentY + 1].add(new Mountains());
+				map[curentX - 1][curentY].add(new Mountains());
+				map[curentX][curentY-1 ].add(new Mountains());
+			}
 			boolean succsess = false;
 			nr--;
 			double nr1 = hypetunusan(curentX + 1, curentY, seeCenterX, seeCenterY)+5
-					* ((notRandomRandom.nextDouble()*10 ) + 1);
+					* ((notRandomRandom.nextDouble()*probeblility ) + 1);
 			double nr2 = hypetunusan(curentX, curentY + 1, seeCenterX, seeCenterY)+5
-					* ((notRandomRandom.nextDouble()*10) + 1);
+					* ((notRandomRandom.nextDouble()*probeblility) + 1);
 			double nr3 = hypetunusan(curentX - 1, curentY, seeCenterX, seeCenterY)+5
-					* ((notRandomRandom.nextDouble() *10) + 1);
+					* ((notRandomRandom.nextDouble() *probeblility) + 1);
 			double nr4 = hypetunusan(curentX, curentY - 1, seeCenterX, seeCenterY)+5
-					* ((notRandomRandom.nextDouble()*10) + 1);
+					* ((notRandomRandom.nextDouble()*probeblility) + 1);
 			double worst = theWorstNumber(nr1, nr2, nr3, nr4);
 			if (worst == nr1) {
-				succsess = createASee(curentX + 1, curentY, seeCenterX, seeCenterY,nr,
+				succsess = CreaateAAriaOf(tile,curentX + 1, curentY, seeCenterX, seeCenterY,probeblility,nr,
 						notRandomRandom);
 			} else if (worst == nr2) {
-				succsess = createASee(curentX, curentY + 1, seeCenterX, seeCenterY,nr,
+				succsess = CreaateAAriaOf(tile,curentX, curentY + 1, seeCenterX, seeCenterY,probeblility,nr,
 						notRandomRandom);
 			} else if (worst == nr3) {
-				succsess = createASee(curentX - 1, curentY, seeCenterX, seeCenterY,nr,
+				succsess = CreaateAAriaOf(tile,curentX - 1, curentY, seeCenterX, seeCenterY,probeblility,nr,
 						notRandomRandom);
 			} else if (worst == nr4) {
-				succsess = createASee(curentX, curentY - 1, seeCenterX, seeCenterY,nr,
+				succsess = CreaateAAriaOf(tile,curentX, curentY - 1, seeCenterX, seeCenterY,probeblility,nr,
 						notRandomRandom);
 			}
 
 			if (!succsess) {
-				createASee(curentX, curentY, seeCenterX, seeCenterY,nr, notRandomRandom);
+				CreaateAAriaOf(tile,curentX, curentY, seeCenterX, seeCenterY,probeblility,nr,notRandomRandom);
 			}
 			return true;
 		} else {
@@ -389,35 +425,37 @@ public class MapPart implements Runnable {
 	 */
 	void createATree(int x, int y, int type) {
 		if (nrOf(new Water(), x, y) == 0) {
-
-			double prio = (y * 10) - (x);
-			if (x < 90 && y < 90) {
-
-				// stammen
-				map[x][y + 2].add(new Tree(type, 0, prio, false));
-				map[x][y + 1 + 2].add(new Tree(type, 1, prio, false));
-				map[x][y + 2 + 2].add(new Tree(type, 2, prio, false));
-
-				map[x + 1][y + 2].add(new Tree(type, 3, prio, false));
-				map[x + 1][y + 1 + 2].add(new Tree(type, 4, prio, false));
-				map[x + 1][y + 2 + 2].add(new Tree(type, 5, prio, false));
-
-				map[x + 2][y + 2].add(new Tree(type, 6, prio, false));
-				map[x + 2][y + 1 + 2].add(new Tree(type, 7, prio, false));
-				map[x + 2][y + 2 + 2].add(new Tree(type, 8, prio, false));
-
-				// träd toppen
-				map[x][y].add(new Tree(type, 0, prio, true));
-				map[x][y + 1].add(new Tree(type, 1, prio, true));
-				map[x][y + 2].add(new Tree(type, 2, prio, true));
-
-				map[x + 1][y].add(new Tree(type, 3, prio, true));
-				map[x + 1][y + 1].add(new Tree(type, 4, prio, true));
-				map[x + 1][y + 2].add(new Tree(type, 5, prio, true));
-
-				map[x + 2][y].add(new Tree(type, 6, prio, true));
-				map[x + 2][y + 1].add(new Tree(type, 7, prio, true));
-				map[x + 2][y + 2].add(new Tree(type, 8, prio, true));
+			if (nrOf(new Stone(), x, y) == 0) {
+				double prio = (y * 10) - (x) +Math.random()*2;
+				if (x < 90 && y < 90) {
+					boolean fail=false;
+					// stammen
+					
+					map[x][y + 2].add(new Tree(type, 0, prio, false));
+					map[x][y + 1 + 2].add(new Tree(type, 1, prio, false));
+					map[x][y + 2 + 2].add(new Tree(type, 2, prio, false));
+	
+					map[x + 1][y + 2].add(new Tree(type, 3, prio, false));
+					map[x + 1][y + 1 + 2].add(new Tree(type, 4, prio, false));
+					map[x + 1][y + 2 + 2].add(new Tree(type, 5, prio, false));
+	
+					map[x + 2][y + 2].add(new Tree(type, 6, prio, false));
+					map[x + 2][y + 1 + 2].add(new Tree(type, 7, prio, false));
+					map[x + 2][y + 2 + 2].add(new Tree(type, 8, prio, false));
+	
+					// träd toppen
+					map[x][y].add(new Tree(type, 0, prio, true));
+					map[x][y + 1].add(new Tree(type, 1, prio, true));
+					map[x][y + 2].add(new Tree(type, 2, prio, true));
+	
+					map[x + 1][y].add(new Tree(type, 3, prio, true));
+					map[x + 1][y + 1].add(new Tree(type, 4, prio, true));
+					map[x + 1][y + 2].add(new Tree(type, 5, prio, true));
+	
+					map[x + 2][y].add(new Tree(type, 6, prio, true));
+					map[x + 2][y + 1].add(new Tree(type, 7, prio, true));
+					map[x + 2][y + 2].add(new Tree(type, 8, prio, true));
+				}
 			}
 		}
 	}
@@ -456,18 +494,25 @@ public class MapPart implements Runnable {
 			}
 
 		}
-		createASee(80 ,80 ,80,80,1000, notRandomRandom);
+		CreaateAAriaOf(new Mountains(),80 ,80 ,80,80, 5,1000, notRandomRandom);
 
 //		if(water>50){
 //			createARiver((int)(notRandomRandom.nextFloat() * 100) ,(int)( notRandomRandom.nextFloat() * 100) ,(int)( notRandomRandom.nextFloat() * 100) ,(int)( notRandomRandom.nextFloat() * 100) , notRandomRandom);
 //		}
 		for (int i = 0; i < 5; i++) {addTiles(new Grass());}
+		for (int i = 0; i < 5; i++) {addTiles(new Mountains());}
+		for (int i = 0; i < 5; i++) {addTiles(new Water());}
+		
 		for (int i = 0; i < 10; i++) { removeTiles(new Grass()); }
-		
-		
+		for (int i = 0; i < 10; i++) { removeTiles(new Mountains()); }
 		for (int i = 0; i < 10; i++) { removeTiles(new Water()); }
+		
+		
+		fixTileLayout(new Mountains());
+		addMountanSides();
+		fixTileLayout(new MountainSide());
 		fixTileLayout(new Grass()); 
-		fixTileLayout(new Water()); 
+		//fixTileLayout(new Water()); 
 		//fix so corect tile sort on corect place.
 		/*
 		 * for (int i = 0; i < 10; i++) { fixTile(new Water()); }
@@ -525,9 +570,9 @@ public class MapPart implements Runnable {
 				}
 			}
 		}
-		for (int i = 0; i < higth; i++) {
+		/*for (int i = 0; i < higth; i++) {
 			for (int j = 0; j < with; j++) {
-				if (notRandomRandom.nextFloat() * 100 < vegitation / 50) {
+				if (notRandomRandom.nextFloat() * 100 < vegitation / 5) {
 					if (notRandomRandom.nextDouble() * 100 > heat) {
 						createATree(i, j, 1);
 					} else {
@@ -535,7 +580,7 @@ public class MapPart implements Runnable {
 					}
 				}
 			}
-		}
+		}*/
 		for (int i = 0; i < higth; i++) {
 			for (int j = 0; j < with; j++) {
 				// loading pictures to memory
@@ -544,4 +589,8 @@ public class MapPart implements Runnable {
 		}
 
 	}
+	
+	/*void bildLV1Mountans(int x, int y, ){
+		
+	}*/
 }

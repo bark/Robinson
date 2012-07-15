@@ -18,12 +18,12 @@ import domain.Tile;
 import domain.useble;
 import domain.backGroundTile.Water;
 
-public class SquashPlant extends plant{
+public class SquashPlant extends Plant{
 
 	public SquashPlant(int x,int y){
 		super(x,y);
-		picX=94+64;
-		picY=220;
+		picX=94+68;
+		picY=224;
 		drops=new Squash();
 		String uri="./res/pic/plants.png";
 		pic= Toolkit.getDefaultToolkit().getImage(uri);

@@ -13,13 +13,13 @@ import domain.Tile;
 import domain.useble;
 import domain.backGroundTile.Water;
 
-public class PapricaPlant extends plant{
+public class PapricaPlant extends Plant{
 	
 
 	public PapricaPlant(int x,int y) {
 		super(x,y);
 		picX=128;
-		picY=220;
+		picY=224;
 		String uri = "./res/pic/plants.png";
 		drops=new Paprica();
 		pic = Toolkit.getDefaultToolkit().getImage(uri);

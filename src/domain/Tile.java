@@ -24,7 +24,8 @@ public abstract class Tile implements Comparable<Tile> {
 	protected Boolean fullscreen = false;
 	protected String name = "tile";
 	protected Boolean sollid = false;
-
+	
+	
 	public Boolean canBeAdded(SortedTileList exist) {
 
 		for (Tile tile : exist) {

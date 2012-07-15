@@ -17,12 +17,12 @@ import domain.Tile;
 import domain.useble;
 import domain.backGroundTile.Water;
 
-public class PalsternackaPlant extends plant{
+public class PalsternackaPlant extends Plant{
 
 	public PalsternackaPlant(int x,int y){
 		super(x,y);
 		picX=94;
-		picY=220;
+		picY=224;
 		drops=new Palsernaka();
 		String uri="./res/pic/plants.png";
 		pic= Toolkit.getDefaultToolkit().getImage(uri);

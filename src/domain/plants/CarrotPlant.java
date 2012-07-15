@@ -16,12 +16,12 @@ import domain.Tile;
 import domain.useble;
 import domain.backGroundTile.Water;
 
-public class CarrotPlant extends plant{
+public class CarrotPlant extends Plant{
 
 	public CarrotPlant(int x,int y){
 		super(x,y);
 		picX=64;
-		picY=220;
+		picY=224;
 		drops=new Carrot();
 		String uri="./res/pic/plants.png";
 		pic= Toolkit.getDefaultToolkit().getImage(uri);

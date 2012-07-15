@@ -19,12 +19,12 @@ import domain.Tile;
 import domain.useble;
 import domain.backGroundTile.Water;
 
-public class MajsPlant extends plant{
+public class MajsPlant extends Plant{
 
 	public MajsPlant(int x,int y){
 		super(x,y);
 		picX=94+94;
-		picY=220;
+		picY=224;
 		drops=new Majs();
 		String uri="./res/pic/plants.png";
 		pic= Toolkit.getDefaultToolkit().getImage(uri);
